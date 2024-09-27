@@ -8,12 +8,12 @@ function Productdetail() {
       <Header></Header>
 	<div className="container">
 		<div className="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-			<Link to="index.html" className="stext-109 cl8 hov-cl1 trans-04">
+			<Link to="/Home" className="stext-109 cl8 hov-cl1 trans-04">
 				Home
 				<i className="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 			</Link>
 
-			<Link to="product.html" className="stext-109 cl8 hov-cl1 trans-04">
+			<Link to="/Product" className="stext-109 cl8 hov-cl1 trans-04">
 				Men
 				<i className="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 			</Link>
@@ -32,34 +32,29 @@ function Productdetail() {
 						<div className="wrap-slick3 flex-sb flex-w">
 							<div className="wrap-slick3-dots"></div>
 							<div className="wrap-slick3-arrows flex-sb-m flex-w"></div>
-
 							<div className="slick3 gallery-lb">
 								<div className="item-slick3" data-thumb="../../asset/images/product-detail-01.jpg">
 									<div className="wrap-pic-w pos-relative">
 										<img src="../../asset/images/product-detail-01.jpg" alt="IMG-PRODUCT"/>
-
 										<a className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="../../asset/images/product-detail-01.jpg">
 											<i className="fa fa-expand"></i>
 										</a>
 									</div>
 								</div>
-
-								<div className="item-slick3" data-thumb="../../asset/images/product-detail-02.jpg">
-									<div className="wrap-pic-w pos-relative">
+								<div class="item-slick3" data-thumb="../../asset/images/product-detail-02.jpg">
+									<div class="wrap-pic-w pos-relative">
 										<img src="../../asset/images/product-detail-02.jpg" alt="IMG-PRODUCT"/>
-
-										<a className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="../../asset/images/product-detail-02.jpg">
-											<i className="fa fa-expand"></i>
+										<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="../../asset/images/product-detail-02.jpg">
+											<i class="fa fa-expand"></i>
 										</a>
 									</div>
 								</div>
-
-								<div className="item-slick3" data-thumb="../../asset/images/product-detail-03.jpg">
-									<div className="wrap-pic-w pos-relative">
+								<div class="item-slick3" data-thumb="../../asset/images/product-detail-03.jpg">
+									<div class="wrap-pic-w pos-relative">
 										<img src="../../asset/images/product-detail-03.jpg" alt="IMG-PRODUCT"/>
 
-										<a className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="../../asset/images/product-detail-03.jpg">
-											<i className="fa fa-expand"></i>
+										<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="../../asset/images/product-detail-03.jpg">
+											<i class="fa fa-expand"></i>
 										</a>
 									</div>
 								</div>
@@ -85,39 +80,35 @@ function Productdetail() {
 						<div className="p-t-33">
 							<div className="flex-w flex-r-m p-b-10">
 								<div className="size-203 flex-c-m respon6">
-									Size
+									Kích cỡ
 								</div>
 
 								<div className="size-204 respon6-next">
-									<div className="rs1-select2 bor8 bg0">
-										<select className="js-select2" name="time">
-											<option>Choose an option</option>
+										<select className="rs1-select2 bor8 bg0" name="time">
+											<option>Chọn size</option>
 											<option>Size S</option>
 											<option>Size M</option>
 											<option>Size L</option>
 											<option>Size XL</option>
 										</select>
 										<div className="dropDownSelect2"></div>
-									</div>
 								</div>
 							</div>
 
 							<div className="flex-w flex-r-m p-b-10">
 								<div className="size-203 flex-c-m respon6">
-									Color
+									Màu
 								</div>
 
 								<div className="size-204 respon6-next">
-									<div className="rs1-select2 bor8 bg0">
-										<select className="js-select2" name="time">
-											<option>Choose an option</option>
+								<select className="rs1-select2 bor8 bg0" name="time">
+											<option>Chọn màu</option>
 											<option>Red</option>
 											<option>Blue</option>
 											<option>White</option>
 											<option>Grey</option>
 										</select>
 										<div className="dropDownSelect2"></div>
-									</div>
 								</div>
 							</div>
 
@@ -136,7 +127,7 @@ function Productdetail() {
 									</div>
 
 									<button className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-										Add to cart
+										Thêm vào giỏ hàng
 									</button>
 								</div>
 							</div>	
@@ -169,15 +160,11 @@ function Productdetail() {
 				<div className="tab01">
 					<ul className="nav nav-tabs" role="tablist">
 						<li className="nav-item p-b-10">
-							<a className="nav-link active" data-toggle="tab" href="#description" role="tab">Description</a>
+							<a className="nav-link active" data-toggle="tab" href="#description" role="tab">Mô tả</a>
 						</li>
 
 						<li className="nav-item p-b-10">
-							<a className="nav-link" data-toggle="tab" href="#information" role="tab">Additional information</a>
-						</li>
-
-						<li className="nav-item p-b-10">
-							<a className="nav-link" data-toggle="tab" href="#reviews" role="tab">Reviews (1)</a>
+							<a className="nav-link" data-toggle="tab" href="#reviews" role="tab">Đánh giá (1)</a>
 						</li>
 					</ul>
 
@@ -347,16 +334,16 @@ function Productdetail() {
 		<div className="container">
 			<div className="p-b-45">
 				<h3 className="ltext-106 cl5 txt-center">
-					Related Products
+					Sản phẩm liên quan
 				</h3>
 			</div>
 
 			<div className="wrap-slick2">
-				<div className="slick2">
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
+				<div className="row isotope-grid">
+					<div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
 						<div className="block2">
 							<div className="block2-pic hov-img0">
-								<img src="images/product-01.jpg" alt="IMG-PRODUCT"/>
+								<img src="../../asset/images/product-01.jpg" alt="IMG-PRODUCT"/>
 
 								<Link to="#" className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
 									Quick View
@@ -376,15 +363,15 @@ function Productdetail() {
 
 								<div className="block2-txt-child2 flex-r p-t-3">
 									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
+										<img className="icon-heart1 dis-block trans-04" src="../../asset/images/icons/icon-heart-01.png" alt="ICON"/>
+										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="../../asset/images/icons/icon-heart-02.png" alt="ICON"/>
 									</Link>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
+					<div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
 						<div className="block2">
 							<div className="block2-pic hov-img0">
 								<img src="../../asset/images/product-02.jpg" alt="IMG-PRODUCT"/>
@@ -407,18 +394,18 @@ function Productdetail() {
 
 								<div className="block2-txt-child2 flex-r p-t-3">
 									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
+										<img className="icon-heart1 dis-block trans-04" src="../../asset/images/icons/icon-heart-01.png" alt="ICON"/>
+										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="../../asset/images/icons/icon-heart-02.png" alt="ICON"/>
 									</Link>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
+					<div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
 						<div className="block2">
 							<div className="block2-pic hov-img0">
-								<img src="images/product-03.jpg" alt="IMG-PRODUCT"/>
+								<img src="../../asset/images/product-03.jpg" alt="IMG-PRODUCT"/>
 
 								<Link to="#" className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
 									Quick View
@@ -438,18 +425,18 @@ function Productdetail() {
 
 								<div className="block2-txt-child2 flex-r p-t-3">
 									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
+										<img className="icon-heart1 dis-block trans-04" src="../../asset/images/icons/icon-heart-01.png" alt="ICON"/>
+										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="../../asset/images/icons/icon-heart-02.png" alt="ICON"/>
 									</Link>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
+					<div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
 						<div className="block2">
 							<div className="block2-pic hov-img0">
-								<img src="images/product-04.jpg" alt="IMG-PRODUCT"/>
+								<img src="../../asset/images/product-04.jpg" alt="IMG-PRODUCT"/>
 
 								<Link to="#" className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
 									Quick View
@@ -469,132 +456,8 @@ function Productdetail() {
 
 								<div className="block2-txt-child2 flex-r p-t-3">
 									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
-									</Link>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-						<div className="block2">
-							<div className="block2-pic hov-img0">
-								<img src="images/product-05.jpg" alt="IMG-PRODUCT"/>
-
-								<Link to="#" className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-									Quick View
-								</Link>
-							</div>
-
-							<div className="block2-txt flex-w flex-t p-t-14">
-								<div className="block2-txt-child1 flex-col-l ">
-									<Link to="product-detail.html" className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-										Front Pocket Jumper
-									</Link>
-
-									<span className="stext-105 cl3">
-										$34.75
-									</span>
-								</div>
-
-								<div className="block2-txt-child2 flex-r p-t-3">
-									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
-									</Link>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-						<div className="block2">
-							<div className="block2-pic hov-img0">
-								<img src="images/product-06.jpg" alt="IMG-PRODUCT"/>
-
-								<Link to="#" className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-									Quick View
-								</Link>
-							</div>
-
-							<div className="block2-txt flex-w flex-t p-t-14">
-								<div className="block2-txt-child1 flex-col-l ">
-									<Link to="product-detail.html" className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-										Vintage Inspired classNameic 
-									</Link>
-
-									<span className="stext-105 cl3">
-										$93.20
-									</span>
-								</div>
-
-								<div className="block2-txt-child2 flex-r p-t-3">
-									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
-									</Link>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-						<div className="block2">
-							<div className="block2-pic hov-img0">
-								<img src="images/product-07.jpg" alt="IMG-PRODUCT"/>
-
-								<Link to="#" className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-									Quick View
-								</Link>
-							</div>
-
-							<div className="block2-txt flex-w flex-t p-t-14">
-								<div className="block2-txt-child1 flex-col-l ">
-									<Link to="product-detail.html" className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-										Shirt in Stretch Cotton
-									</Link>
-
-									<span className="stext-105 cl3">
-										$52.66
-									</span>
-								</div>
-
-								<div className="block2-txt-child2 flex-r p-t-3">
-									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
-									</Link>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div className="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-						<div className="block2">
-							<div className="block2-pic hov-img0">
-								<img src="images/product-08.jpg" alt="IMG-PRODUCT"/>
-
-								<Link to="#" className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-									Quick View
-								</Link>
-							</div>
-
-							<div className="block2-txt flex-w flex-t p-t-14">
-								<div className="block2-txt-child1 flex-col-l ">
-									<Link to="product-detail.html" className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-										Pieces Metallic Printed
-									</Link>
-
-									<span className="stext-105 cl3">
-										$18.96
-									</span>
-								</div>
-
-								<div className="block2-txt-child2 flex-r p-t-3">
-									<Link to="#" className="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-										<img className="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"/>
-										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"/>
+										<img className="icon-heart1 dis-block trans-04" src="../../asset/images/icons/icon-heart-01.png" alt="ICON"/>
+										<img className="icon-heart2 dis-block trans-04 ab-t-l" src="../../asset/images/icons/icon-heart-02.png" alt="ICON"/>
 									</Link>
 								</div>
 							</div>

@@ -16,16 +16,17 @@ import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import AddCategory from "./frontend/admin/AddCategory";
 import AddPersonnel from "./frontend/admin/AddPersonnel";
 import AddProduct from "./frontend/admin/AddProduct";
+
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
 import Contact from "./frontend/client/Contact";
 import LoginForm from "./frontend/admin/LoginForm";
-
-import Productdetail from "./frontend/client/Productdetail";
+import Productdetail from "./frontend/client/Product-detail";
 import Blog from "./frontend/client/Blog";
 import ShoppingCart from "./frontend/client/ShoppingCart";
 import Login from "./frontend/client/auth/Login";
+import Register from "./frontend/client/auth/Register"
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
       <BrowserRouter basename="/">
         <Routes>
           {/* Các Route cho client */}
+          <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/product" element={<Product />} />
           <Route path="/productdetail" element={<Productdetail />} />
@@ -41,9 +43,10 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
           <Route path="/login" element={<Login />} />
+          <Route path='/register'  element={<Register />}/>
 
           {/* Các Route cho admin */}
-          <Route path="/" element={<ThongKe />} />
+          <Route path="/admin" element={<ThongKe />} />
           <Route path="/thongke" element={<ThongKe />} />
           <Route path="/cndanhmuc" element={<CNDanhMuc />} />
           <Route path="/cndonhang" element={<CNDonHang />} />

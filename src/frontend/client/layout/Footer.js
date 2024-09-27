@@ -8,18 +8,18 @@ function Footer() {
         <div className="container">
           <div className="row">
             <div className="col-sm-6 col-lg-3 p-b-50">
-              <h4 className="stext-301 cl0 p-b-30">Categories</h4>
+              <h4 className="stext-301 cl0 p-b-30">Danh mục</h4>
 
               <ul>
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Women
+                    Nữ
                   </Link>
                 </li>
 
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Men
+                    Name
                   </Link>
                 </li>
 
@@ -38,7 +38,7 @@ function Footer() {
             </div>
 
             <div className="col-sm-6 col-lg-3 p-b-50">
-              <h4 className="stext-301 cl0 p-b-30">Help</h4>
+              <h4 className="stext-301 cl0 p-b-30">Hỗ trợ</h4>
 
               <ul>
                 <li className="p-b-10">
@@ -68,7 +68,7 @@ function Footer() {
             </div>
 
             <div className="col-sm-6 col-lg-3 p-b-50">
-              <h4 className="stext-301 cl0 p-b-30">GET IN TOUCH</h4>
+              <h4 className="stext-301 cl0 p-b-30">LIÊN HỆ</h4>
 
               <p className="stext-107 cl7 size-201">
                 Any questions? Let us know in store at 8th floor, 379 Hudson St,
@@ -91,7 +91,7 @@ function Footer() {
             </div>
 
             <div className="col-sm-6 col-lg-3 p-b-50">
-              <h4 className="stext-301 cl0 p-b-30">Newsletter</h4>
+              <h4 className="stext-301 cl0 p-b-30">BẢN TIN</h4>
 
               <form>
                 <div className="wrap-input1 w-full p-b-4">
@@ -137,7 +137,6 @@ function Footer() {
             </div>
 
             <p className="stext-107 cl6 txt-center">
-              {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
               Copyright &copy;
               <script>document.write(new Date().getFullYear());</script> All
               rights reserved | Made with{" "}
@@ -149,7 +148,6 @@ function Footer() {
               <Link to="https://themewagon.com" target="_blank">
                 ThemeWagon
               </Link>
-              {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
             </p>
           </div>
         </div>

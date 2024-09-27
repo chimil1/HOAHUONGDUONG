@@ -20,20 +20,20 @@ function Contact() {
                         <div className="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
                             <form>
                                 <h4 className="mtext-105 cl2 txt-center p-b-30">
-                                    Send Us A Message
+                                Gửi tin nhắn cho chúng tôi
                                 </h4>
 
                                 <div className="bor8 m-b-20 how-pos4-parent">
-                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email" placeholder="Your Email Address" />
+                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email" placeholder="Địa chỉ Email của bạn" />
                                     <img className="how-pos4 pointer-none" src="../../asset/images/icons/icon-email.png" alt="ICON" />
                                 </div>
 
                                 <div className="bor8 m-b-30">
-                                    <textarea className="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg" placeholder="How Can We Help?"></textarea>
+                                    <textarea className="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg" placeholder="Chúng tôi có thể giúp gì?"></textarea>
                                 </div>
 
                                 <button className="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
-                                    Submit
+                                    Gửi
                                 </button>
                             </form>
                         </div>
@@ -46,11 +46,11 @@ function Contact() {
 
                                 <div className="size-212 p-t-2">
                                     <span className="mtext-110 cl2">
-                                        Address
+                                        Địa chỉ
                                     </span>
 
                                     <p className="stext-115 cl6 size-213 p-t-18">
-                                        Coza Store Center 8th floor, 379 Hudson St, New York, NY 10018 US
+                                        An Khánh, Ninh Kiều, Cần Thơ
                                     </p>
                                 </div>
                             </div>
@@ -62,11 +62,11 @@ function Contact() {
 
                                 <div className="size-212 p-t-2">
                                     <span className="mtext-110 cl2">
-                                        Lets Talk
+                                        Số điện thoại
                                     </span>
 
                                     <p className="stext-115 cl1 size-213 p-t-18">
-                                        +1 800 1236879
+                                        +84 365 971 807
                                     </p>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@ function Contact() {
 
                                 <div className="size-212 p-t-2">
                                     <span className="mtext-110 cl2">
-                                        Sale Support
+                                    Hỗ trợ bán hàng
                                     </span>
 
                                     <p className="stext-115 cl1 size-213 p-t-18">

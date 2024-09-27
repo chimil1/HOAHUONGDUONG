@@ -1,11 +1,11 @@
+import { Link } from "react-router-dom";
 import Header from "./layout/Header";
 import Slider from "./layout/Slider";
 import Footer from "./layout/Footer";
-import { Link } from "react-router-dom";
 
 function Home(){
     return(
-        <div>
+        <div className="App">
             <Header></Header>
             <Slider></Slider>
             <section className="bg0 p-t-23 p-b-140">
@@ -46,7 +46,7 @@ function Home(){
                       <div className="block2-pic hov-img0">
                         <img src={product.imgSrc} alt="IMG-PRODUCT" />
                         <Link
-                          to="#"
+                          to="/Productdetail"
                           className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                         >
                           Quick View
@@ -91,7 +91,7 @@ function Home(){
                     to="#"
                     className="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04"
                   >
-                    Load More
+                    Xem thêm
                   </Link>
                 </div>
               </div>

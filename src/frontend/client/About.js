@@ -1,6 +1,6 @@
 import Header from './layout/Header';
 import Footer from './layout/Footer';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom'; // It's imported but not used, remove if not needed
 
 function About() {
     return (
@@ -20,7 +20,7 @@ function About() {
                     <div className="row p-b-148">
                         <div className="col-md-7 col-lg-8">
                             <div className="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
-                                <h3 className="mtext-111 cl2 p-b-16">Our Story</h3>
+                                <h3 className="mtext-111 cl2 p-b-16">Câu chuyện của chúng tôi</h3>
 
                                 <p className="stext-113 cl6 p-b-26">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
@@ -67,7 +67,7 @@ function About() {
                     <div className="row">
                         <div className="order-md-2 col-md-7 col-lg-8 p-b-30">
                             <div className="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
-                                <h3 className="mtext-111 cl2 p-b-16">Our Mission</h3>
+                                <h3 className="mtext-111 cl2 p-b-16">Sứ mệnh của chúng tôi</h3>
 
                                 <p className="stext-113 cl6 p-b-26">
                                     Mauris non lacinia magna. Sed nec lobortis dolor. Vestibulum
