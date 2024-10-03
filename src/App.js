@@ -26,6 +26,7 @@ import Productdetail from "./frontend/client/Productdetail";
 import Blog from "./frontend/client/Blog";
 import ShoppingCart from "./frontend/client/ShoppingCart";
 import Login from "./frontend/client/auth/Login";
+import Register from "./frontend/client/auth/Register";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           {/* Các Route cho admin */}
           <Route path="/" element={<ThongKe />} />

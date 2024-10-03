@@ -6,12 +6,12 @@ function Menu() {
     <aside className="menu-sidebar2">
       <div className="logo bg-dark">
       <Link to="#">
-          <img src="../../assets/images/icon/logo-white.png" alt="Cool Admin" />
+          <img src="../../assets/images/icon/logo-white.png" alt="Hoa Hướng Dương" />
         </Link>
       </div>
       <div className="menu-sidebar2__content js-scrollbar1">
         <div className="account2">
-          <Link to="#">Sign out</Link>
+          <Link to="/admin/login">Đăng Xuất</Link>
         </div>
         <nav className="navbar-sidebar2">
           <ul className="list-unstyled navbar__list">
