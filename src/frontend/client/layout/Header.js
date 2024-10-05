@@ -36,7 +36,7 @@ function Header() {
                   </li>
 
                   <li>
-                    <Link to="/Contact">Liên hệ</Link>
+                    <Link to="/contact">Liên hệ</Link>
                   </li>
                 </ul>
               </div>
@@ -49,14 +49,14 @@ function Header() {
 
                 <div
                   className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart">
-                  <Link to="/ShoppingCart">
+                  <Link to="/shoppingCart">
                     <i className="zmdi zmdi-shopping-cart" style={{ color: 'black' }}></i>
                   </Link>
                 </div>
 
                 <div
                   className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart">
-                  <Link to="/Login">
+                  <Link to="/login">
                     <i className="fa-solid fa-user" style={{ color: 'black' }}></i>
                   </Link>
                 </div>

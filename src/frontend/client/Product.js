@@ -43,14 +43,14 @@ function Product() {
                 className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
                 data-filter=".shoes"
               >
-                Shoes
+                Giày
               </button>
 
               <button
                 className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
                 data-filter=".watches"
               >
-                Watches
+                Đồng hồ
               </button>
             </div>
 
@@ -145,31 +145,31 @@ function Product() {
 
                     <li className="p-b-6">
                       <Link to="#" className="filter-link stext-106 trans-04">
-                        $0.00 - $50.00
+                        0đ - 50.000đ
                       </Link>
                     </li>
 
                     <li className="p-b-6">
                       <Link to="#" className="filter-link stext-106 trans-04">
-                        $50.00 - $100.00
+                        50.000đ - 100.00đ
                       </Link>
                     </li>
 
                     <li className="p-b-6">
                       <Link to="#" className="filter-link stext-106 trans-04">
-                        $100.00 - $150.00
+                        100.000đ - 150.000đ
                       </Link>
                     </li>
 
                     <li className="p-b-6">
                       <Link to="#" className="filter-link stext-106 trans-04">
-                        $150.00 - $200.00
+                        150.000đ - 200.000đ
                       </Link>
                     </li>
 
                     <li className="p-b-6">
                       <Link to="#" className="filter-link stext-106 trans-04">
-                        $200.00+
+                        200.000đ
                       </Link>
                     </li>
                   </ul>
@@ -188,7 +188,7 @@ function Product() {
                       </span>
 
                       <Link to="#" className="filter-link stext-106 trans-04">
-                        Black
+                        Đen
                       </Link>
                     </li>
 
@@ -316,10 +316,10 @@ function Product() {
                   />
 
                   <Link
-                    to="/Productdetail"
+                    to="/productdetail"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
@@ -332,7 +332,7 @@ function Product() {
                       Esprit Ruffle Shirt
                     </Link>
 
-                    <span className="stext-105 cl3">$16.64</span>
+                    <span className="stext-105 cl3">160.000đ</span>
                   </div>
 
                   <div className="block2-txt-child2 flex-r p-t-3">
@@ -381,7 +381,7 @@ function Product() {
                       Only Check Trouser
                     </Link>
 
-                    <span className="stext-105 cl3">$25.50</span>
+                    <span className="stext-105 cl3">250.000đ</span>
                   </div>
 
                   <div className="block2-txt-child2 flex-r p-t-3">
@@ -430,7 +430,7 @@ function Product() {
                       Vintage Inspired Classic
                     </Link>
 
-                    <span class="stext-105 cl3">$93.20</span>
+                    <span class="stext-105 cl3">93.000đ</span>
                   </div>
 
                   <div class="block2-txt-child2 flex-r p-t-3">
@@ -479,7 +479,7 @@ function Product() {
                       Converse All Star Hi Plimsolls
                     </a>
 
-                    <span class="stext-105 cl3">$75.00</span>
+                    <span class="stext-105 cl3">75.000đ</span>
                   </div>
 
                   <div class="block2-txt-child2 flex-r p-t-3">
@@ -528,7 +528,7 @@ function Product() {
                       Femme T-Shirt In Stripe
                     </Link>
 
-                    <span class="stext-105 cl3">$25.85</span>
+                    <span class="stext-105 cl3">250.000đ</span>
                   </div>
 
                   <div class="block2-txt-child2 flex-r p-t-3">
@@ -577,7 +577,7 @@ function Product() {
                       Herschel supply
                     </Link>
 
-                    <span class="stext-105 cl3">$63.16</span>
+                    <span class="stext-105 cl3">63.000đ</span>
                   </div>
 
                   <div class="block2-txt-child2 flex-r p-t-3">
@@ -626,7 +626,7 @@ function Product() {
                       Mini Silver Mesh Watch
                     </Link>
 
-                    <span class="stext-105 cl3">$86.85</span>
+                    <span class="stext-105 cl3">86.000đ</span>
                   </div>
 
                   <div class="block2-txt-child2 flex-r p-t-3">
@@ -675,7 +675,7 @@ function Product() {
                       Square Neck Back
                     </a>
 
-                    <span class="stext-105 cl3">$29.64</span>
+                    <span class="stext-105 cl3">92.000đ</span>
                   </div>
 
                   <div class="block2-txt-child2 flex-r p-t-3">
@@ -705,7 +705,7 @@ function Product() {
               to="#"
               className="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04"
             >
-              Load More
+              Xem thêm
             </Link>
           </div>
         </div>

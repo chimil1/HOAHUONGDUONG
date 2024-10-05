@@ -1,6 +1,5 @@
 import Header from './layout/Header';
 import Footer from './layout/Footer';
-import { Link } from 'react-router-dom'; // It's imported but not used, remove if not needed
 
 function About() {
     return (
@@ -20,37 +19,23 @@ function About() {
                     <div className="row p-b-148">
                         <div className="col-md-7 col-lg-8">
                             <div className="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
-                                <h3 className="mtext-111 cl2 p-b-16">Câu chuyện của chúng tôi</h3>
+                                <h3 className="mtext-111 cl2 p-b-16">Câu chuyện của Hoa Hướng Dương</h3>
 
                                 <p className="stext-113 cl6 p-b-26">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-                                    consequat consequat enim, non auctor massa ultrices non. Morbi sed
-                                    odio massa. Quisque at vehicula tellus, sed tincidunt augue. Orci
-                                    varius natoque penatibus et magnis dis parturient montes, nascetur
-                                    ridiculus mus. Maecenas varius egestas diam, eu sodales metus
-                                    scelerisque congue. Pellentesque habitant morbi tristique senectus
-                                    et netus et malesuada fames ac turpis egestas. Maecenas gravida
-                                    justo eu arcu egestas convallis. Nullam eu erat bibendum, tempus
-                                    ipsum eget, dictum enim. Donec non neque ut enim dapibus tincidunt
-                                    vitae nec augue. Suspendisse potenti. Proin ut est diam. Donec
-                                    condimentum euismod tortor, eget facilisis diam faucibus et. Morbi
-                                    a tempor elit.
+                                Hoa Hướng Dương được thành lập với mong muốn mang đến cho mọi người những bộ quần áo, 
+                                phụ kiện không chỉ đẹp mà còn mang đậm dấu ấn cá nhân. Chúng tôi tin rằng thời trang là ngôn 
+                                ngữ không lời thể hiện cá tính, sự tự tin và phong cách riêng biệt của mỗi người.
                                 </p>
 
                                 <p className="stext-113 cl6 p-b-26">
-                                    Donec gravida lorem elit, quis condimentum ex semper sit amet.
-                                    Fusce eget ligula magna. Aliquam aliquam imperdiet sodales. Ut
-                                    fringilla turpis in vehicula vehicula. Pellentesque congue ac orci
-                                    ut gravida. Aliquam erat volutpat. Donec iaculis lectus a arcu
-                                    facilisis, eu sodales lectus sagittis. Etiam pellentesque, magna
-                                    vel dictum rutrum, neque justo eleifend elit, vel tincidunt erat
-                                    arcu ut sem. Sed rutrum, turpis ut commodo efficitur, quam velit
-                                    convallis ipsum, et maximus enim ligula ac ligula.
+                                Từ những sản phẩm được lựa chọn cẩn thận, đến dịch vụ chăm sóc khách hàng tận tâm, Hoa Hướng Dương 
+                                luôn nỗ lực để mỗi khách hàng đều có trải nghiệm mua sắm tuyệt vời. Chúng tôi không chỉ cung cấp sản 
+                                phẩm, mà còn mang đến niềm vui, sự tự tin cho khách hàng trong mỗi bộ trang phục họ lựa chọn.
                                 </p>
 
                                 <p className="stext-113 cl6 p-b-26">
-                                    Any questions? Let us know in store at 8th floor, 379 Hudson St,
-                                    New York, NY 10018 or call us on (+1) 96 716 6879
+                                Với tình yêu và sự đam mê thời trang, Hoa Hướng Dương hy vọng trở thành người bạn đồng hành trên 
+                                hành trình khẳng định phong cách của bạn.
                                 </p>
                             </div>
                         </div>
@@ -70,30 +55,16 @@ function About() {
                                 <h3 className="mtext-111 cl2 p-b-16">Sứ mệnh của chúng tôi</h3>
 
                                 <p className="stext-113 cl6 p-b-26">
-                                    Mauris non lacinia magna. Sed nec lobortis dolor. Vestibulum
-                                    rhoncus dignissim risus, sed consectetur erat. Pellentesque habitant
-                                    morbi tristique senectus et netus et malesuada fames ac turpis
-                                    egestas. Nullam maximus mauris sit amet odio convallis, in pharetra
-                                    magna gravida. Praesent sed nunc fermentum mi molestie tempor. Morbi
-                                    vitae viverra odio. Pellentesque ac velit egestas, luctus arcu non,
-                                    laoreet mauris. Sed in ipsum tempor, consequat odio in, porttitor
-                                    ante. Ut mauris ligula, volutpat in sodales in, porta non odio.
-                                    Pellentesque tempor urna vitae mi vestibulum, nec venenatis nulla
-                                    lobortis. Proin at gravida ante. Mauris auctor purus at lacus
-                                    maximus euismod. Pellentesque vulputate massa ut nisl hendrerit,
-                                    eget elementum libero iaculis.
+                                Sứ mệnh của Hoa Hướng Dương là mang đến cho khách hàng những sản phẩm thời trang chất 
+                                lượng cao, phong cách độc đáo và giá cả hợp lý. Chúng tôi cam kết cung cấp những bộ quần 
+                                áo và phụ kiện giúp tôn vinh vẻ đẹp cá nhân, thúc đẩy sự tự tin và thể hiện phong cách 
+                                riêng của mỗi người.
                                 </p>
-
-                                <div className="bor16 p-l-29 p-b-9 m-t-22">
-                                    <p className="stext-114 cl6 p-r-40 p-b-11">
-                                        Creativity is just connecting things. When you ask creative
-                                        people how they did something, they feel a little guilty because
-                                        they didnt really do it, they just saw something. It seemed
-                                        obvious to them after a while.
-                                    </p>
-
-                                    <span className="stext-111 cl8">- Steve Jobs</span>
-                                </div>
+                                <p className="stext-113 cl6 p-b-26">
+                                Chúng tôi luôn nỗ lực để tạo ra trải nghiệm mua sắm trực tuyến tiện lợi, an toàn và thân 
+                                thiện, với dịch vụ chăm sóc khách hàng tận tâm. Hoa Hướng Dương không chỉ là nơi mua sắm 
+                                mà còn là nơi khách hàng tìm thấy niềm vui và cảm hứng trong việc thể hiện bản thân qua thời trang.
+                                </p>
                             </div>
                         </div>
 

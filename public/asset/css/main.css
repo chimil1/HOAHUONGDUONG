@@ -103,7 +103,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*------------------------------------------------------------------
 [ Bootstrap ]*/
-.container {max-width: 1380px;}
+.container {max-width: 100%;}
 
 @media (max-width: 1600px) {
   .container {max-width: 1200px;}
@@ -112,10 +112,6 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 /*------------------------------------------------------------------
 [ Slick2 ]*/
 .slick-slide {outline: none !important;}
-
-
-
-
 
 /*//////////////////////////////////////////////////////////////////
 [ LOADDING ]*/
@@ -367,7 +363,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 }
 
 .main-menu > li > a {
-  font-family: Bold;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 18px;
   color: #333;
   padding: 5px 0px;
@@ -539,7 +535,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 /*---------------------------------------------*/
 .btn-hide-modal-search {
   position: absolute;
-  padding: 5px;
+  /* padding: 5px; */
   right: 0;
   top: -45px;
   opacity: 0.8;
@@ -1208,6 +1204,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 }
 
 .item-slick1 {
+  position: relative;
   height: calc(100vh - 40px);
   background-size: cover;
   background-repeat: no-repeat;
@@ -1466,6 +1463,49 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 .slick3 {
   width: 83.333333%;
+}
+
+.gallery-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.large-image {
+  width: 70%; /* Hình ảnh lớn chiếm 70% chiều rộng */
+}
+
+.small-images {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25%; /* Hình ảnh nhỏ chiếm 25% chiều rộng */
+  margin-left: 20px; /* Tạo khoảng cách giữa hình lớn và hình nhỏ */
+}
+
+.small-images .item-slick3 {
+  margin-bottom: 10px; /* Khoảng cách giữa các hình nhỏ */
+}
+
+.item-slick3 img {
+  width: 100%;
+  height: auto;
+}
+
+.wrap-pic-w {
+  position: relative;
+}
+
+.how-pos1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.wrap-pic-w:hover .how-pos1 {
+  display: flex;
 }
 
 .slick3-dots li {
@@ -2352,7 +2392,7 @@ input.num-product::-webkit-inner-spin-button {
 
 .ltext-103 {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 36px;
+  font-size: 25px;
   line-height: 1.1;
   text-transform: uppercase;
 }
@@ -2640,7 +2680,25 @@ input.num-product::-webkit-inner-spin-button {
 ==================================================================*/
 .bg-none {background-color: transparent;}
 .bg0 {background-color: #fff;}
-.bg1 {background-color: #717fe0;}
+.bg1 {
+  background-color: #000000;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 15px 20px;
+  border-radius: 25px;
+  font-size: 18px;
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bg1:hover {
+  background-color: #f3f3f3;
+  color: #000000;
+}
 .bg2 {background-color: #e6e6e6;}
 .bg3 {background-color: #222;}
 .bg5 {background-color: rgba(0,0,0,0.5);}
