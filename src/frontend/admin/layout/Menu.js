@@ -4,15 +4,12 @@ import { Link } from "react-router-dom";
 function Menu() {
   return (
     <aside className="menu-sidebar2">
-      <div className="logo bg-dark">
+      <div className="logo">
       <Link to="#">
-          <img src="../../assets/images/icon/logo-white.png" alt="Cool Admin" />
+          <img src="../../asset/images/icons/logo2.png" alt="Cool Admin" />
         </Link>
       </div>
       <div className="menu-sidebar2__content js-scrollbar1">
-        <div className="account2">
-          <Link to="#">Sign out</Link>
-        </div>
         <nav className="navbar-sidebar2">
           <ul className="list-unstyled navbar__list">
             <li className="has-sub">

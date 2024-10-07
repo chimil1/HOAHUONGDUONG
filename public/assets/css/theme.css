@@ -2130,19 +2130,9 @@ section {
 }
 
 .menu-sidebar2 .logo {
-    height: 75px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -moz-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    background: #365cad;
-    padding: 0 35px;
+    height: 100px;
+    width: 100px;
+    padding: 0 80px;
 }
 
 @media (max-width: 991px) {

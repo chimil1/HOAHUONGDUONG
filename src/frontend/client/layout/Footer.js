@@ -68,20 +68,6 @@ function Footer() {
                 Any questions? Let us know in store at 8th floor, 379 Hudson St,
                 New York, NY 10018 or call us on (+1) 96 716 6879
               </p>
-
-              <div className="p-t-27">
-                <Link to="#" className="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-                  <i className="fa fa-facebook"></i>
-                </Link>
-
-                <Link to="#" className="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-                  <i className="fa fa-instagram"></i>
-                </Link>
-
-                <Link to="#" className="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-                  <i className="fa fa-pinterest-p"></i>
-                </Link>
-              </div>
             </div>
 
             <div className="col-sm-6 col-lg-3 p-b-50">

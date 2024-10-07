@@ -2165,7 +2165,7 @@ input.num-product::-webkit-inner-spin-button {
 .cl1 {color: #717fe0;}
 .cl2 {color: #333;}
 .cl3 {color: #666;}
-.cl4 {color: #999;}
+.cl4 {color: #000000;}
 .cl5 {color: #222;}
 .cl6 {color: #888;}
 .cl7 {color: #b2b2b2;}
@@ -3148,14 +3148,15 @@ input.num-product::-webkit-inner-spin-button {
 .hov-btn2:hover {
   border-color: #fff;
   background-color: #fff;
-  color: #717fe0;
+  color: #000000;
 }
 
 /*---------------------------------------------*/
 .hov-btn3:hover {
-  border-color: #717fe0;
-  background-color: #717fe0;
-  color: #fff;
+  border-color: #000000;
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
 }
 
 .hov-btn3:hover i {

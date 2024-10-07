@@ -226,7 +226,7 @@ function Home() {
                       >
                         {product.title}
                       </a>
-                      <span className="stext-105 cl3">{product.price}</span>
+                      <span className="stext-105 cl4">{product.price}</span>
                     </div>
                     <div className="block2-txt-child2 flex-r p-t-3">
                       <Link
