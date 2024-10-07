@@ -2380,7 +2380,7 @@ input.num-product::-webkit-inner-spin-button {
 [ L-Text >= 26 ]*/
 .ltext-101 {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 28px;
+  font-size: 30px;
   line-height: 1.2857;
 }
 
@@ -2437,10 +2437,9 @@ input.num-product::-webkit-inner-spin-button {
 
 /*---------------------------------------------*/
 .ltext-201 {
-  font-family: PlayfairDisplay-Bold;
-  font-size: 60px;
+  font-family: Georgia;
+  font-size: 55px;
   line-height: 1.1;
-  text-transform: uppercase;
 }
 
 .ltext-202 {
@@ -2767,7 +2766,8 @@ input.num-product::-webkit-inner-spin-button {
 
 .bor8 {
   border: 1px solid #e6e6e6;
-  border-radius: 2px;
+  border-radius: 5px;
+  width: 50%;
 }
 
 .bor9 {

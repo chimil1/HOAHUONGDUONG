@@ -25,13 +25,13 @@ function Footer() {
 
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Shoes
+                    Túi
                   </Link>
                 </li>
 
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Watches
+                    Đồng hồ
                   </Link>
                 </li>
               </ul>
@@ -43,19 +43,13 @@ function Footer() {
               <ul>
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Track Order
+                  Theo dõi đơn hàng
                   </Link>
                 </li>
 
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Returns
-                  </Link>
-                </li>
-
-                <li className="p-b-10">
-                  <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Shipping
+                  Vận chuyển
                   </Link>
                 </li>
 

@@ -129,8 +129,9 @@ function Login() {
                       data-mdb-ripple-init
                       class="btn btn-lg btn-block btn-danger"
                       type="submit"
+                      onClick={handleLogin}
                     >
-                      <i class="fab fa-google me-2" onClick={handleLogin()}></i> Sign in with google
+                      <i class="fab fa-google me-2"></i> Sign in with google
                     </button>
 
                     <p className="text-center text-muted mt-5 mb-0">
