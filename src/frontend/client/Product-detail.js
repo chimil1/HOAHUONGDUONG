@@ -6,6 +6,7 @@ function Productdetail() {
   return (
     <div>
       <Header></Header>
+      <hr></hr>
       <div className="container">
         <div className="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
           <Link to="/Home" className="stext-109 cl8 hov-cl1 trans-04">
@@ -121,9 +122,10 @@ function Productdetail() {
                   Lightweight Jacket
                 </h4>
 
-                <span className="mtext-106 cl2">58.790đ</span>
-                <div className="size-203 flex-c-m respon6">Mô tả</div>
-                <p className="stext-102 cl3 p-t-23">
+                <span className="mtext-106 cl2 p-b-5">58.790đ</span>
+                <div className="mtext-106 cl js-name-detail p-b-2 ">Mô tả</div>
+                <p className="stext-102 cl3 p-t-10">
+                gfdsfsfshdfsgfysvdfhs
                 </p>
 
                 <div className="p-t-33">
@@ -131,7 +133,7 @@ function Productdetail() {
                     <div className="size-203 flex-c-m respon6">Kích cỡ</div>
 
                     <div className="size-204 respon6-next">
-                      <select className="rs1-select2 bor8 bg0" name="time">
+                      <select className="form-select form-select-sm" name="time">
                         <option>Chọn size</option>
                         <option>Size S</option>
                         <option>Size M</option>
@@ -146,7 +148,7 @@ function Productdetail() {
                     <div className="size-203 flex-c-m respon6">Màu</div>
 
                     <div className="size-204 respon6-next">
-                      <select className="rs1-select2 bor8 bg0" name="time">
+                      <select className="form-select form-select-sm" name="time">
                         <option>Chọn màu</option>
                         <option>Red</option>
                         <option>Blue</option>
@@ -158,6 +160,7 @@ function Productdetail() {
                   </div>
 
                   <div className="flex-w flex-r-m p-b-10">
+                  <div className="size-203 flex-c-m respon6">Số lượng</div>
                     <div className="size-204 flex-w flex-m respon6-next">
                       <div className="wrap-num-product flex-w m-r-20 m-tb-10">
                         <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
@@ -175,19 +178,20 @@ function Productdetail() {
                           <i className="fs-16 zmdi zmdi-plus"></i>
                         </div>
                       </div>
-                      <div className="d-grid gap-2 d-md-block">
-                      <button className="btn btn-dark btn-lg m-2 rounded-pill">
-                        Thêm vào giỏ
-                      </button>
-                      
-                      <button className="btn btn-dark btn-lg rounded-pill">
-                      Mua hàng
-                    </button>
-                    </div>
+                  
                     </div>
                     
                   </div>
                 </div>
+                <div className="d-grid gap-2 d-md-block">
+                <button className="btn btn-dark btn-lg m-2 rounded-pill">
+                  Thêm vào giỏ
+                </button>
+                
+                <button className="btn btn-dark btn-lg rounded-pill">
+                Mua hàng
+              </button>
+              </div>
 
                 <div className="flex-w flex-m p-l-100 p-t-40 respon7">
                   <div className="flex-m bor9 p-r-10 m-r-11">

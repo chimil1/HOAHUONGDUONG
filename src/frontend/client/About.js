@@ -12,7 +12,6 @@ function About() {
             >
                 <h2 className="ltext-105 cl0 txt-center">Giới thiệu</h2>
             </section>
-
             {/* Content page */}
             <section className="bg0 p-t-75 p-b-120">
                 <div className="container">
