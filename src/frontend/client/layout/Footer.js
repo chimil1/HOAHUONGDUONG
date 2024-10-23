@@ -65,8 +65,8 @@ function Footer() {
               <h4 className="stext-301 cl0 p-b-30">LIÊN HỆ</h4>
 
               <p className="stext-107 cl7 size-201">
-                Any questions? Let us know in store at 8th floor, 379 Hudson St,
-                New York, NY 10018 or call us on (+1) 96 716 6879
+              Bạn có thắc mắc gì không? Hãy cho chúng tôi biết tại cửa hàng ở An Khánh, Ninh Kiều
+              Cần Thơ hoặc gọi cho chúng tôi theo số (+84) 365 971 807
               </p>
             </div>
 
@@ -117,17 +117,7 @@ function Footer() {
             </div>
 
             <p className="stext-107 cl6 txt-center">
-              Copyright &copy;
-              <script>document.write(new Date().getFullYear());</script> All
-              rights reserved | Made with{" "}
-              <i className="fa fa-heart-o" aria-hidden="true"></i> by{" "}
-              <Link to="https://colorlib.com" target="_blank">
-                Colorlib
-              </Link>{" "}
-              &amp; distributed by{" "}
-              <Link to="https://themewagon.com" target="_blank">
-                ThemeWagon
-              </Link>
+             ©HoaHuongDuong All rights reserved
             </p>
           </div>
         </div>

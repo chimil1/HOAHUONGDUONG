@@ -368,7 +368,7 @@ function Product() {
                     to="#"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
@@ -414,17 +414,17 @@ function Product() {
                   />
 
                   <Link
-                    href="#"
+                    to="#"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
                 <div className="block2-txt flex-w flex-t p-t-14">
                   <div className="block2-txt-child1 flex-col-l ">
                     <Link
-                      href="product-detail.html"
+                      to="product-detail.html"
                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                     >
                       Vintage Inspired Classic
@@ -435,7 +435,7 @@ function Product() {
 
                   <div className="block2-txt-child2 flex-r p-t-3">
                     <Link
-                      href="#"
+                      to="#"
                       className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
                     >
                       <img
@@ -463,28 +463,28 @@ function Product() {
                   />
 
                   <Link
-                    href="#"
+                    to="#"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
                 <div className="block2-txt flex-w flex-t p-t-14">
                   <div className="block2-txt-child1 flex-col-l ">
-                    <a
-                      href="product-detail.html"
+                    <Link
+                      to="product-detail.html"
                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                     >
                       Converse All Star Hi Plimsolls
-                    </a>
+                    </Link>
 
                     <span className="stext-105 cl3">75.000đ</span>
                   </div>
 
                   <div className="block2-txt-child2 flex-r p-t-3">
                     <Link
-                      href="#"
+                      to="#"
                       className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
                     >
                       <img
@@ -512,17 +512,17 @@ function Product() {
                   />
 
                   <Link
-                    href="#"
+                    to="#"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
                 <div className="block2-txt flex-w flex-t p-t-14">
                   <div className="block2-txt-child1 flex-col-l ">
                     <Link
-                      href="product-detail.html"
+                      to="product-detail.html"
                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                     >
                       Femme T-Shirt In Stripe
@@ -533,7 +533,7 @@ function Product() {
 
                   <div className="block2-txt-child2 flex-r p-t-3">
                     <Link
-                      href="#"
+                      to="#"
                       className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
                     >
                       <img
@@ -561,17 +561,17 @@ function Product() {
                   />
 
                   <Link
-                    href="#"
+                    to="#"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
                 <div className="block2-txt flex-w flex-t p-t-14">
                   <div className="block2-txt-child1 flex-col-l ">
                     <Link
-                      href="product-detail.html"
+                      to="product-detail.html"
                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                     >
                       Herschel supply
@@ -582,7 +582,7 @@ function Product() {
 
                   <div className="block2-txt-child2 flex-r p-t-3">
                     <Link
-                      href="#"
+                      to="#"
                       className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
                     >
                       <img
@@ -610,17 +610,17 @@ function Product() {
                   />
 
                   <Link
-                    href="#"
+                    to="#"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
                 <div className="block2-txt flex-w flex-t p-t-14">
                   <div className="block2-txt-child1 flex-col-l ">
                     <Link
-                      href="product-detail.html"
+                      to="product-detail.html"
                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                     >
                       Mini Silver Mesh Watch
@@ -631,7 +631,7 @@ function Product() {
 
                   <div className="block2-txt-child2 flex-r p-t-3">
                     <Link
-                      href="#"
+                      to="#"
                       className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
                     >
                       <img
@@ -659,28 +659,28 @@ function Product() {
                   />
 
                   <Link
-                    href="#"
+                    to="#"
                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                   >
-                    Quick View
+                    Xem
                   </Link>
                 </div>
 
                 <div className="block2-txt flex-w flex-t p-t-14">
                   <div className="block2-txt-child1 flex-col-l ">
-                    <a
-                      href="product-detail.html"
+                    <Link
+                      to="product-detail.html"
                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                     >
                       Square Neck Back
-                    </a>
+                    </Link>
 
                     <span className="stext-105 cl3">92.000đ</span>
                   </div>
 
                   <div className="block2-txt-child2 flex-r p-t-3">
                     <Link
-                      href="#"
+                      to="#"
                       className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
                     >
                       <img
@@ -744,12 +744,12 @@ function Product() {
                             alt="IMG-PRODUCT"
                           />
 
-                          <a
+                          <Link
                             className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                            href="../../asset/images/product-detail-01.jpg"
+                            to="../../asset/images/product-detail-01.jpg"
                           >
                             <i className="fa fa-expand"></i>
-                          </a>
+                          </Link>
                         </div>
                       </div>
 
@@ -763,12 +763,12 @@ function Product() {
                             alt="IMG-PRODUCT"
                           />
 
-                          <a
+                          <Link
                             className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                            href="../../asset/images/product-detail-02.jpg"
+                            to="../../asset/images/product-detail-02.jpg"
                           >
                             <i className="fa fa-expand"></i>
-                          </a>
+                          </Link>
                         </div>
                       </div>
 
@@ -782,12 +782,12 @@ function Product() {
                             alt="IMG-PRODUCT"
                           />
 
-                          <a
+                          <Link
                             className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                            href="../../asset/images/product-detail-03.jpg"
+                            to="../../asset/images/product-detail-03.jpg"
                           >
                             <i className="fa fa-expand"></i>
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </div>
