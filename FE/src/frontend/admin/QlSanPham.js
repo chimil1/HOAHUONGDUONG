@@ -4,6 +4,7 @@ import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 import ProductDetails from "./ProductDetails";
 import EditProductForm from "./EditProductForm";
+import { Link } from "react-router-dom";
 
 function QlSanPham() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -51,8 +52,14 @@ function QlSanPham() {
                 <div className="row">
                   <div className="col-md-12">
                     <div className="card-header">
-                      <div className="col-md-12">
-                        <h3 className="title-5 m-b-35">Bảng sản phẩm</h3>
+                    <div className="overview-wrap">
+                        <h2 className="title-5 m-b-35">Bảng danh mục</h2>
+                        <Link
+                          className="au-btn au-btn-icon au-btn--green bg-dark"
+                          to="/AddProduct" 
+                        >
+                          <i className="zmdi zmdi-plus"></i>Thêm danh mục
+                        </Link>
                       </div>
                     </div>
 
@@ -63,9 +70,9 @@ function QlSanPham() {
                             <th>Hình ảnh</th>
                             <th>Tên sản phẩm</th>
                             <th>Giá</th>
-                            <th>Giá khuyến mãi</th>
-                            <th>Số lượng</th>
-                            <th></th>
+                            <th>Mô tả</th>
+                            <th>Trạng thái</th>
+                            <th>Danh mục</th>
                           </tr>
                         </thead>
                         <tbody>

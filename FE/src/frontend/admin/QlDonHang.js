@@ -1,6 +1,7 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
+import { Link } from "react-router-dom";
 
 function QlDonHang() {
   // Dữ liệu giả lập của đơn hàng
@@ -13,31 +14,9 @@ function QlDonHang() {
       status: "Đang giao",
       products: [
         { name: "Áo thun", quantity: 2, price: 200000 },
-        { name: "Quần jean", quantity: 1, price: 500000 }
-      ]
+        { name: "Quần jean", quantity: 1, price: 500000 },
+      ],
     },
-    {
-      id: 2,
-      recipient: "John Doe",
-      address: "56 Đường Nguyễn Trãi, Hà Nội",
-      phone: "0987654321",
-      status: "Đã giao",
-      products: [
-        { name: "Giày thể thao", quantity: 1, price: 1000000 },
-        { name: "Áo khoác", quantity: 2, price: 750000 }
-      ]
-    },
-    {
-      id: 2,
-      recipient: "John Doe",
-      address: "56 Đường Nguyễn Trãi, Hà Nội",
-      phone: "0987654321",
-      status: "Đã Hủy",
-      products: [
-        { name: "Giày thể thao", quantity: 1, price: 1000000 },
-        { name: "Áo khoác", quantity: 2, price: 750000 }
-      ]
-    }
   ];
 
   return (
@@ -60,40 +39,44 @@ function QlDonHang() {
                       <table className="table table-data2">
                         <thead>
                           <tr>
-                            <th>Hình ảnh</th>
                             <th>Tên người nhận</th>
+                            <th>Tổng giá</th>
+                            <th>Mã hóa đơn</th>
                             <th>Địa chỉ</th>
                             <th>SĐT</th>
-                            <th>Chi tiết đơn hàng</th>
                             <th>Trạng thái</th>
+                            <th>Chi tiết đơn hàng</th>
                           </tr>
                         </thead>
                         <tbody>
                           {orders.map((order, index) => (
                             <tr key={index} className="tr-shadow">
-                              <td>
-                                {/* Có thể hiển thị hình ảnh sản phẩm ở đây */}
-                                <img
-                                  src="https://via.placeholder.com/50"
-                                  alt="Hình ảnh"
-                                />
-                              </td>
+                              <td>{order.recipient}</td>
+                              <td>{order.recipient}</td>
                               <td>{order.recipient}</td>
                               <td>{order.address}</td>
                               <td>{order.phone}</td>
                               <td>
-                                <ul>
-                                  {order.products.map((product, i) => (
-                                    <li key={i}>
-                                      {product.name} - Số lượng: {product.quantity} - Giá: {product.price.toLocaleString()} VND
-                                    </li>
-                                  ))}
-                                </ul>
-                              </td>
-                              <td>
-                                <span className={`badge ${order.status === "Đã giao" ? "badge-success" : "badge-warning"}`}>
+                                <span
+                                  className={`badge ${
+                                    order.status === "Đã giao"
+                                      ? "badge-success"
+                                      : "badge-warning"
+                                  }`}
+                                >
                                   {order.status}
                                 </span>
+                              </td>
+                              <td>
+                                <div className="overview-wrap">
+                                  <Link
+                                    className="au-btn au-btn-icon au-btn--green bg-dark"
+                                    to="/OrderDetails"
+                                    state={order}
+                                  >
+                                    <i className="zmdi zmdi-mail-send"></i>
+                                  </Link>
+                                </div>
                               </td>
                             </tr>
                           ))}

@@ -33,8 +33,9 @@ function QlDanhMuc() {
                       <table className="table table-data2">
                         <thead>
                           <tr>
-                            <th>Hình ảnh</th>
                             <th>Tên danh mục</th>
+                            <th>Mô tả</th>
+                            <th>Hình ảnh</th>
                             <th>Trạng thái</th>
                           </tr>
                         </thead>
@@ -42,17 +43,12 @@ function QlDanhMuc() {
                           <tr className="tr-shadow">
                             <td></td>
                             <td>Lori Lynch</td>
+                            <td>helelhhfff</td>
                             <td>
                               <span className="status--process">
                                 Đang Hoạt Động
                               </span>
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
                             <td>
                               <div className="table-data-feature">
                                 <button

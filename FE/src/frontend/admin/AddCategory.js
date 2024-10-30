@@ -6,6 +6,7 @@ import Menu from "./layout/Menu";
 
 function AddCategory() {
   const [categoryName, setCategoryName] = useState("");
+  const [description, setDescription] = useState("");
   const [status, setStatus] = useState("Đang Hoạt Động");
   const [image, setImage] = useState(null); // State để lưu trữ hình ảnh
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function AddCategory() {
 
     // Reset form sau khi thêm thành công
     setCategoryName("");
+    setDescription("");
     setStatus("Đang Hoạt Động");
     setImage(null);
 
@@ -56,6 +58,16 @@ function AddCategory() {
                         className="form-control"
                         value={categoryName}
                         onChange={(e) => setCategoryName(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Mô tả</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                         required
                       />
                     </div>

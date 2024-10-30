@@ -65,9 +65,7 @@ function QlKhachHang() {
                             <th>Hình ảnh</th>
                             <th>Tên khách hàng</th>
                             <th>Email</th>
-                            <th>Số điện thoại</th>
-                            <th>Đơn hàng</th>
-                            <th></th>
+                            <th>Vai trò</th>
                           </tr>
                         </thead>
                         <tbody>

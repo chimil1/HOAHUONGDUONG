@@ -7,9 +7,9 @@ function AddProduct() {
   const [product, setProduct] = useState({
     name: "",
     price: "",
-    discountPrice: "",
-    quantity: "",
-    image: "",
+    description: "",
+    status: "",
+    category_id: "",
   });
 
   const handleChange = (e) => {
@@ -65,39 +65,38 @@ function AddProduct() {
                       />
                     </div>
                     <div class="form-group">
-                      <label for="discountPrice">Giá khuyến mãi</label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="discountPrice"
-                        name="discountPrice"
-                        value={product.discountPrice}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label for="quantity">Số lượng</label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="quantity"
-                        name="quantity"
-                        value={product.quantity}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label for="image">Hình ảnh</label>
+                      <label for="discountPrice">Mô tả</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="image"
-                        name="image"
-                        value={product.image}
+                        id="description"
+                        name="description"
+                        value={product.description}
                         onChange={handleChange}
-                        placeholder="URL hình ảnh"
                       />
+                    </div>
+                    <div className="form-group">
+                      <label>Trạng thái</label>
+                      <select
+                        className="form-control"
+                        value={product.status}
+                        onChange={handleChange}
+                      >
+                        <option value="Có sẵn">Có sẵn</option>
+                        <option value="Hết hàng">Hết hàng</option>
+                        <option value="Đã ngừng cung cấp">Đã ngừng cung cấp</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Chọn danh mục</label>
+                      <select
+                        className="form-control"
+                        value={product.category_id}
+                        onChange={handleChange}
+                      >
+                        <option value="Quần">Quần</option>
+                        <option value="Áo">Áo</option>
+                      </select>
                     </div>
                     <button type="submit" class="btn btn-primary">
                       Thêm sản phẩm
