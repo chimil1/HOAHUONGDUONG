@@ -10,31 +10,12 @@ function QlKhachHang() {
       name: "Lori Lynch",
       email: "lori@example.com",
       phone: "0342453243",
-      orders: [
-        {
-          id: 1,
-          productName: "Áo sơ mi nam",
-          status: "Đã nhận hàng",
-        }
-      ]
     },
     {
       id: 2,
       name: "John Doe",
       email: "john@example.com",
       phone: "0987654321",
-      orders: [
-        {
-          id: 1,
-          productName: "Quần Âu",
-          status: "Đang giao",
-        },
-        {
-          id: 2,
-          productName: "Áo thun",
-          status: "Đã hủy đơn",
-        }
-      ]
     }
   ];
 
@@ -83,30 +64,6 @@ function QlKhachHang() {
                                 <span className="block-email">{customer.email}</span>
                               </td>
                               <td>{customer.phone}</td>
-                              <td>
-                                {customer.orders.length > 0 ? (
-                                  <ul>
-                                    {customer.orders.map((order, idx) => (
-                                      <li key={idx}>
-                                        {order.productName} -{" "}
-                                        <span
-                                          className={`badge ${
-                                            order.status === "Đã nhận hàng"
-                                              ? "badge-success"
-                                              : order.status === "Đang giao"
-                                              ? "badge-warning"
-                                              : "badge-danger"
-                                          }`}
-                                        >
-                                          {order.status}
-                                        </span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                ) : (
-                                  "Không có đơn hàng"
-                                )}
-                              </td>
                               <td>
                                 <div className="table-data-feature">
                                   <button

@@ -17,7 +17,7 @@ function QlSanPham() {
       name: "Áo Thun Line Phối ATN0163",
       price: "100.000đ",
       discountPrice: "10.000đ",
-      quantity: 112
+      category: "Áo",
     },
     // Các sản phẩm khác
   ];
@@ -52,11 +52,11 @@ function QlSanPham() {
                 <div className="row">
                   <div className="col-md-12">
                     <div className="card-header">
-                    <div className="overview-wrap">
+                      <div className="overview-wrap">
                         <h2 className="title-5 m-b-35">Bảng danh mục</h2>
                         <Link
                           className="au-btn au-btn-icon au-btn--green bg-dark"
-                          to="/AddProduct" 
+                          to="/AddProduct"
                         >
                           <i className="zmdi zmdi-plus"></i>Thêm danh mục
                         </Link>
@@ -78,11 +78,18 @@ function QlSanPham() {
                         <tbody>
                           {products.map((product) => (
                             <tr className="tr-shadow" key={product.id}>
-                              <td></td>
+                              <td>
+                                {/* Có thể thêm hình ảnh khách hàng */}
+                                <img
+                                  src="https://via.placeholder.com/50"
+                                  alt="Hình ảnh"
+                                />
+                              </td>
                               <td>{product.name}</td>
                               <td>{product.price}</td>
-                              <td>{product.discountPrice}</td>
-                              <td>{product.quantity}</td>
+                              <td>{product.discountPrice}</td>{" "}
+                              <td>Còn hàng</td>
+                              <td>{product.category}</td>
                               <td>
                                 <div className="table-data-feature">
                                   <button
