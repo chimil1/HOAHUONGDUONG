@@ -7,72 +7,50 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $categories = Category::all();
         return response()->json($categories);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CategoryRequest $request)
     {
-        try {
-            $category = Category::create(
-                [
-                    'name' => $request->name,
-                    'description' => $request->description,
-                    'img' => $request->img,
-                    'status' => $request->status,
-                ]
-            );
-            return response()->json([
-                'success' => true,
-                'message' => 'Thêm dữ liệu thành công.',
-                'data' => $category,
-            ], 201);
-        } catch (\Exception $e) {
+        $category = Category::create(
+            [
+                'name' => $request->name,
+                'description' => $request->description,
+                'img' => $request->img,
+                'status' => $request->status,
+            ]
+        );
+        if(!$category){
             return response()->json([
                 'success' => false,
                 'message' => 'Thêm dữ liệu không thành công.',
-                'error' => $e->getMessage(),
             ], 500);
         }
+        return response()->json([
+            'success' => true,
+            'message' => 'Thêm dữ liệu thành công.',
+            'data' => $category,
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show($id)
-    // {
-    //     $category = Category::find($id);
-    //     if (!$category) {
-    //         return response()->json(['message' => 'Category not found'], 404);
-    //     }
-    //     return $category;
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
+    public function show($id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json(['message' => 'Không tìm thấy danh mục'], 404);
+        }
+        return $category;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(CategoryRequest $request, $id)
     {
         $category = Category::find($id);
         if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
+            return response()->json(['message' => 'Không tìm thấy danh mục'], 404);
         }
 
         $category->update($request->all());
@@ -80,11 +58,16 @@ class CategoryController extends Controller
         return response()->json($category, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json(['message' => 'Không tìm thấy danh mục'], 404);
+        }
+        $deleteCategory =  $category->delete();
+        if(!$deleteCategory){
+            return response()->json(['message' => 'Xóa danh mục không thành công'], 200);
+        }
+        return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
     }
 }

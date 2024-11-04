@@ -9,24 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    // public function up(): void
-    // {
-    //     Schema::create('shipping_addresses', function (Blueprint $table) {
-    //         $table->id();
-    //         $table->unsignedBigInteger('user_id'); 
-    //         $table->string('shipping_phone', 11);
-    //         $table->string('shipping_street');
-    //         $table->string('shipping_city');
-    //         $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-    //         $table->timestamps();
-    //     });
-    // }
+    public function up(): void
+    {
+        Schema::create('shipping_addresses', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id'); 
+            $table->string('shipping_phone', 11);
+            $table->string('shipping_street');
+            $table->string('shipping_city');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
-    // public function down(): void
-    // {
-    //     Schema::dropIfExists('shipping_addresses');
-    // }
+    public function down(): void
+    {
+        Schema::dropIfExists('shipping_addresses');
+    }
 };

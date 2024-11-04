@@ -12,7 +12,13 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::with('user')->get();
+        $orders = $orders->map(function ($order) {
+            $order->username = $order->user->name;
+            unset($order->user);
+            return $order;
+        });
+        return response()->json($orders);
     }
 
     /**
@@ -36,7 +42,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order->load(['user:id,name', 'orderDetails']);
+        $order->username = $order->user->name;
+        unset($order->user);
+
+        return response()->json($order);
     }
 
     /**
