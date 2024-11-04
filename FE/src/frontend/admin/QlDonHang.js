@@ -4,6 +4,7 @@ import Menu from "./layout/Menu";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUnits } from "../actions/unitActions";
+import { Link } from "react-router-dom";
 
 function QlDonHang() {
   const dispatch = useDispatch();
@@ -90,7 +91,6 @@ function QlDonHang() {
                                   <Link
                                     className="au-btn au-btn-icon au-btn--green bg-dark"
                                     to="/OrderDetails"
-                                    state={order}
                                   >
                                     <i className="zmdi zmdi-mail-send"></i>
                                   </Link>

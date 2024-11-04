@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchAddCategory } from "../actions/categoryAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
@@ -10,19 +10,37 @@ import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function AddCategory() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const categoryState = useSelector((state) => state.unit);
+  const navigate = useNavigate();
+  const categoryState = useSelector((state) => state.unit);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
- 
+  if (categoryState.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (categoryState.error) {
+    return <p>Error: {categoryState.error}</p>;
+  }
 
   const submit = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("status", data.status);
+      if (data.img.length >= 0) {
+      const file = data.img[0];
+      data.img = file.name;
+      formData.append("img", file);
+    }
+
+
     dispatch(fetchAddCategory(data));
+    
     console.log(data);
     Swal.fire({
       text: "Thêm sản phẩm thành công!",
@@ -72,6 +90,7 @@ function AddCategory() {
                         className="form-control"
                         id="description"
                         name="description"
+                        placeholder="Nhập mô tả"
                       />
                     </div>
                     <div className="form-group">
@@ -92,9 +111,9 @@ function AddCategory() {
                         id="status"
                         name="status"
                       >
-                        <option value="">Chọn danh mục</option>
-                        <option value="Đang Hoạt Động">Đang Hoạt Động</option>
-                        <option value="Ngừng Hoạt Động">Ngừng Hoạt Động</option>
+                        <option value="">Chọn trạng thái</option>
+                        <option value="0">Đang Hoạt Động</option>
+                        <option value="1">Ngừng Hoạt Động</option>
                       </select>
                       {errors.status && (
                         <span className="text-danger">

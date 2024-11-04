@@ -1,62 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { fetchCategoryDetails, updateCategory } from "../actions/unitActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function EditCategory() {
-  const [categoryName, setCategoryName] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("Đang Hoạt Động");
-  const [image, setImage] = useState(null);
+  let { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const categoryState = useSelector((state) => state.unit);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue
+  } = useForm();
 
   useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/api/category/${id}`);
-        console.log(response.data);
-        const { name, description, status, img } = response.data;
-        setCategoryName(name);
-        setDescription(description);
-        setStatus(status);
-        setImage(img);
-      } catch (error) {
-        console.error("Error fetching category:", error);
-      }
-    };
+    dispatch(fetchCategoryDetails(id)); // Sử dụng action lấy chi tiết sản phẩm
+  }, [dispatch, id]);
+  useEffect(() => {
+    console.log("Unit State:", categoryState.selectedUnit);
+    if (categoryState.selectedUnit) {
+      setValue("name", categoryState.selectedUnit.name);
+      setValue("description", categoryState.selectedUnit.description);
+      setValue("status", categoryState.selectedUnit.status);
+    }
+  }, [categoryState.selectedUnit, setValue]);
 
-    fetchCategory();
-  }, [id]);
+  if (categoryState.loading) {
+    return <p>Loading...</p>;
+  }
 
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  if (categoryState.error) {
+    return <p>Error: {categoryState.error}</p>;
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const submit = (data) => {
     const formData = new FormData();
-    formData.append("name", categoryName);
-    formData.append("description", description);
-    formData.append("status", status);
-    if (typeof image === "object") {
-      formData.append("img", image);
-    }
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("status", data.status);
 
-    try {
-      await axios.put(`http://localhost:8000/api/category/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    if (data.img && data.img.length > 0) {
+      Array.from(data.img).forEach((file) => {
+        formData.append("img", file);
       });
-
-      navigate("/QlDanhMuc");
-    } catch (error) {
-      console.error("Error updating category:", error);
     }
+
+    dispatch(updateCategory(id, formData)); // Sử dụng action cập nhật sản phẩm
+
+    console.log(data);
+    Swal.fire({
+      text: "Cập nhật sản phẩm thành công!",
+      icon: "success",
+    });
+    navigate("/qldanhmuc");
   };
 
   return (
@@ -72,56 +76,68 @@ function EditCategory() {
                   <h3 className="title-5 m-b-35">Sửa danh mục</h3>
                 </div>
                 <div className="card-body">
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit(submit)}>
                     <div className="form-group">
-                      <label>Tên danh mục</label>
+                      <label htmlFor="name">Tên danh mục</label>
                       <input
+                        {...register("name", { required: true })}
                         type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Nhập tên sản phẩm..."
                         className="form-control"
-                        value={categoryName}
-                        onChange={(e) => setCategoryName(e.target.value)}
-                        required
                       />
+                      {errors.name && (
+                        <span className="text-danger">
+                          Tên sản phẩm không được bỏ trống!
+                        </span>
+                      )}
                     </div>
                     <div className="form-group">
-                      <label>Mô tả</label>
-                      <input
-                        type="text"
+                      <label htmlFor="description">Mô tả</label>
+                      <textarea
+                        {...register("description", { required: true })}
+                        name="description"
+                        id="description"
+                        rows="9"
+                        placeholder="Nhập mô tả..."
                         className="form-control"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                      />
+                      ></textarea>
+                      {errors.description && (
+                        <span className="text-danger">
+                          Mô tả sản phẩm không được bỏ trống!
+                        </span>
+                      )}
                     </div>
                     <div className="form-group">
-                      <label>Hình ảnh</label>
+                      <label htmlFor="file-input">Hình ảnh</label>
                       <input
+                        {...register("img")}
                         type="file"
-                        className="form-control"
-                        onChange={handleImageChange}
-                        accept="image/*"
+                        id="file-input"
+                        name="img"
+                        className="form-control-file"
                       />
                     </div>
                     <div className="form-group">
-                      <label>Trạng thái</label>
+                      <label htmlFor="status">Trạng thái</label>
                       <select
+                        {...register("status", { required: true })}
+                        name="status"
+                        id="status"
                         className="form-control"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
                       >
                         <option value="Đang Hoạt Động">Đang Hoạt Động</option>
                         <option value="Ngừng Hoạt Động">Ngừng Hoạt Động</option>
                       </select>
+                      {errors.status && (
+                        <span className="text-danger">
+                          Trạng thái sản phẩm không được bỏ trống!
+                        </span>
+                      )}
                     </div>
                     <button type="submit" className="btn btn-dark">
                       <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-danger ml-2"
-                      onClick={() => navigate("/QlDanhMuc")}
-                    >
-                      Hủy
                     </button>
                   </form>
                 </div>
