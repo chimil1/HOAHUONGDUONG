@@ -7,13 +7,14 @@ import CNSanPham from "./frontend/admin/CNSanPham";
 import CNTaiKhoan from "./frontend/admin/CNTaiKhoan";
 import DanhGia from "./frontend/admin/DanhGia";
 import QlDanhMuc from "./frontend/admin/QlDanhMuc";
+import AddCategory from "./frontend/admin/AddCategory";
+import EditCategory from "./frontend/admin/EditCategory";
 import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import OrderDetails from "./frontend/admin/OrderDetails";
-import AddCategory from "./frontend/admin/AddCategory";
 import AddProduct from "./frontend/admin/AddProduct";
 
 import Home from "./frontend/client/Home";
@@ -24,8 +25,10 @@ import LoginForm from "./frontend/admin/LoginForm";
 import Productdetail from "./frontend/client/Product-detail";
 import Blog from "./frontend/client/Blog";
 import ShoppingCart from "./frontend/client/ShoppingCart";
+import Profile from "./frontend/client/Profile";
 import Login from "./frontend/client/auth/Login";
-import Register from "./frontend/client/auth/Register"
+import Register from "./frontend/client/auth/Register";
+import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 
 function App() {
   return (
@@ -41,8 +44,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
+          <Route path='/profile' element={<Profile />}/>
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
+          <Route path='/forgotpassword'  element={<ForgotPassword />}/>
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
@@ -53,13 +58,14 @@ function App() {
           <Route path="/cntaikhoan" element={<CNTaiKhoan />} />
           <Route path="/danhgia" element={<DanhGia />} />
           <Route path="/qldanhmuc" element={<QlDanhMuc />} />
+          <Route path="/addcategory" element={<AddCategory />} />
+          <Route path="/editcategory/:id" element={<EditCategory />} />
           <Route path="/qldanhsach" element={<QlDanhSach />} />
           <Route path="/qldonhang" element={<QlDonHang />} />
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
           <Route path="/orderdetails" element={<OrderDetails />} />
-          <Route path="/addcategory" element={<AddCategory />} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/home" element={<Home />} />
           <Route path="/admin/login" element={<LoginForm />} />

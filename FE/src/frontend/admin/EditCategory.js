@@ -1,53 +1,61 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
-function AddCategory() {
+function EditCategory() {
+  const [categoryName, setCategoryName] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("Đang Hoạt Động");
+  const [image, setImage] = useState(null);
   const navigate = useNavigate();
-  const createCategoryApi = "http://localhost:8000/api/category";
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [category, setCategory] = useState({
-    name: "",
-    description: "",
-    img: null,
-    status: ""
-  });
+  const { id } = useParams();
 
-  const handleInput = (event) => {
-    const { name, value } = event.target;
-    setCategory({ ...category, [name]: value });
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/category/${id}`);
+        console.log(response.data);
+        const { name, description, status, img } = response.data;
+        setCategoryName(name);
+        setDescription(description);
+        setStatus(status);
+        setImage(img);
+      } catch (error) {
+        console.error("Error fetching category:", error);
+      }
+    };
+
+    fetchCategory();
+  }, [id]);
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
-  const handleFileChange = (event) => {
-    setCategory({ ...category, img: event.target.files[0] });
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
     const formData = new FormData();
-    formData.append('name', category.name);
-    formData.append('description', category.description);
-    formData.append('img', category.img);
-    formData.append('status', category.status);
+    formData.append("name", categoryName);
+    formData.append("description", description);
+    formData.append("status", status);
+    if (typeof image === "object") {
+      formData.append("img", image);
+    }
 
     try {
-      setIsLoading(true);
-      await axios.post(createCategoryApi, formData, {
+      await axios.put(`http://localhost:8000/api/category/${id}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
-      console.log('Form submitted successfully!');
-      setCategory({ name: "", description: "", img: null, status: "" });
-      navigate('/qldanhmuc');
+
+      navigate("/QlDanhMuc");
     } catch (error) {
-      setError(error.response ? error.response.data.message : error.message);
-    } finally {
-      setIsLoading(false);
+      console.error("Error updating category:", error);
     }
   };
 
@@ -61,19 +69,17 @@ function AddCategory() {
             <div className="container-fluid">
               <div className="card">
                 <div className="card-header">
-                  <h3 className="title-5 m-b-35">Thêm danh mục mới</h3>
+                  <h3 className="title-5 m-b-35">Sửa danh mục</h3>
                 </div>
                 <div className="card-body">
-                  {error && <div className="alert alert-danger">{error}</div>}
                   <form onSubmit={handleSubmit}>
                     <div className="form-group">
                       <label>Tên danh mục</label>
                       <input
                         type="text"
                         className="form-control"
-                        name="name"
-                        value={category.name}
-                        onChange={handleInput}
+                        value={categoryName}
+                        onChange={(e) => setCategoryName(e.target.value)}
                         required
                       />
                     </div>
@@ -82,9 +88,8 @@ function AddCategory() {
                       <input
                         type="text"
                         className="form-control"
-                        name="description"
-                        value={category.description}
-                        onChange={handleInput}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                         required
                       />
                     </div>
@@ -93,31 +98,28 @@ function AddCategory() {
                       <input
                         type="file"
                         className="form-control"
-                        name="img"
-                        onChange={handleFileChange}
+                        onChange={handleImageChange}
                         accept="image/*"
-                        required
                       />
                     </div>
                     <div className="form-group">
                       <label>Trạng thái</label>
                       <select
                         className="form-control"
-                        name="status"
-                        value={category.status }
-                        onChange={handleInput}
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
                       >
                         <option value="Đang Hoạt Động">Đang Hoạt Động</option>
                         <option value="Ngừng Hoạt Động">Ngừng Hoạt Động</option>
                       </select>
                     </div>
                     <button type="submit" className="btn btn-dark">
-                      <i className="zmdi zmdi-plus"></i> Thêm danh mục
+                      <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
                     </button>
                     <button
                       type="button"
                       className="btn btn-danger ml-2"
-                      onClick={() => navigate("/qldanhmuc")}
+                      onClick={() => navigate("/QlDanhMuc")}
                     >
                       Hủy
                     </button>
@@ -135,4 +137,4 @@ function AddCategory() {
   );
 }
 
-export default AddCategory;
+export default EditCategory;
