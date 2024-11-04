@@ -1,52 +1,35 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch} from "react-redux";
+import { fetchCategory } from "../actions/categoryAction";
 
 function QlDanhMuc() {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { data = [], loading, error } = useSelector((state) => state.unitReducers || {});
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/category")
-      .then((response) => {
-        setCategories(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
-  }, []);
-
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Bạn có chắc chắn muốn xóa danh mục này?"
-    );
-    if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost:8000/api/category/${id}`);
-        // Cập nhật danh sách sau khi xóa
-        setCategories(categories.filter((category) => category.id !== id));
-      } catch (error) {
-        console.error("Error deleting category:", error);
-      }
-    }
-  };
+    dispatch(fetchCategory());
+  }, [dispatch]);
 
   if (loading) {
     return <p>Loading...</p>;
   }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  if (!data.length) {
+    return <div>No data available</div>;
+  }
   return (
     <div className="page-wrapper">
       <Menu />
-
       <div className="page-container">
         <Header />
-
         <div className="main-content">
           <div className="section__content section__content--p30">
             <div className="container-fluid">
@@ -72,14 +55,15 @@ function QlDanhMuc() {
                             <th>Mô tả</th>
                             <th>Hình ảnh</th>
                             <th>Trạng thái</th>
+                            <th>Hành động</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {categories.map((item) => (
-                            <tr className="tr-shadow">
+                          {data.map((item) => (
+                            <tr key={item.id} className="tr-shadow">
                               <td>{item.name}</td>
                               <td>{item.description}</td>
-                              <td>{item.img}</td>
+                              <td><img src={item.img} alt={item.name} style={{ width: '50px' }} /></td>
                               <td>
                                 <span className="status--process">
                                   {item.status}
@@ -102,7 +86,7 @@ function QlDanhMuc() {
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Xóa"
-                                    onClick={() => handleDelete(item.id)}
+                                    // onClick={() => handleDelete(item.id)}
                                   >
                                     <i className="zmdi zmdi-delete"></i>
                                   </button>

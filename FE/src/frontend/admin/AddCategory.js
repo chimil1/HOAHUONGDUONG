@@ -1,54 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import { fetchAddCategory } from "../actions/categoryAction";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function AddCategory() {
   const navigate = useNavigate();
-  const createCategoryApi = "http://localhost:8000/api/category";
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [category, setCategory] = useState({
-    name: "",
-    description: "",
-    img: null,
-    status: ""
-  });
+  const dispatch = useDispatch();
+  // const categoryState = useSelector((state) => state.unit);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleInput = (event) => {
-    const { name, value } = event.target;
-    setCategory({ ...category, [name]: value });
-  };
+ 
 
-  const handleFileChange = (event) => {
-    setCategory({ ...category, img: event.target.files[0] });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('name', category.name);
-    formData.append('description', category.description);
-    formData.append('img', category.img);
-    formData.append('status', category.status);
-
-    try {
-      setIsLoading(true);
-      await axios.post(createCategoryApi, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('Form submitted successfully!');
-      setCategory({ name: "", description: "", img: null, status: "" });
-      navigate('/qldanhmuc');
-    } catch (error) {
-      setError(error.response ? error.response.data.message : error.message);
-    } finally {
-      setIsLoading(false);
-    }
+  const submit = (data) => {
+    dispatch(fetchAddCategory(data));
+    console.log(data);
+    Swal.fire({
+      text: "Thêm sản phẩm thành công!",
+      icon: "success",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/qldanhmuc");
+      }
+    });
   };
 
   return (
@@ -64,62 +47,63 @@ function AddCategory() {
                   <h3 className="title-5 m-b-35">Thêm danh mục mới</h3>
                 </div>
                 <div className="card-body">
-                  {error && <div className="alert alert-danger">{error}</div>}
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit(submit)}>
                     <div className="form-group">
-                      <label>Tên danh mục</label>
+                      <label htmlFor="name">Tên danh mục</label>
                       <input
+                        {...register("name", { required: true })}
                         type="text"
                         className="form-control"
+                        id="name"
                         name="name"
-                        value={category.name}
-                        onChange={handleInput}
-                        required
+                        placeholder="Nhập tên danh mục"
                       />
+                      {errors.name && (
+                        <span className="text-danger">
+                          Tên danh mục không được bỏ trống!
+                        </span>
+                      )}
                     </div>
                     <div className="form-group">
-                      <label>Mô tả</label>
+                      <label htmlFor="description">Mô tả</label>
                       <input
+                        {...register("description")}
                         type="text"
                         className="form-control"
+                        id="description"
                         name="description"
-                        value={category.description}
-                        onChange={handleInput}
-                        required
                       />
                     </div>
                     <div className="form-group">
-                      <label>Hình ảnh</label>
+                      <label htmlFor="file-input">Hình ảnh</label>
                       <input
+                        {...register("img")}
                         type="file"
                         className="form-control"
+                        id="file-input"
                         name="img"
-                        onChange={handleFileChange}
-                        accept="image/*"
-                        required
                       />
                     </div>
                     <div className="form-group">
                       <label>Trạng thái</label>
                       <select
+                        {...register("status", { required: true })}
                         className="form-control"
+                        id="status"
                         name="status"
-                        value={category.status }
-                        onChange={handleInput}
                       >
+                        <option value="">Chọn danh mục</option>
                         <option value="Đang Hoạt Động">Đang Hoạt Động</option>
                         <option value="Ngừng Hoạt Động">Ngừng Hoạt Động</option>
                       </select>
+                      {errors.status && (
+                        <span className="text-danger">
+                          Trạng thái danh mục không được bỏ trống!
+                        </span>
+                      )}
                     </div>
                     <button type="submit" className="btn btn-dark">
                       <i className="zmdi zmdi-plus"></i> Thêm danh mục
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-danger ml-2"
-                      onClick={() => navigate("/qldanhmuc")}
-                    >
-                      Hủy
                     </button>
                   </form>
                 </div>

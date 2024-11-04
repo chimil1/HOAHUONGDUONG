@@ -29,6 +29,7 @@ import Profile from "./frontend/client/Profile";
 import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
+import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
           <Route path='/forgotpassword'  element={<ForgotPassword />}/>
+          <Route path='/confirmpassword'  element={<ConfirmPassword />}/>
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
