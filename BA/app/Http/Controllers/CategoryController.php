@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
+
 
 class CategoryController extends Controller
 {
@@ -17,17 +18,8 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        try { 
-            if ($request->hasFile('img')) {
-                $image = $request->file('img');
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                if ($image->move(public_path('images'), $imageName)) {
-                    $imagePath = '/images/' . $imageName;
-                } else {
-                    return response()->json(['success' => false, 'message' => 'Không thể di chuyển tệp vào thư mục.'], 500);
-                }
-            }
-            
+
+        try {
             $category = Category::create(
                 [
                     'name' => $request->name,
@@ -36,13 +28,11 @@ class CategoryController extends Controller
                     'status' => $request->status,
                 ]
             );
-            if (!$category) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Thêm dữ liệu không thành công.',
-                ], 500);
-            }
-            return response()->json($category);
+            return response()->json([
+                'success' => true,
+                'message' => 'Thêm dữ liệu thành công.',
+                'data' => $category,
+            ], 201);
         } catch (\Exception $exception) {
             return response()->json([
                 'error' => $exception,
@@ -50,39 +40,46 @@ class CategoryController extends Controller
                 'message' => 'Thêm dữ liệu không thành công.',
             ], 500);
         }
+        return response()->json([
+            'success' => true,
+            'message' => 'Thêm dữ liệu thành công.',
+            'data' => $category,
+        ], 201);
     }
 
-    public function show($id)
+    public function update(Request $request, Category $category)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Không tìm thấy danh mục'], 404);
+        try {
+            $category->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'img' => $request->img,
+                'status' => $request->status,
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Sửa dữ liệu thành công.',
+                'data' => $category,
+            ], 201);
+        }catch(\Exception $exception){
+            return response()->json([
+                'error' => $exception,
+                'success' => false,
+                'message' => 'Sửa dữ liệu không thành công.',
+            ], 500);
         }
-        return $category;
     }
 
-    public function update(CategoryRequest $request, $id)
+    public function destroy(Category $category)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Không tìm thấy danh mục'], 404);
-        }
-
-        $category->update($request->all());
-
-        return response()->json($category, 200);
-    }
-
-    public function destroy($id)
-    {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Không tìm thấy danh mục'], 404);
-        }
-        $deleteCategory =  $category->delete();
-        if (!$deleteCategory) {
-            return response()->json(['message' => 'Xóa danh mục không thành công'], 200);
-        }
+        try {
+        $category->delete();
         return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
+    }catch (\Exception $e) {
+        return response()->json([
+           'message' => 'Danh mục tồn tại sản phẩm không thể xóa',
+            'error' => $e->getMessage()
+        ], 500);
+    }
     }
 }
