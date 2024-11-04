@@ -1,23 +1,30 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUnits } from "../actions/unitActions";
 
 function QlDonHang() {
-  // Dữ liệu giả lập của đơn hàng
-  const orders = [
-    {
-      id: 1,
-      recipient: "Lori Lynch",
-      address: "124D,12H,Nguyễn Văn Linh, Cần Thơ",
-      phone: "0342453243",
-      status: "Đang giao",
-      products: [
-        { name: "Áo thun", quantity: 2, price: 200000 },
-        { name: "Quần jean", quantity: 1, price: 500000 },
-      ],
-    },
-  ];
+  const dispatch = useDispatch();
+  const unitState = useSelector(state => state.unit);
+
+  useEffect(() => {
+    dispatch(fetchUnits());
+  }, [dispatch]);
+
+  if (unitState.loading) {
+    return <p>Đang tải...</p>;
+  }
+
+  if (unitState.error) {
+    return <p>Lỗi: {unitState.error}</p>;
+  }
+
+  // Kiểm tra nếu unitState.units là một mảng trước khi dùng map
+  if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
+    return <p>Lỗi: Định dạng dữ liệu không chính xác hoặc không có đơn hàng nào.</p>;
+  }
 
   return (
     <div className="page-wrapper">
@@ -46,26 +53,37 @@ function QlDonHang() {
                             <th>SĐT</th>
                             <th>Trạng thái</th>
                             <th>Chi tiết đơn hàng</th>
+                            <th>Trạng thái</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {orders.map((order, index) => (
+                          {unitState.units.map((item, index) => (
                             <tr key={index} className="tr-shadow">
-                              <td>{order.recipient}</td>
-                              <td>{order.recipient}</td>
-                              <td>{order.recipient}</td>
-                              <td>{order.address}</td>
-                              <td>{order.phone}</td>
                               <td>
-                                <span
-                                  className={`badge ${
-                                    order.status === "Đã giao"
-                                      ? "badge-success"
-                                      : "badge-warning"
-                                  }`}
-                                >
-                                  {order.status}
-                                </span>
+                                <img
+                                  src="https://via.placeholder.com/50"
+                                  alt="Hình ảnh"
+                                />
+                              </td>
+                              <td>{item.username || 'Không có thông tin'}</td>
+                              <td>{item.shipping_address || 'Không có thông tin'}</td>
+                              <td>{item.shipping_phone || 'Không có thông tin'}</td>
+                              <td>
+                                
+                              </td>
+                              <td>
+                              {item.status === 0 ? (
+                                <span className="badge badge-success">Thanh toán tiền mặt</span>
+                              ) : (
+                                <span className="badge badge-warning">Thanh toán tài khoản</span>
+                              )}
+                              </td>
+                              <td>
+                              {item.payment_type === 0 ? (
+                                <span className="badge badge-success">Thanh toán tiền mặt</span>
+                              ) : (
+                                <span className="badge badge-warning">Thanh toán tài khoản</span>
+                              )}
                               </td>
                               <td>
                                 <div className="overview-wrap">
