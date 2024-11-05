@@ -45,11 +45,6 @@ function Menu() {
               </Link>
             </li>
             <li className="has-sub">
-              <Link className="js-arrow" to="/QlNhanVien">
-                <i className="far fa-check-square"></i>Quản lý Nhân Viên
-              </Link>
-            </li>
-            <li className="has-sub">
               <Link className="js-arrow" to="/qlsanpham">
                 <i className="fas fa-table"></i>Quản lý Sản Phẩm
               </Link>

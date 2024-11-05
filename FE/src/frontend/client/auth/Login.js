@@ -79,7 +79,7 @@ function Login() {
                         type="email"
                         id="form3Example3cg"
                         className="form-control form-control-lg"
-                        placeholder="Email"
+                        placeholder="Email hoặc tài khoản"
                       />
                       <label
                         className="form-label"
@@ -92,7 +92,7 @@ function Login() {
                         type="password"
                         id="form3Example4cg"
                         className="form-control form-control-lg"
-                        placeholder="Password"
+                        placeholder="Mật khẩu"
                       />
                       <label
                         className="form-label"
@@ -100,17 +100,8 @@ function Login() {
                       ></label>
                     </div>
 
-                    <div class="form-check d-flex justify-content-start mb-4">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="form1Example3"
-                      />
-                      <label class="form-check-label" for="form1Example3">
-                        {" "}
-                        Remember password{" "}
-                      </label>
+                    <div class="forgot-pass">
+                      <Link to="/forgotpassword">Quên mật khẩu?</Link>
                     </div>
 
                     <button

@@ -1,6 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { fetchAddCategory } from "../actions/categoryAction";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchCategoryDetails, updateCategory } from "../actions/unitActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -9,7 +9,8 @@ import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
-function AddCategory() {
+function EditCategory() {
+  let { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const categoryState = useSelector((state) => state.unit);
@@ -17,7 +18,20 @@ function AddCategory() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm();
+
+  useEffect(() => {
+    dispatch(fetchCategoryDetails(id)); // Sử dụng action lấy chi tiết sản phẩm
+  }, [dispatch, id]);
+  useEffect(() => {
+    console.log("Unit State:", categoryState.selectedUnit);
+    if (categoryState.selectedUnit) {
+      setValue("name", categoryState.selectedUnit.name);
+      setValue("description", categoryState.selectedUnit.description);
+      setValue("status", categoryState.selectedUnit.status);
+    }
+  }, [categoryState.selectedUnit, setValue]);
 
   if (categoryState.loading) {
     return <p>Loading...</p>;
@@ -32,24 +46,21 @@ function AddCategory() {
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("status", data.status);
-      if (data.img.length >= 0) {
-      const file = data.img[0];
-      data.img = file.name;
-      formData.append("img", file);
+
+    if (data.img && data.img.length > 0) {
+      Array.from(data.img).forEach((file) => {
+        formData.append("img", file);
+      });
     }
 
+    dispatch(updateCategory(id, formData)); // Sử dụng action cập nhật sản phẩm
 
-    dispatch(fetchAddCategory(data));
-    
     console.log(data);
     Swal.fire({
-      text: "Thêm sản phẩm thành công!",
+      text: "Cập nhật sản phẩm thành công!",
       icon: "success",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/qldanhmuc");
-      }
     });
+    navigate("/qldanhmuc");
   };
 
   return (
@@ -62,7 +73,7 @@ function AddCategory() {
             <div className="container-fluid">
               <div className="card">
                 <div className="card-header">
-                  <h3 className="title-5 m-b-35">Thêm danh mục mới</h3>
+                  <h3 className="title-5 m-b-35">Sửa danh mục</h3>
                 </div>
                 <div className="card-body">
                   <form onSubmit={handleSubmit(submit)}>
@@ -71,58 +82,62 @@ function AddCategory() {
                       <input
                         {...register("name", { required: true })}
                         type="text"
-                        className="form-control"
                         id="name"
                         name="name"
-                        placeholder="Nhập tên danh mục"
+                        placeholder="Nhập tên sản phẩm..."
+                        className="form-control"
                       />
                       {errors.name && (
                         <span className="text-danger">
-                          Tên danh mục không được bỏ trống!
+                          Tên sản phẩm không được bỏ trống!
                         </span>
                       )}
                     </div>
                     <div className="form-group">
                       <label htmlFor="description">Mô tả</label>
-                      <input
-                        {...register("description")}
-                        type="text"
-                        className="form-control"
-                        id="description"
+                      <textarea
+                        {...register("description", { required: true })}
                         name="description"
-                        placeholder="Nhập mô tả"
-                      />
+                        id="description"
+                        rows="9"
+                        placeholder="Nhập mô tả..."
+                        className="form-control"
+                      ></textarea>
+                      {errors.description && (
+                        <span className="text-danger">
+                          Mô tả sản phẩm không được bỏ trống!
+                        </span>
+                      )}
                     </div>
                     <div className="form-group">
                       <label htmlFor="file-input">Hình ảnh</label>
                       <input
                         {...register("img")}
                         type="file"
-                        className="form-control"
                         id="file-input"
                         name="img"
+                        className="form-control-file"
                       />
                     </div>
                     <div className="form-group">
-                      <label>Trạng thái</label>
+                      <label htmlFor="status">Trạng thái</label>
                       <select
                         {...register("status", { required: true })}
-                        className="form-control"
-                        id="status"
                         name="status"
+                        id="status"
+                        className="form-control"
                       >
-                        <option value="">Chọn trạng thái</option>
-                        <option value="0">Đang Hoạt Động</option>
-                        <option value="1">Ngừng Hoạt Động</option>
+                        <option value="Đang Hoạt Động">Đang Hoạt Động</option>
+                        <option value="Ngừng Hoạt Động">Ngừng Hoạt Động</option>
                       </select>
                       {errors.status && (
                         <span className="text-danger">
-                          Trạng thái danh mục không được bỏ trống!
+                          Trạng thái sản phẩm không được bỏ trống!
                         </span>
                       )}
                     </div>
                     <button type="submit" className="btn btn-dark">
-                      <i className="zmdi zmdi-plus"></i> Thêm danh mục
+                      <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
                     </button>
                   </form>
                 </div>
@@ -138,4 +153,4 @@ function AddCategory() {
   );
 }
 
-export default AddCategory;
+export default EditCategory;

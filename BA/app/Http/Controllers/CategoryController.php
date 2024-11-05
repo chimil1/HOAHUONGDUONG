@@ -6,7 +6,6 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 
-
 class CategoryController extends Controller
 {
 
@@ -18,8 +17,17 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-
-        try {
+        try { 
+            if ($request->hasFile('img')) {
+                $image = $request->file('img');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                if ($image->move(public_path('images'), $imageName)) {
+                    $imagePath = '/images/' . $imageName;
+                } else {
+                    return response()->json(['success' => false, 'message' => 'Không thể di chuyển tệp vào thư mục.'], 500);
+                }
+            }
+            
             $category = Category::create(
                 [
                     'name' => $request->name,
@@ -28,11 +36,13 @@ class CategoryController extends Controller
                     'status' => $request->status,
                 ]
             );
-            return response()->json([
-                'success' => true,
-                'message' => 'Thêm dữ liệu thành công.',
-                'data' => $category,
-            ], 201);
+            if (!$category) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thêm dữ liệu không thành công.',
+                ], 500);
+            }
+            return response()->json($category);
         } catch (\Exception $exception) {
             return response()->json([
                 'error' => $exception,
@@ -40,11 +50,6 @@ class CategoryController extends Controller
                 'message' => 'Thêm dữ liệu không thành công.',
             ], 500);
         }
-    }
-
-    public function show(Category $category)
-    {
-        return response()->json($category);
     }
 
     public function update(Request $request, Category $category)
@@ -68,12 +73,10 @@ class CategoryController extends Controller
                 'message' => 'Sửa dữ liệu không thành công.',
             ], 500);
         }
-    }
-
-    public function destroy(Category $category)
-    {
-        try {
-        $category->delete();
+        $deleteCategory =  $category->delete();
+        if (!$deleteCategory) {
+            return response()->json(['message' => 'Xóa danh mục không thành công'], 200);
+        }
         return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
     }catch (\Exception $e) {
         return response()->json([
