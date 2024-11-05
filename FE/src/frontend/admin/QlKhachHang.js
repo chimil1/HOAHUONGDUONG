@@ -1,42 +1,22 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function QlKhachHang() {
-  // Dữ liệu giả lập của khách hàng và đơn hàng
-  const customers = [
-    {
-      id: 1,
-      name: "Lori Lynch",
-      email: "lori@example.com",
-      phone: "0342453243",
-      orders: [
-        {
-          id: 1,
-          productName: "Áo sơ mi nam",
-          status: "Đã nhận hàng",
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      email: "john@example.com",
-      phone: "0987654321",
-      orders: [
-        {
-          id: 1,
-          productName: "Quần Âu",
-          status: "Đang giao",
-        },
-        {
-          id: 2,
-          productName: "Áo thun",
-          status: "Đã hủy đơn",
-        }
-      ]
-    }
-  ];
+
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    axios
+        .get("http://localhost:8000/api/user")
+        .then((response) => {
+          setUsers(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching categories:", error);
+        });
+  }, []);
 
   return (
     <div className="page-wrapper">
@@ -62,52 +42,17 @@ function QlKhachHang() {
                       <table className="table table-data2">
                         <thead>
                           <tr>
-                            <th>Hình ảnh</th>
                             <th>Tên khách hàng</th>
                             <th>Email</th>
-                            <th>Số điện thoại</th>
-                            <th>Đơn hàng</th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {customers.map((customer, index) => (
-                            <tr key={index} className="tr-shadow">
+                          {users.map((item) => (
+                            <tr className="tr-shadow">
+                              <td>{item.name}</td>
                               <td>
-                                {/* Có thể thêm hình ảnh khách hàng */}
-                                <img
-                                  src="https://via.placeholder.com/50"
-                                  alt="Hình ảnh"
-                                />
-                              </td>
-                              <td>{customer.name}</td>
-                              <td>
-                                <span className="block-email">{customer.email}</span>
-                              </td>
-                              <td>{customer.phone}</td>
-                              <td>
-                                {customer.orders.length > 0 ? (
-                                  <ul>
-                                    {customer.orders.map((order, idx) => (
-                                      <li key={idx}>
-                                        {order.productName} -{" "}
-                                        <span
-                                          className={`badge ${
-                                            order.status === "Đã nhận hàng"
-                                              ? "badge-success"
-                                              : order.status === "Đang giao"
-                                              ? "badge-warning"
-                                              : "badge-danger"
-                                          }`}
-                                        >
-                                          {order.status}
-                                        </span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                ) : (
-                                  "Không có đơn hàng"
-                                )}
+                                <span className="block-email">{item.email}</span>
                               </td>
                               <td>
                                 <div className="table-data-feature">

@@ -28,6 +28,8 @@ import Blog from "./frontend/client/Blog";
 import ShoppingCart from "./frontend/client/ShoppingCart";
 import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register"
+import ForgotPassword from "./frontend/client/auth/ForgotPassword";
+import ComfirmPassword from "./frontend/client/auth/ComfirmPassword";
 
 function App() {
   return (
@@ -45,6 +47,8 @@ function App() {
           <Route path="/shoppingcart" element={<ShoppingCart />} />
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
+          <Route path='/forgot-password'  element={<ForgotPassword />}/>
+          <Route path='/reset-password'  element={<ComfirmPassword />}/>
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
