@@ -28,7 +28,7 @@ export const fetchUnits = () => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());
       axios
-        .get("http://localhost:8000/api/order")
+        .get(`http://localhost:8000/api/order`)
         .then((response) => {
           const units = response.data;
           dispatch(fetchUnitsSuccess(units));
@@ -39,3 +39,19 @@ export const fetchUnits = () => {
         });
     };
   };
+  export const fetchOrderDetails = (id) => {
+    return (dispatch) => {
+      dispatch(fetchUnitsRequest());
+      axios
+        .get(`http://localhost:8000/api/order/${id}`)
+        .then((response) => {
+          const units = response.data;
+          dispatch(fetchUnitsSuccess(units));
+        })
+        .catch((error) => {
+          const errorMsg = error.message;
+          dispatch(fetchUnitsFailure(errorMsg));
+        });
+    };
+  };
+  
