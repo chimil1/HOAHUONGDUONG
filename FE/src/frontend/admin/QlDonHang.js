@@ -49,8 +49,9 @@ function QlDonHang() {
                       <table className="table table-data2">
                         <thead>
                           <tr>
-                            <th>Hình ảnh</th>
                             <th>Tên người nhận</th>
+                            <th>Tổng giá</th>
+                            <th>Mã hóa đơn</th>
                             <th>Địa chỉ</th>
                             <th>SĐT</th>
                             <th>Trạng thái</th>
