@@ -1,7 +1,30 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { fetchReview } from "../actions/unitActions"; 
+
 function DanhGia() {
+  const dispatch = useDispatch();
+  const unitState = useSelector(state => state.unit);
+
+  useEffect(() => {
+    dispatch(fetchReview());
+  }, [dispatch]);
+
+  if (unitState.loading) {
+    return <p>Đang tải...</p>;
+  }
+
+  if (unitState.error) {
+    return <p>Lỗi: {unitState.error}</p>;
+  }
+
+  // Kiểm tra nếu unitState.units là một mảng trước khi dùng map
+  if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
+    return <p>Lỗi: Định dạng dữ liệu không chính xác hoặc không có đơn hàng nào.</p>;
+  }
   return (
     <div class="page-wrapper">
       <Menu></Menu>
@@ -24,19 +47,23 @@ function DanhGia() {
                       <table class="table table-data2">
                         <thead>
                           <tr>
-                            <th>Hình ảnh</th>
-                            <th>Tên người mua</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Nội dung đánh giá</th>
+                            <th>STT</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Hình</th>
+                            <th>Tổng Review</th> 
+                            <th>Tác vụ</th>                          
                           </tr>
                         </thead>
                         <tbody>
-                          <tr class="tr-shadow">
-                            <td></td>
-                            <td>Lori Lynch</td>
-                            <td>124D,12H,Nguyễn văn Linh,cần Thơ.</td>
-                            <td>0342453243</td>
-                            <td>
+                        {unitState.units.map((item, index) => (
+                            <tr key={index} className="tr-shadow">
+
+                              <td>{item.id || 'Không có thông tin'}</td>
+                              <td>{item.name || 'Không có thông tin'}</td>
+                              <td>{item.img || 'Không có thông tin'}</td>
+                              <td>{item.review_count || 'Không có thông tin'}</td>
+
+                              <td>
                               <div class="table-data-feature">
                                 <button
                                   class="item"
@@ -48,7 +75,9 @@ function DanhGia() {
                                 </button>
                               </div>
                             </td>
-                          </tr>
+                            </tr>
+                          ))}
+                          
                         </tbody>
                       </table>
                     </div>
