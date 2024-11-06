@@ -26,7 +26,6 @@ class CouponRequest extends FormRequest
             'code_name' => 'string|max:10',
             'discount_type' => 'integer',
             'discount_value' => 'integer',
-            'minium_order_value' => 'nullable',
             'start_date' => 'date',
             'end_date' => 'date|after_or_equal:start_date',
         ];

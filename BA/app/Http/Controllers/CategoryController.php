@@ -16,9 +16,8 @@ class CategoryController extends Controller
         return response()->json($categories);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Category $category)
     {
-
         try {
             $category = Category::create(
                 [
@@ -39,7 +38,7 @@ class CategoryController extends Controller
                 'success' => false,
                 'message' => 'Thêm dữ liệu không thành công.',
             ], 500);
-        }
+        }        
     }
 
     public function show(Category $category)
@@ -47,6 +46,7 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
+    
     public function update(Request $request, Category $category)
     {
         try {
@@ -61,7 +61,7 @@ class CategoryController extends Controller
                 'message' => 'Sửa dữ liệu thành công.',
                 'data' => $category,
             ], 201);
-        }catch(\Exception $exception){
+        } catch (\Exception $exception) {
             return response()->json([
                 'error' => $exception,
                 'success' => false,
@@ -73,13 +73,13 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         try {
-        $category->delete();
-        return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
-    }catch (\Exception $e) {
-        return response()->json([
-           'message' => 'Danh mục tồn tại sản phẩm không thể xóa',
-            'error' => $e->getMessage()
-        ], 500);
-    }
+            $category->delete();
+            return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Danh mục tồn tại sản phẩm không thể xóa',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

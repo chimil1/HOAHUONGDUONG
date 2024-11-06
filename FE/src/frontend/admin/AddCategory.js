@@ -1,38 +1,60 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchAddCategory } from "../actions/unitActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+
+import { fetchAddCategory } from "../actions/unitActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function AddCategory() {
-  const [categoryName, setCategoryName] = useState("");
-  const [status, setStatus] = useState("Đang Hoạt Động");
-  const [image, setImage] = useState(null); // State để lưu trữ hình ảnh
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const categoryState = useSelector((state) => state.unit);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  if (categoryState.loading) {
+    return <p>Loading...</p>;
+  }
 
-    // Kiểm tra xem có đủ dữ liệu hay không
-    if (!categoryName || !image) {
-      alert("Vui lòng nhập đầy đủ thông tin.");
-      return;
+  if (categoryState.error) {
+    return <p>Error: {categoryState.error}</p>;
+  }
+
+  const submit = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("status", data.status);
+      if (data.img.length >= 0) {
+      const file = data.img[0];
+      data.img = file.name;
+      formData.append("img", file);
     }
 
-    // Hiển thị dữ liệu thêm danh mục
-    console.log("Thêm danh mục:", { categoryName, status, image });
 
-    // Reset form sau khi thêm thành công
-    setCategoryName("");
-    setStatus("Đang Hoạt Động");
-    setImage(null);
-
-    // Điều hướng về trang quản lý danh mục
-    navigate("/QlDanhMuc");
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]); // Lưu trữ file hình ảnh
+    dispatch(fetchAddCategory(data));
+    
+    console.log(data);
+    Swal.fire({
+      text: "Thêm sản phẩm thành công!",
+      icon: "success",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/qldanhmuc");
+      }
+    });
   };
 
   return (
@@ -48,47 +70,101 @@ function AddCategory() {
                   <h3 className="title-5 m-b-35">Thêm danh mục mới</h3>
                 </div>
                 <div className="card-body">
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit(submit)}>
                     <div className="form-group">
-                      <label>Tên danh mục</label>
+                      <label htmlFor="name">Tên danh mục</label>
                       <input
+                        {...register("name", { required: true })}
                         type="text"
                         className="form-control"
-                        value={categoryName}
-                        onChange={(e) => setCategoryName(e.target.value)}
-                        required
+                        id="name"
+                        name="name"
+                        placeholder="Nhập tên danh mục"
+                      />
+                      {errors.name && (
+                        <span className="text-danger">
+                          Tên danh mục không được bỏ trống!
+                        </span>
+                      )}
+                    </div>
+                  <form onSubmit={handleSubmit(submit)}>
+                    <div className="form-group">
+                      <label htmlFor="name">Tên danh mục</label>
+                      <input
+                        {...register("name", { required: true })}
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="Nhập tên danh mục"
+                      />
+                      {errors.name && (
+                        <span className="text-danger">
+                          Tên danh mục không được bỏ trống!
+                        </span>
+                      )}
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="description">Mô tả</label>
+                      <label htmlFor="description">Mô tả</label>
+                      <input
+                        {...register("description")}
+                        {...register("description")}
+                        type="text"
+                        className="form-control"
+                        id="description"
+                        name="description"
+                        placeholder="Nhập mô tả"
+                        id="description"
+                        name="description"
+                        placeholder="Nhập mô tả"
                       />
                     </div>
                     <div className="form-group">
-                      <label>Hình ảnh</label>
+                      <label htmlFor="file-input">Hình ảnh</label>
+                      <label htmlFor="file-input">Hình ảnh</label>
                       <input
+                        {...register("img")}
+                        {...register("img")}
                         type="file"
                         className="form-control"
-                        onChange={handleImageChange}
-                        accept="image/*"
-                        required
+                        id="file-input"
+                        name="img"
+                        id="file-input"
+                        name="img"
                       />
                     </div>
                     <div className="form-group">
                       <label>Trạng thái</label>
                       <select
+                        {...register("status", { required: true })}
+                        {...register("status", { required: true })}
                         className="form-control"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
+                        id="status"
+                        name="status"
+                        id="status"
+                        name="status"
                       >
-                        <option value="Đang Hoạt Động">Đang Hoạt Động</option>
-                        <option value="Ngừng Hoạt Động">Ngừng Hoạt Động</option>
+                        <option value="">Chọn trạng thái</option>
+                        <option value="0">Đang Hoạt Động</option>
+                        <option value="1">Ngừng Hoạt Động</option>
+                        <option value="">Chọn trạng thái</option>
+                        <option value="0">Đang Hoạt Động</option>
+                        <option value="1">Ngừng Hoạt Động</option>
                       </select>
+                      {errors.status && (
+                        <span className="text-danger">
+                          Trạng thái danh mục không được bỏ trống!
+                        </span>
+                      )}
+                      {errors.status && (
+                        <span className="text-danger">
+                          Trạng thái danh mục không được bỏ trống!
+                        </span>
+                      )}
                     </div>
                     <button type="submit" className="btn btn-dark">
                       <i className="zmdi zmdi-plus"></i> Thêm danh mục
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-danger ml-2"
-                      onClick={() => navigate("/QlDanhMuc")}
-                    >
-                      Hủy
                     </button>
                   </form>
                 </div>

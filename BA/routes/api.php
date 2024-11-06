@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,4 @@ Route::apiResource('category', CategoryController::class);
 Route::apiResource('order', OrderController::class);
 Route::apiResource('review', ReviewController::class);
 Route::apiResource('coupon', CouponController::class);
+Route::apiResource('product', ProductController::class);
