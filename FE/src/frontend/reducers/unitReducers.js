@@ -2,7 +2,7 @@ import {
     FETCH_UNITS_REQUEST,
     FETCH_UNITS_SUCCESS,
     FETCH_UNITS_FAILURE
-} from '../actions/Action';
+} from '../actions/unitActions';
 
 const initialState = {
     selectedUnit: null, 
