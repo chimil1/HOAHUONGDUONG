@@ -20,7 +20,7 @@ function Menu() {
             <li className="has-sub">
               <Link className="js-arrow" to="/qldonhang">
                 <i className="fas fa-shopping-basket"></i>Đơn hàng
-                <span className="inbox-num">2</span>
+                <span className="inbox-num">1</span>
               </Link>
             </li>
             <li className="has-sub">
