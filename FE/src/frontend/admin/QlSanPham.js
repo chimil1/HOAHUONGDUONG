@@ -4,7 +4,7 @@ import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, fetchDelete } from "../actions/productAction";
+import { fetchProducts, fetchDelete } from "../actions/unitActions";
 
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";

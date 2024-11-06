@@ -3,7 +3,7 @@ import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUnits } from "../actions/unitActions";
+import { fetchOrders } from "../actions/unitActions";
 import { Link } from "react-router-dom";
 
 
@@ -13,7 +13,7 @@ function QlDonHang() {
   const unitState = useSelector(state => state.unit);
 
   useEffect(() => {
-    dispatch(fetchUnits());
+    dispatch(fetchOrders());
   }, [dispatch]);
 
   if (unitState.loading) {
