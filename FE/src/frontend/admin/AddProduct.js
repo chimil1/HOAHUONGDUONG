@@ -1,16 +1,32 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchAddProduct } from "../actions/productAction";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function AddProduct() {
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    description: "",
-    status: "",
-    category_id: "",
-  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const unitState = useSelector((state) => state.unit);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm();
+
+  if (unitState.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (unitState.error) {
+    return <p>Error: {unitState.error}</p>;
+  }
 
   const submit = (data) => {
     const formData = new FormData();

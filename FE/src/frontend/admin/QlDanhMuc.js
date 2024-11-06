@@ -66,6 +66,7 @@ function QlDanhMuc() {
                         <Link
                           className="au-btn au-btn-icon au-btn--green bg-dark"
                           to="/AddCategory"
+                          to="/AddCategory"
                         >
                           <i className="zmdi zmdi-plus"></i>Thêm danh mục
                         </Link>
