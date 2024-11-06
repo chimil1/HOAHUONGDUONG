@@ -8,7 +8,6 @@ import CNSanPham from "./frontend/admin/CNSanPham";
 import CNTaiKhoan from "./frontend/admin/CNTaiKhoan";
 import DanhGia from "./frontend/admin/DanhGia";
 import QlDanhMuc from "./frontend/admin/QlDanhMuc";
-import AddCategory from "./frontend/admin/AddCategory";
 import EditCategory from "./frontend/admin/EditCategory";
 import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
@@ -18,8 +17,8 @@ import QlSanPham from "./frontend/admin/QlSanPham";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import AddCategory from "./frontend/admin/AddCategory";
 import AddPersonnel from "./frontend/admin/AddPersonnel";
-import OrderDetails from "./frontend/admin/OrderDetails";
 import AddProduct from "./frontend/admin/AddProduct";
+import Orderdetails from"./frontend/admin/orderDetail"
 
 
 import Home from "./frontend/client/Home";
@@ -75,9 +74,8 @@ function App() {
           <Route path="/qlnhanvien" element={<QlNhanVien />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
-          <Route path="/addcategory" element={<AddCategory />} />
           <Route path="/addpersonnel" element={<AddPersonnel />} />
-            <Route path="/orderdetails" element={<OrderDetails />} />
+            <Route path="/orderdetails" element={<Orderdetails />} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/home" element={<Home />} />
           <Route path="/admin/login" element={<LoginForm />} />
