@@ -32,15 +32,14 @@ function AddCategory() {
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("status", data.status);
-    formData.append("img", data.img.name);
-    // if (data.img.length >= 0) {
-    //   const file = data.img[0]; // Lấy tệp đầu tiên từ FileList
-    //   formData.append("img", file.name); // Thêm tệp vào FormData
-    //   console.log("Tên tệp hình ảnh:", file.name); // In ra tên tệp
-    // }
+      if (data.img.length >= 0) {
+      const file = data.img[0];
+      data.img = file.name;
+      formData.append("img", file);
+    }
+
 
     dispatch(fetchAddCategory(data));
-    // console.log();
 
     console.log(data);
     Swal.fire({

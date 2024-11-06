@@ -16,9 +16,8 @@ class CategoryController extends Controller
         return response()->json($categories);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Category $category)
     {
-
         try {
             $category = Category::create(
                 [
@@ -39,7 +38,7 @@ class CategoryController extends Controller
                 'success' => false,
                 'message' => 'Thêm dữ liệu không thành công.',
             ], 500);
-        }
+        }        
     }
 
     public function show(Category $category)
@@ -47,6 +46,7 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
+    
     public function update(Request $request, Category $category)
     {
         try {

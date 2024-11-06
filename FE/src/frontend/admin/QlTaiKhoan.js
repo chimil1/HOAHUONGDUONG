@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
@@ -13,9 +14,9 @@ function QlTaiKhoan() {
             <div class="container-fluid">
               <div class="header-wrap2">
                 <div class="logo d-block d-lg-none">
-                  <a href="#">
+                  <Link to="#">
                     <img src="images/icon/logo-white.png" alt="CoolAdmin" />
-                  </a>
+                  </Link>
                 </div>
                 <div class="header-button2">
                   <div class="header-button-item js-item-menu">
@@ -67,7 +68,7 @@ function QlTaiKhoan() {
                         </div>
                       </div>
                       <div class="notifi__footer">
-                        <a href="#">All notifications</a>
+                        <Link to="#">All notifications</Link>
                       </div>
                     </div>
                   </div>
@@ -77,41 +78,41 @@ function QlTaiKhoan() {
                   <div class="setting-menu js-right-sidebar d-none d-lg-block">
                     <div class="account-dropdown__body">
                       <div class="account-dropdown__item">
-                        <a href="#">
+                        <Link to="#">
                           <i class="zmdi zmdi-account"></i>Account
-                        </a>
+                        </Link>
                       </div>
                       <div class="account-dropdown__item">
-                        <a href="#">
+                        <Link to="#">
                           <i class="zmdi zmdi-settings"></i>Setting
-                        </a>
+                        </Link>
                       </div>
                       <div class="account-dropdown__item">
-                        <a href="#">
+                        <Link to="#">
                           <i class="zmdi zmdi-money-box"></i>Billing
-                        </a>
+                        </Link>
                       </div>
                     </div>
                     <div class="account-dropdown__body">
                       <div class="account-dropdown__item">
-                        <a href="#">
+                        <Link to="#">
                           <i class="zmdi zmdi-globe"></i>Language
-                        </a>
+                        </Link>
                       </div>
                       <div class="account-dropdown__item">
-                        <a href="#">
+                        <Link to="#">
                           <i class="zmdi zmdi-pin"></i>Location
-                        </a>
+                        </Link>
                       </div>
                       <div class="account-dropdown__item">
-                        <a href="#">
+                        <Link to="#">
                           <i class="zmdi zmdi-email"></i>Email
-                        </a>
+                        </Link>
                       </div>
                       <div class="account-dropdown__item">
-                        <a href="#">
+                        <Link to="#">
                           <i class="zmdi zmdi-notifications"></i>Notifications
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -136,12 +137,9 @@ function QlTaiKhoan() {
                       <table class="table table-data2">
                         <thead>
                           <tr>
-                            <th>Hình ảnh</th>
                             <th>Tên tài khoản</th>
                             <th>Email</th>
-                            <th>Số điện thoại</th>
                             <th>Chức vụ</th>
-                            <th>Lương</th>
                             <th></th>
                           </tr>
                         </thead>

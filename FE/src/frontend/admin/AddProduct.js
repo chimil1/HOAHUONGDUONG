@@ -1,32 +1,16 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { fetchAddProduct } from "../actions/productAction";
-import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function AddProduct() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const unitState = useSelector((state) => state.unit);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-  } = useForm();
-
-  if (unitState.loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (unitState.error) {
-    return <p>Error: {unitState.error}</p>;
-  }
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    description: "",
+    status: "",
+    category_id: "",
+  });
 
   const submit = (data) => {
     const formData = new FormData();
@@ -92,55 +76,39 @@ function AddProduct() {
                         <small className="text-danger">Giá là bắt buộc</small>
                       )}
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="description" className="form-label">
-                        Mô tả
-                      </label>
-                      <textarea
+                    <div class="form-group">
+                      <label for="discountPrice">Mô tả</label>
+                      <input
+                        type="text"
+                        class="form-control"
                         id="description"
+                        name="description"
+                        value={product.description}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Trạng thái</label>
+                      <select
                         className="form-control"
-                        rows="4"
-                        {...register("description")}
-                      ></textarea>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="status" className="form-label">
-                        Trạng thái
-                      </label>
-                      <select
-                        id="status"
-                        className="form-select"
-                        {...register("status", { required: true })}
+                        value={product.status}
+                        onChange={handleChange}
                       >
-                        <option value="">Chọn trạng thái</option>
-                        <option value="0">Đang hoạt động</option>
-                        <option value="1">Không hoạt động</option>
+                        <option value="Có sẵn">Có sẵn</option>
+                        <option value="Hết hàng">Hết hàng</option>
+                        <option value="Đã ngừng cung cấp">Đã ngừng cung cấp</option>
                       </select>
-                      {errors.status && (
-                        <small className="text-danger">
-                          Trạng thái là bắt buộc
-                        </small>
-                      )}
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="category_id" className="form-label">
-                        Danh mục
-                      </label>
+                    <div className="form-group">
+                      <label>Chọn danh mục</label>
                       <select
-                        id="category_id"
-                        className="form-select"
-                        {...register("category_id", { required: true })}
+                        className="form-control"
+                        value={product.category_id}
+                        onChange={handleChange}
                       >
-                        <option value="">Chọn danh mục</option>
-                        <option value="1">Áo thun</option>
-                        <option value="2">Áo khoác</option>
-                        <option value="3">Quần jean</option>
+                        <option value="Quần">Quần</option>
+                        <option value="Áo">Áo</option>
                       </select>
-                      {errors.category_id && (
-                        <small className="text-danger">
-                          Danh mục là bắt buộc
-                        </small>
-                      )}
                     </div>
                     {/* Hình ảnh (Nếu có) */}
                     {/* <div className="mb-3">

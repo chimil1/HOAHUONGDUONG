@@ -39,7 +39,7 @@ export const fetchCategory = () => {
         });
     };
   };
-  
+
   export const fetchDelete = (id) => {
     return (dispatch) => {
       dispatch(fetchCategorysRequest());
@@ -56,7 +56,7 @@ export const fetchCategory = () => {
         });
     };
   };
-  
+
   export const fetchCategoryDetails = (id) => {
     return (dispatch) => {
       dispatch(fetchCategorysRequest());
@@ -72,12 +72,12 @@ export const fetchCategory = () => {
         });
     };
   };
-  
-  export const updateCategory = (id, data) => {
+
+  export const updateCategory = (id, category) => {
     return (dispatch) => {
       dispatch(fetchCategorysRequest());
       axios
-        .put(`http://localhost:8000/api/category/${id}`, data)
+        .put(`http://localhost:8000/api/category/${id}`, category)
         .then((response) => {
           const category = response.data;
           dispatch(fetchCategorysSuccess(category));
@@ -88,7 +88,7 @@ export const fetchCategory = () => {
         });
     };
   };
-  
+
   export const fetchAddCategory = (category) => {
     return (dispatch) => {
       dispatch(fetchCategorysRequest());
