@@ -7,6 +7,7 @@ import { fetchUnits } from "../actions/unitActions";
 import { Link } from "react-router-dom";
 
 function QlDonHang() {
+  
   const dispatch = useDispatch();
   const unitState = useSelector(state => state.unit);
 
@@ -53,8 +54,8 @@ function QlDonHang() {
                             <th>Địa chỉ</th>
                             <th>SĐT</th>
                             <th>Trạng thái</th>
+                            <th>Trạng thái thanh toán</th> {/* Thêm cột trạng thái thanh toán */}
                             <th>Chi tiết đơn hàng</th>
-                            <th>Trạng thái</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -70,9 +71,6 @@ function QlDonHang() {
                               <td>{item.shipping_address || 'Không có thông tin'}</td>
                               <td>{item.shipping_phone || 'Không có thông tin'}</td>
                               <td>
-                                
-                              </td>
-                              <td>
                               {item.status === 0 ? (
                                 <span className="badge badge-success">Thanh toán tiền mặt</span>
                               ) : (
@@ -87,12 +85,14 @@ function QlDonHang() {
                               )}
                               </td>
                               <td>
-                                <div className="overview-wrap">
-                                  <Link
-                                    className="au-btn au-btn-icon au-btn--green bg-dark"
-                                    to="/OrderDetails"
+                              <div className="table-data-feature">
+                                <Link to={`/orderdetail/${item.id}`}>                               
+                                  <button
+                                    className="item"
+                                    title="Chi tiết"
                                   >
                                     <i className="zmdi zmdi-mail-send"></i>
+                                  </button>
                                   </Link>
                                 </div>
                               </td>
