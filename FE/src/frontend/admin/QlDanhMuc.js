@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom"; // Đảm bảo bạn import Link
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function QlDanhMuc() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/category")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
   return (
     <div className="page-wrapper">
       <Menu />
@@ -23,7 +37,7 @@ function QlDanhMuc() {
                         <h2 className="title-5 m-b-35">Bảng danh mục</h2>
                         <Link
                           className="au-btn au-btn-icon au-btn--green bg-dark"
-                          to="/AddCategory" 
+                          to="/AddCategory"
                         >
                           <i className="zmdi zmdi-plus"></i>Thêm danh mục
                         </Link>
@@ -39,21 +53,12 @@ function QlDanhMuc() {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="tr-shadow">
-                            <td></td>
-                            <td>Lori Lynch</td>
-                            <td>
-                              <span className="status--process">
-                                Đang Hoạt Động
-                              </span>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
+                          {categories.map((item) => (
+                            <tr className="tr-shadow">
+                              {/* <td><img src={`${image}`} alt="" /></td> */}
+                              <td>{item.name}</td>
+                              <td>{item.status}</td>
+                              <td>
                               <div className="table-data-feature">
                                 <button
                                   className="item"
@@ -72,8 +77,9 @@ function QlDanhMuc() {
                                   <i className="zmdi zmdi-delete"></i>
                                 </button>
                               </div>
-                            </td>
-                          </tr>
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
