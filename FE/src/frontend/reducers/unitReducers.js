@@ -1,7 +1,7 @@
 import {
     FETCH_UNITS_REQUEST,
     FETCH_UNITS_SUCCESS,
-    FETCH_UNITS_FAILURE
+    FETCH_UNITS_FAILURE,
 } from '../actions/unitActions';
 
 const initialState = {
@@ -34,6 +34,7 @@ const unitReducer = (state = initialState, action) => {
                 units: [],
                 error: action.payload
             };
+
         default:
             return state;
     }

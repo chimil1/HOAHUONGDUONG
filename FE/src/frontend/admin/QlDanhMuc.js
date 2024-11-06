@@ -4,7 +4,7 @@ import Menu from "./layout/Menu";
 
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCategory, fetchDelete } from "../actions/categoryAction";
+import { fetchCategory, fetchCategoryDelete } from "../actions/unitActions";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -30,7 +30,7 @@ function QlDanhMuc() {
           text: "Xóa sản phẩm thành công!",
           icon: "success",
         });
-        dispatch(fetchDelete(id));
+        dispatch(fetchCategoryDelete(id));
       }
     });
   };
