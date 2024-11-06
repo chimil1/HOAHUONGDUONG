@@ -39,7 +39,7 @@ class CouponController extends Controller
             ], 201);
         } catch (\Exception $exception) {
             return response()->json([
-                'aaa' => $exception,
+                'error' => $exception,
                 'success' => false,
                 'message' => 'Thêm dữ liệu không thành công.',
             ], 500);

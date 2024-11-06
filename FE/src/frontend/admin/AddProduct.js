@@ -1,29 +1,51 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchAddProduct } from "../actions/productAction";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 function AddProduct() {
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    description: "",
-    status: "",
-    category_id: "",
-  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const unitState = useSelector((state) => state.unit);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
-  };
+  if (unitState.loading) {
+    return <p>Loading...</p>;
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Gửi dữ liệu product lên backend tại đây
-    console.log("Product submitted:", product);
+  if (unitState.error) {
+    return <p>Error: {unitState.error}</p>;
+  }
+
+  const submit = (data) => {
+    const formData = new FormData();
+    formData.append("product_name", data.product_name);
+    formData.append("price", data.price);
+    formData.append("description", data.description);
+    formData.append("status", data.status);
+    formData.append("category_id", data.category_id);
+
+    dispatch(fetchAddProduct(formData));
+    console.log(data);
+    Swal.fire({
+      text: "Thêm sản phẩm thành công!",
+      icon: "success",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/qlproduct");
+      }
+    });
   };
 
   return (
@@ -39,66 +61,95 @@ function AddProduct() {
                   <h3 class="title-5 m-b-35">Thêm sản phẩm mới</h3>
                 </div>
                 <div class="card-body">
-                  <form onSubmit={handleSubmit}>
-                    <div class="form-group">
-                      <label for="name">Tên sản phẩm</label>
+                  <form onSubmit={handleSubmit(submit)}>
+                    <div className="mb-3">
+                      <label htmlFor="product_name" className="form-label">
+                        Tên sản phẩm
+                      </label>
                       <input
                         type="text"
-                        class="form-control"
-                        id="name"
-                        name="name"
-                        value={product.name}
-                        onChange={handleChange}
-                        required
+                        className="form-control"
+                        id="product_name"
+                        {...register("product_name", { required: true })}
                       />
+                      {errors.product_name && (
+                        <small className="text-danger">
+                          Tên sản phẩm là bắt buộc
+                        </small>
+                      )}
                     </div>
-                    <div class="form-group">
-                      <label for="price">Giá</label>
+                    <div className="mb-3">
+                      <label htmlFor="price" className="form-label">
+                        Giá
+                      </label>
                       <input
                         type="number"
-                        class="form-control"
+                        className="form-control"
                         id="price"
-                        name="price"
-                        value={product.price}
-                        onChange={handleChange}
-                        required
+                        {...register("price", { required: true })}
                       />
+                      {errors.price && (
+                        <small className="text-danger">Giá là bắt buộc</small>
+                      )}
                     </div>
-                    <div class="form-group">
-                      <label for="discountPrice">Mô tả</label>
-                      <input
-                        type="text"
-                        class="form-control"
+                    <div className="mb-3">
+                      <label htmlFor="description" className="form-label">
+                        Mô tả
+                      </label>
+                      <textarea
                         id="description"
-                        name="description"
-                        value={product.description}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Trạng thái</label>
-                      <select
                         className="form-control"
-                        value={product.status}
-                        onChange={handleChange}
-                      >
-                        <option value="Có sẵn">Có sẵn</option>
-                        <option value="Hết hàng">Hết hàng</option>
-                        <option value="Đã ngừng cung cấp">Đã ngừng cung cấp</option>
-                      </select>
+                        rows="4"
+                        {...register("description")}
+                      ></textarea>
                     </div>
-                    <div className="form-group">
-                      <label>Chọn danh mục</label>
+                    <div className="mb-3">
+                      <label htmlFor="status" className="form-label">
+                        Trạng thái
+                      </label>
                       <select
-                        className="form-control"
-                        value={product.category_id}
-                        onChange={handleChange}
+                        id="status"
+                        className="form-select"
+                        {...register("status", { required: true })}
                       >
-                        <option value="Quần">Quần</option>
-                        <option value="Áo">Áo</option>
+                        <option value="">Chọn trạng thái</option>
+                        <option value="0">Đang hoạt động</option>
+                        <option value="1">Không hoạt động</option>
                       </select>
+                      {errors.status && (
+                        <small className="text-danger">
+                          Trạng thái là bắt buộc
+                        </small>
+                      )}
                     </div>
-                    <button type="submit" class="btn btn-primary">
+                    <div className="mb-3">
+                      <label htmlFor="category_id" className="form-label">
+                        Danh mục
+                      </label>
+                      <select
+                        id="category_id"
+                        className="form-select"
+                        {...register("category_id", { required: true })}
+                      >
+                        <option value="">Chọn danh mục</option>
+                        <option value="1">Áo thun</option>
+                        <option value="2">Áo khoác</option>
+                        <option value="3">Quần jean</option>
+                      </select>
+                      {errors.category_id && (
+                        <small className="text-danger">
+                          Danh mục là bắt buộc
+                        </small>
+                      )}
+                    </div>
+                    {/* Hình ảnh (Nếu có) */}
+                    {/* <div className="mb-3">
+                  <label htmlFor="image" className="form-label">
+                    Hình ảnh
+                  </label>
+                  <input type="file" className="form-control" id="image" {...register("image")} />
+                </div> */}
+                    <button type="submit" className="btn btn-dark w-100">
                       Thêm sản phẩm
                     </button>
                   </form>

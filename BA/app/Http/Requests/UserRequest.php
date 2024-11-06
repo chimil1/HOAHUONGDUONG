@@ -23,17 +23,10 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'nullable|string|max:50|unique',
-            'email' => 'required|string|email|max:100|unique:users,email,',
-            'password' => 'nullable|string|min:6', // Optional on update
-            'role' => 'required|integer',
+            'email' => 'string|email|max:100|unique:users,email,',
+            'password' => 'nullable|string|min:6',
+            'role' => 'integer',
         ];
     }
-    public function messages()
-    {
-        return [
-            'email.required' => 'The email field is required.',
-            'email.unique' => 'This email is already taken.',
-            'password.min' => 'The password must be at least 6 characters.',
-        ];
-    }
+
 }

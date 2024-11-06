@@ -73,11 +73,11 @@ export const fetchCategory = () => {
     };
   };
   
-  export const updateCategory = (id, category) => {
+  export const updateCategory = (id, data) => {
     return (dispatch) => {
       dispatch(fetchCategorysRequest());
       axios
-        .put(`http://localhost:8000/api/category/${id}`, category)
+        .put(`http://localhost:8000/api/category/${id}`, data)
         .then((response) => {
           const category = response.data;
           dispatch(fetchCategorysSuccess(category));
