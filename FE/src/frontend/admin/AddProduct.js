@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchAddProduct } from "../actions/productAction";
+import { fetchAddProduct } from "../actions/unitActions";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
