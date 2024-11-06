@@ -10,10 +10,7 @@ function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Kiểm tra login (ở đây chỉ là ví dụ, bạn cần thay bằng API hoặc logic thực)
     if (email === 'admin@example.com' && password === 'admin') {
-      // Chuyển hướng sang trang quản trị sau khi đăng nhập thành công
       navigate('/admin/ThongKe');
     } else {
       setError('Email hoặc mật khẩu không đúng!');

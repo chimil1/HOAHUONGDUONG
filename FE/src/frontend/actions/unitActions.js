@@ -43,7 +43,7 @@ export const fetchProducts = () => {
   };
 };
 
-export const fetchDelete = (id) => {
+export const fetchProductDelete = (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
@@ -187,23 +187,6 @@ export const fetchOrders = () => {
         });
     };
   };
-  
-  // export const updateCategory = (id, data) => {
-  //   return (dispatch) => {
-  //     dispatch(fetchUnitsRequest());
-  //     return axios
-  //       .put(`http://localhost:8000/api/category/${id}`, data)  // return the axios promise here
-  //       .then((response) => {
-  //         const unit = response.data;
-  //         dispatch(fetchUnitsSuccess(unit));
-  //       })
-  //       .catch((error) => {
-  //         const errorMsg = error.response?.data || error.message;
-  //         dispatch(fetchUnitsFailure(errorMsg));
-  //         throw error; // re-throw to be caught in component
-  //       });
-  //   };
-  // };
 
   export const updateCategory = (id, data) => {
     return (dispatch) => {

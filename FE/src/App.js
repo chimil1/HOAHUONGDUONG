@@ -29,6 +29,8 @@ import ShoppingCart from "./frontend/client/ShoppingCart";
 import Profile from "./frontend/client/Profile";
 import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register"
+import ForgotPassword from "./frontend/client/auth/ForgotPassword";
+import ComfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import OrderDetail from "./frontend/admin/orderDetail";
 
 function App() {
@@ -67,8 +69,6 @@ function App() {
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
           <Route path="/orderdetails" element={<OrderDetails />} />
           <Route path="/addproduct" element={<AddProduct />} />
-          <Route path="/orderdetail/:id" element={<OrderDetail />} />
-          <Route path="/orderdetail" element={<OrderDetail />} />
           <Route path="/home" element={<Home />} />
           <Route path="/admin/login" element={<LoginForm />} />
         </Routes>

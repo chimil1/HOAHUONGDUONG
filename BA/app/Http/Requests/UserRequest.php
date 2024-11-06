@@ -22,10 +22,28 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|max:50|unique',
-            'email' => 'string|email|max:100|unique:users,email,',
-            'password' => 'nullable|string|min:6',
-            'role' => 'integer',
+            'name' => 'required|string|max:50|unique:users,name',
+            'email' => 'required|email|max:100|unique:users,email,' . $this->User,
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|integer',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Tên không được bỏ trống.',
+            'name.max' => 'Tên không được vượt quá 50 ký tự.',
+
+            'email.required' => 'Email là bắt buộc.',
+            'email.email' => 'Vui lòng nhập địa chỉ email hợp lệ.',
+            'email.unique' => 'Email này đã được sử dụng.',
+
+            'password.required' => 'Mật khẩu là bắt buộc.',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
+
+            'role.required' => 'Vui lòng chọn vai trò.',
+            'role.integer' => 'Vai trò phải là một số nguyên.',
         ];
     }
 
