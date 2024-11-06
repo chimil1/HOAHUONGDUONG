@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchCategoryDetails, updateCategory } from "../actions/unitActions";
+import { fetchCategoryDetails, updateCategory } from "../actions/categoryAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";

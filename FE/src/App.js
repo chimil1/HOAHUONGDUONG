@@ -30,6 +30,9 @@ import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
+import Coupons from "./frontend/admin/Coupons";
+import Addcoupon from "./frontend/admin/Addcoupon";
+import EditCoupon from "./frontend/admin/EditCoupon";
 
 function App() {
   return (
@@ -62,6 +65,7 @@ function App() {
           <Route path="/qldanhmuc" element={<QlDanhMuc />} />
           <Route path="/addcategory" element={<AddCategory />} />
           <Route path="/editcategory/:id" element={<EditCategory />} />
+          <Route path="/editcoupon/:id" element={<EditCoupon />} />
           <Route path="/qldanhsach" element={<QlDanhSach />} />
           <Route path="/qldonhang" element={<QlDonHang />} />
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
@@ -69,6 +73,8 @@ function App() {
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
           <Route path="/orderdetails" element={<OrderDetails />} />
           <Route path="/addproduct" element={<AddProduct />} />
+          <Route path="/coupon" element={<Coupons />} />
+          <Route path="/Addcoupon" element={<Addcoupon />} />
           <Route path="/home" element={<Home />} />
           <Route path="/admin/login" element={<LoginForm />} />
         </Routes>

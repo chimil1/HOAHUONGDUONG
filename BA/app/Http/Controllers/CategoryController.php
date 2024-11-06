@@ -17,7 +17,7 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        try { 
+        try {
             if ($request->hasFile('img')) {
                 $image = $request->file('img');
                 $imageName = time() . '_' . $image->getClientOriginalName();
@@ -27,7 +27,7 @@ class CategoryController extends Controller
                     return response()->json(['success' => false, 'message' => 'Không thể di chuyển tệp vào thư mục.'], 500);
                 }
             }
-            
+
             $category = Category::create(
                 [
                     'name' => $request->name,
@@ -66,23 +66,25 @@ class CategoryController extends Controller
                 'message' => 'Sửa dữ liệu thành công.',
                 'data' => $category,
             ], 201);
-        }catch(\Exception $exception){
+        } catch (\Exception $exception) {
             return response()->json([
                 'error' => $exception,
                 'success' => false,
                 'message' => 'Sửa dữ liệu không thành công.',
             ], 500);
         }
-        $deleteCategory =  $category->delete();
-        if (!$deleteCategory) {
-            return response()->json(['message' => 'Xóa danh mục không thành công'], 200);
-        }
-        return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
-    }catch (\Exception $e) {
-        return response()->json([
-           'message' => 'Danh mục tồn tại sản phẩm không thể xóa',
-            'error' => $e->getMessage()
-        ], 500);
     }
+
+    public function destroy(Category $category)
+    {
+        try {
+            $category->delete();
+            return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Danh mục tồn tại sản phẩm không thể xóa',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
