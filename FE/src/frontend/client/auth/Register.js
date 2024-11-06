@@ -4,47 +4,62 @@ import axios from "axios";
 import { Alert } from "react-bootstrap";
 
 function Register() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const initialState = {
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const validateInput = () => {
+    if (Object.values(formData).some((value) => !value)) {
+      setError("Không được bỏ trống.");
+      return false;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Mật khẩu phải có ít nhất 6 ký tự.");
+      return false;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Mật khẩu không khớp.");
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!name || !phone || !email || !password || !confirmPassword) {
-      setError("Không được bỏ trống.");
-      return;
-    }
-
-    if (password.length < 6) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("Mật khẩu không khớp.");
-      return;
-    }
+    if (!validateInput()) return;
 
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/register", {
-        name,
-        phone,
-        email,
-        password,
-        password_confirmation: confirmPassword,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+        password_confirmation: formData.confirmPassword,
       });
+
       setSuccess(response.data.message);
-      setTimeout(() => {
-        navigate("/Login");
-      }, 2000);
+      setTimeout(() => navigate("/Login"), 2000);
     } catch (error) {
       if (error.response && error.response.data.errors) {
         const errorMessages = Object.values(error.response.data.errors).flat();
@@ -75,8 +90,8 @@ function Register() {
                               className="form-control form-control-lg"
                               id="name"
                               placeholder="Họ tên"
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
+                              value={formData.name}
+                              onChange={handleChange}
                           />
                         </div>
                         <div className="col">
@@ -86,8 +101,8 @@ function Register() {
                               className="form-control form-control-lg"
                               id="phone"
                               placeholder="Số điện thoại"
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
+                              value={formData.phone}
+                              onChange={handleChange}
                           />
                         </div>
                       </div>
@@ -98,8 +113,8 @@ function Register() {
                             className="form-control form-control-lg"
                             id="email"
                             placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={formData.email}
+                            onChange={handleChange}
                         />
                       </div>
                       <div className="form-row mb-4">
@@ -110,8 +125,8 @@ function Register() {
                               className="form-control form-control-lg"
                               id="password"
                               placeholder="Mật khẩu"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
+                              value={formData.password}
+                              onChange={handleChange}
                           />
                         </div>
                         <div className="col">
@@ -121,8 +136,8 @@ function Register() {
                               className="form-control form-control-lg"
                               id="confirmPassword"
                               placeholder="Nhập lại mật khẩu"
-                              value={confirmPassword}
-                              onChange={(e) => setConfirmPassword(e.target.value)}
+                              value={formData.confirmPassword}
+                              onChange={handleChange}
                           />
                         </div>
                       </div>

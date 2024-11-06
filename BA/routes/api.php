@@ -21,8 +21,8 @@ Route::post('login', [UserController::class, 'login']);
 Route::get('/auth/redirect', [GoogleController::class, 'redirectToProvider']);
 Route::post('/auth/callback', [GoogleController::class, 'handleProviderCallback']);
 
-Route::apiResource('categories', CategoriController::class);
 Route::apiResource('user', UserController::class);
+
 Route::apiResource('category', CategoryController::class);
 Route::apiResource('order', OrderController::class);
 Route::apiResource('review', ReviewController::class);

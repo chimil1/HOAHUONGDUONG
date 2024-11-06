@@ -19,27 +19,31 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:15|unique:users,phone',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email',
+                'phone' => 'required|string',
+                'password' => 'required|string|min:6|confirmed',
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'email_verified_at' => now(),
-        ]);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'role' =>1,
+                'email_verified_at' => now(),
+            ]);
 
-        return response()->json([
-            'message' => 'Đăng ký thành công!',
-            'user' => $user,
-        ], 201);
-    }
-
+            return response()->json([
+                'message' => 'Đăng ký thành công!',
+                'user' => $user,
+            ], 201);
+        }catch (\Exception $exception){
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+}
     public function login(Request $request)
     {
         $request->validate([
