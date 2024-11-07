@@ -235,3 +235,38 @@ export const fetchOrders = () => {
         });
     };
   };
+
+//review
+export const fetchReview = () => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    axios
+      .get(url+'/review')
+      .then((response) => {
+        const units = response.data;
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};
+//details review
+
+
+export const fetchReviewDetails = (id) => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    axios
+      .get(`http://localhost:8000/api/review/${id}`)
+      .then((response) => {
+        const units = response.data;
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};

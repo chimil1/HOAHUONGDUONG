@@ -4,6 +4,7 @@ import Menu from "./layout/Menu";
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchReview } from "../actions/unitActions"; 
+import { Link } from "react-router-dom";
 
 function DanhGia() {
   const dispatch = useDispatch();
@@ -65,7 +66,8 @@ function DanhGia() {
 
                               <td>
                               <div class="table-data-feature">
-                                <button
+                              <Link to={`/reviewdetail/${item.id}`}>                               
+                              <button
                                   class="item"
                                   data-toggle="tooltip"
                                   data-placement="top"
@@ -73,6 +75,7 @@ function DanhGia() {
                                 >
                                   <i class="zmdi zmdi-mail-send"></i>
                                 </button>
+                                  </Link>
                               </div>
                             </td>
                             </tr>

@@ -14,8 +14,8 @@ import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
-import OrderDetails from "./frontend/admin/OrderDetails";
 import AddProduct from "./frontend/admin/AddProduct";
+
 
 
 import Home from "./frontend/client/Home";
@@ -30,6 +30,7 @@ import Profile from "./frontend/client/Profile";
 import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register"
 import OrderDetail from "./frontend/admin/orderDetail";
+import ReviewDetail from "./frontend/admin/ReviewDetails";
 
 function App() {
   return (
@@ -48,8 +49,7 @@ function App() {
           <Route path='/profile' element={<Profile />}/>
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
-          <Route path='/forgotpassword'  element={<ForgotPassword />}/>
-          <Route path='/confirmpassword'  element={<ConfirmPassword />}/>
+         
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
@@ -67,10 +67,12 @@ function App() {
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
-          <Route path="/orderdetails" element={<OrderDetails />} />
+          
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/orderdetail/:id" element={<OrderDetail />} />
           <Route path="/orderdetail" element={<OrderDetail />} />
+          <Route path="/reviewdetail" element={<ReviewDetail />} />
+          <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
           <Route path="/home" element={<Home />} />
           <Route path="/admin/login" element={<LoginForm />} />
         </Routes>
