@@ -7,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import { fetchAddCoupon } from "../actions/couponAction";
-
+import axios from 'axios';
 function AddCoupon() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const unitState = useSelector((state) => state.unit);
   
-  const { register, handleSubmit, formState: { errors }, getValues } = useForm();
+  const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm();
   
   if (unitState.loading) {
     return <p>Loading...</p>;
@@ -22,8 +22,32 @@ function AddCoupon() {
   if (unitState.error) {
     return <p>Error: {unitState.error}</p>;
   }
-  
-  const submit = (data) => {
+  const checkCouponCode = async (code) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/checkCode/${code}`);
+      if (response.data.message === "Mã giảm giá đã tồn tại") {
+        return false; // Mã giảm giá đã tồn tại
+      }
+      return true; // Mã giảm giá hợp lệ
+    } catch (error) {
+      console.error("Error checking code:", error);
+      return false;
+    }
+  };
+
+  const submit = async (data) => {
+    // Kiểm tra mã giảm giá trước khi thêm
+    const isCodeValid = await checkCouponCode(data.code_name);
+    if (!isCodeValid) {
+      // Hiển thị thông báo lỗi nếu mã đã tồn tại
+      Swal.fire({
+        text: "Mã giảm giá đã tồn tại!",
+        icon: "error"
+      });
+      setError("code_name", { type: "manual", message: "Mã giảm giá đã tồn tại" });
+      return; // Ngừng thực hiện nếu mã đã tồn tại
+    }
+
     const formData = new FormData();
     formData.append("name_coupon", data.name_coupon);
     formData.append("code_name", data.code_name);
@@ -32,7 +56,7 @@ function AddCoupon() {
     formData.append("minium_order_value", data.minium_order_value);
     formData.append("start_date", data.start_date);
     formData.append("end_date", data.end_date);
-    console.log("Data to send:", Array.from(formData.entries()));
+
     dispatch(fetchAddCoupon(formData));
     Swal.fire({
       text: "Thêm mã giảm giá thành công!",

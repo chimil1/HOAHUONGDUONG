@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
+import axios from 'axios';
 import { fetchCouponDetails ,updateCoupon} from "../actions/couponAction";
 
 function EditCoupon() {
@@ -20,6 +21,7 @@ function EditCoupon() {
       formState: { errors },
       setValue,
       getValues,
+      setError
     } = useForm();
   
     useEffect(() => {
@@ -27,29 +29,39 @@ function EditCoupon() {
     }, [dispatch, id]);
   
     useEffect(() => {
-      console.log("Unit State:", unitState.selectedUnit);
       if (unitState.selectedUnit) {
-        // Sử dụng selectedUnit
-        setValue("name_coupon", unitState.selectedUnit.name_coupon);
-        setValue("code_name", unitState.selectedUnit.code_name);
-        setValue("discount_type", unitState.selectedUnit.discount_type);
-        setValue("discount_value", unitState.selectedUnit.discount_value);
-        setValue("minium_order_value", unitState.selectedUnit.minium_order_value);
-        setValue("start_date", unitState.selectedUnit.start_date);
-        setValue("end_date", unitState.selectedUnit.end_date);
-      
+        const { name_coupon, code_name, discount_type, discount_value, minium_order_value, start_date, end_date } = unitState.selectedUnit;
+        setValue("name_coupon", name_coupon);
+        setValue("code_name", code_name);
+        setValue("discount_type", discount_type);
+        setValue("discount_value", discount_value);
+        setValue("minium_order_value", minium_order_value);
+        setValue("start_date", start_date);
+        setValue("end_date", end_date);
       }
     }, [unitState.selectedUnit, setValue]);
   
-    if (unitState.loading) {
-      return <p>Loading...</p>;
-    }
+    const checkCouponCode = async (code) => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/checkCode/${code}`);
+        return response.data.message !== "Mã giảm giá đã tồn tại";
+      } catch (error) {
+        console.error("Error checking code:", error);
+        return false;
+      }
+    };
   
-    if (unitState.error) {
-      return <p>Error: {unitState.error}</p>;
-    }
+    const submit = async (data) => {
+      const isCodeValid = await checkCouponCode(data.code_name);
+      if (!isCodeValid) {
+        Swal.fire({
+          text: "Mã giảm giá đã tồn tại!",
+          icon: "error",
+        });
+        setError("code_name", { type: "manual", message: "Mã giảm giá đã tồn tại" });
+        return;
+      }
   
-    const submit = (data) => {
       const jsonData = {
         name_coupon: data.name_coupon,
         code_name: data.code_name,
@@ -59,11 +71,9 @@ function EditCoupon() {
         start_date: data.start_date,
         end_date: data.end_date,
       };
-    
- 
-   
+  
       try {
-        dispatch(updateCoupon(id, jsonData));   // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
+        await dispatch(updateCoupon(id, jsonData));
         Swal.fire({
           text: "Cập nhật mã giảm giá thành công!",
           icon: "success",
@@ -75,7 +85,10 @@ function EditCoupon() {
           icon: "error",
         });
       }
-   };
+    };
+  
+    if (unitState.loading) return <p>Loading...</p>;
+    if (unitState.error) return <p>Error: {unitState.error}</p>;
   return (
     <div className="page-wrapper">
       <Menu />
