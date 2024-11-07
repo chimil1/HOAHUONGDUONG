@@ -1,8 +1,34 @@
 import React from 'react';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
+import  { useState } from 'react'; 
 
 function Contact() {
+    const [data, setData] = useState (
+        {
+            name: '',
+            email: ''
+        }
+    );
+    const handChange = (e)  => {
+        setData({ ...data, [e.target.name]: e.target.value });
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        fetch('http://localhost:4500/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.status === 200) {
+                alert('Email sent successfully');
+            } else {
+                alert('An error occurred while sending email');
+            }
+        });
+    }
     return (
         <div>
         <Header></Header>
@@ -18,21 +44,21 @@ function Contact() {
                 <div className="container">
                     <div className="flex-w flex-tr">
                         <div className="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <h4 className="mtext-105 cl2 txt-center p-b-30">
                                 Gửi tin nhắn cho chúng tôi
                                 </h4>
 
                                 <div className="bor8 m-b-20 how-pos4-parent">
-                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email" placeholder="Địa chỉ Email của bạn" />
+                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email" placeholder="Địa chỉ Email của bạn" value={data.email} onChange={handChange}/>
                                     <img className="how-pos4 pointer-none" src="../../asset/images/icons/icon-email.png" alt="ICON" />
                                 </div>
 
                                 <div className="bor8 m-b-30">
-                                    <textarea className="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg" placeholder="Chúng tôi có thể giúp gì?"></textarea>
+                                    <textarea className="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" type="text" name="name" placeholder="Chúng tôi có thể giúp gì?" value={data.name} onChange={handChange}></textarea>
                                 </div>
 
-                                <button className="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+                                <button className="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" type="submit">
                                     Gửi
                                 </button>
                             </form>
