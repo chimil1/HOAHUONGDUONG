@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
-import { fetchCouponDetails ,updateCoupon} from "../actions/couponAction";
+import { fetchCouponDetails ,updateCoupon} from "../actions/unitActions";
 
 function EditCoupon() {
 

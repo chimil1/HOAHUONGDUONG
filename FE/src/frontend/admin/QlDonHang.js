@@ -87,7 +87,7 @@ function QlDonHang() {
                               </td>
                               <td>
                               <div className="table-data-feature">
-                                <Link to={`/orderdetail/${item.id}`}>                               
+                                <Link to={`/orderdetails/${item.id}`}>                               
                                   <button
                                     className="item"
                                     title="Chi tiết"

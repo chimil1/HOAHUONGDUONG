@@ -66,7 +66,6 @@ function QlDanhMuc() {
                         <Link
                           className="au-btn au-btn-icon au-btn--green bg-dark"
                           to="/AddCategory"
-                          to="/AddCategory"
                         >
                           <i className="zmdi zmdi-plus"></i>Thêm danh mục
                         </Link>
@@ -78,7 +77,6 @@ function QlDanhMuc() {
                           <tr>
                             <th>Tên danh mục</th>
                             <th>Mô tả</th>
-                            <th>Hình ảnh</th>
                             <th>Trạng thái</th>
                           </tr>
                         </thead>
@@ -87,13 +85,6 @@ function QlDanhMuc() {
                             <tr key={item.id} className="tr-shadow">
                               <td>{item.name}</td>
                               <td>{item.description}</td>
-                              <td>
-                                <img
-                                  src={item.img}
-                                  alt={item.name}
-                                  style={{ width: "50px" }}
-                                />
-                              </td>
                               <td>
                                 {item.status === 0 ? (
                                   <span className="badge badge-success">

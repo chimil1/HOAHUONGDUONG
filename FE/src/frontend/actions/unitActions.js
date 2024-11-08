@@ -142,8 +142,7 @@ export const fetchOrders = () => {
   export const fetchCategory = () => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());
-      axios
-        .get(url+'/category')
+      axios(`http://localhost:8000/api/category`)
         .then((response) => {
           const units = response.data;
           dispatch(fetchUnitsSuccess(units));
@@ -192,7 +191,7 @@ export const fetchOrders = () => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());
       axios
-        .put(`http://localhost:8000/api/category/${id}`, data)
+        .put(url+`/category/${id}`, data)
         .then((response) => {
           const unit = response.data;
           dispatch(fetchUnitsSuccess(unit));
@@ -213,6 +212,87 @@ export const fetchOrders = () => {
           dispatch(fetchUnitsSuccess(response.data));
         })
         .catch(error => {
+          const errorMsg = error.message;
+          dispatch(fetchUnitsFailure(errorMsg));
+        });
+    };
+  };
+
+  //Coupon
+  export const fetchCoupons = () => {
+    return (dispatch) => {
+      dispatch(fetchUnitsRequest());
+      axios
+        .get("http://localhost:8000/api/coupon")
+        .then((response) => {
+          const units = response.data;
+          dispatch(fetchUnitsSuccess(units));
+        })
+        .catch((error) => {
+          const errorMsg = error.message;
+          dispatch(fetchUnitsFailure(errorMsg));
+        });
+    };
+  };
+
+  export const fetchDelete = (id) => {
+    return (dispatch) => {
+      dispatch(fetchUnitsRequest());
+      axios
+        .delete(`http://localhost:8000/api/coupon/${id}`)
+        .then((response) => {
+          const units = response.data;
+          dispatch(fetchUnitsSuccess(units));
+          dispatch(fetchCoupons());
+        })
+        .catch((error) => {
+          const errorMsg = error.message;
+          dispatch(fetchUnitsFailure(errorMsg));
+        });
+    };
+  };
+
+  export const fetchAddCoupon = (unit) => {
+    return (dispatch) => {
+      dispatch(fetchUnitsRequest());
+      axios.post("http://localhost:8000/api/coupon", unit)
+        .then(response => {
+          dispatch(fetchUnitsSuccess(response.data));
+        })
+        .catch(error => {
+          const errorMsg = error.message;
+          dispatch(fetchUnitsFailure(errorMsg));
+        });
+    };
+  };
+
+  export const fetchCouponDetails = (id) => {
+    return (dispatch) => {
+      dispatch(fetchUnitsRequest());
+      axios
+        .get(`http://localhost:8000/api/coupon/${id}`)
+        .then((response) => {
+          const unit = response.data;
+          dispatch(fetchUnitsSuccess(unit));
+        })
+        .catch((error) => {
+          const errorMsg = error.message;
+          dispatch(fetchUnitsFailure(errorMsg));
+        });
+    };
+  };
+  
+
+  export const updateCoupon = (id, data) => {
+    return (dispatch) => {
+      dispatch(fetchUnitsRequest());
+      axios
+        .put(`http://localhost:8000/api/coupon/${id}`, data)
+        .then((response) => {
+          const unit = response.data;
+          dispatch(fetchUnitsSuccess(unit));
+        })
+        .catch((error) => {
           const errorMsg = error.message;
           dispatch(fetchUnitsFailure(errorMsg));
         });

@@ -3,7 +3,7 @@ import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCoupons ,fetchDelete} from "../actions/couponAction";
+import { fetchCoupons ,fetchDelete} from "../actions/unitActions";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 

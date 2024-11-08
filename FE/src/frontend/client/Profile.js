@@ -89,13 +89,16 @@ function Profile() {
                         {" "}
                         <button
                           type="button"
-                          className="btn btn-success"
+                          className="btn btn-outline-dark me-2"
                           data-bs-toggle="modal"
                           data-bs-target="#examppass"
                         >
                           Đổi mật khẩu
                         </button>
                       </Link>
+                      <Link name="" className="btn btn-outline-dark me-2" to="/addshipping">Thêm địa chỉ</Link>
+
+                      <Link name="" className="btn btn-outline-dark" to="/shipping">Sửa địa chỉ</Link>
                     </form>
                   </div>
                 </div>

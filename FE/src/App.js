@@ -14,8 +14,9 @@ import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
-import OrderDetails from "./frontend/admin/OrderDetails";
+import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
+import ProductDetails from "./frontend/admin/ProductDetails";
 
 
 import Home from "./frontend/client/Home";
@@ -34,6 +35,9 @@ import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import Coupons from "./frontend/admin/Coupons";
 import Addcoupon from "./frontend/admin/Addcoupon";
 import EditCoupon from "./frontend/admin/EditCoupon";
+import Shipping from "./frontend/client/Shipping";
+import AddShipping from "./frontend/client/AddShipping";
+import ListAddress from "./frontend/client/listAddess";
 
 function App() {
   return (
@@ -44,14 +48,19 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/product" element={<Product />} />
-          <Route path="/productdetail" element={<Productdetail />} />
+          <Route path="/product/:id" element={<Productdetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
           <Route path='/profile' element={<Profile />}/>
+          <Route path='/shipping' element={<Shipping />}/>
+          <Route path='/addshipping'  element={<AddShipping />}/>
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
+          <Route path='/forgot-password'  element={<ForgotPassword />}/>
+          <Route path='/reset-password'  element={<ConfirmPassword />}/>
+          <Route path='/listaddress'  element={<ListAddress/>}/>
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
@@ -69,8 +78,11 @@ function App() {
           <Route path="/qldonhang" element={<QlDonHang />} />
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
+          <Route path="/productdetail" element={<ProductDetails />} />
+          <Route path="/productdetail/:id" element={<ProductDetails />} />
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
-          <Route path="/orderdetails" element={<OrderDetails />} />
+          <Route path="/orderdetails/:id" element={<OrderDetail />} />
+          <Route path="/orderdetails" element={<OrderDetail />} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />
           <Route path="/Addcoupon" element={<Addcoupon />} />

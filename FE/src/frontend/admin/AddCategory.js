@@ -32,12 +32,6 @@ function AddCategory() {
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("status", data.status);
-      if (data.img.length >= 0) {
-      const file = data.img[0];
-      data.img = file.name;
-      formData.append("img", file);
-    }
-
 
     dispatch(fetchAddCategory(data));
     
@@ -82,27 +76,21 @@ function AddCategory() {
                         </span>
                       )}
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="description">Mô tả</label>
-                      <input
-                        {...register("description")}
-                        type="text"
-                        className="form-control"
-                        id="description"
-                        name="description"
-                        placeholder="Nhập mô tả"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="file-input">Hình ảnh</label>
-                      <input
-                        {...register("img")}
-                        type="file"
-                        className="form-control"
-                        id="file-input"
-                        name="img"
-                      />
-                    </div>
+                      <div className="form-group">
+                        <label htmlFor="description">Mô tả</label>
+                        <textarea
+                          {...register("description", { required: true })}
+                          id="description"
+                          rows="9"
+                          placeholder="Nhập mô tả..."
+                          className="form-control"
+                        ></textarea>
+                        {errors.description && (
+                          <span className="text-danger">
+                            Mô tả sản phẩm không được bỏ trống!
+                          </span>
+                        )}
+                      </div>
                     <div className="form-group">
                       <label>Trạng thái</label>
                       <select

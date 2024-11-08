@@ -81,9 +81,7 @@ function QlSanPham() {
                             <th>Mô tả</th>
                             <th>Trạng thái</th>
                             <th>Danh mục</th>
-                            <th>Mô tả</th>
-                            <th>Trạng thái</th>
-                            <th>Danh mục</th>
+                            <th>tác vụ</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -97,6 +95,7 @@ function QlSanPham() {
                               <td>{product.category_id}</td>
                               <td>
                                 <div className="table-data-feature">
+                                  <Link to={`/productdetail/${product.id}`}>
                                   <button
                                     className="item"
                                     // onClick={() => handleDetailClick(product)}
@@ -104,6 +103,7 @@ function QlSanPham() {
                                   >
                                     <i className="zmdi zmdi-mail-send"></i>
                                   </button>
+                                  </Link>
                                   <button
                                     className="item"
                                     // onClick={() => handleEditClick(product)}

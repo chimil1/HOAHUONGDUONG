@@ -7,19 +7,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchOrderDetails } from "../actions/unitActions";
 import { useParams } from "react-router-dom";
 
-
 function OrderDetail() {
   let { id } = useParams();
   const dispatch = useDispatch();
   const unitState = useSelector((state) => state.unit);
-
 
   useEffect(() => {
     dispatch(fetchOrderDetails(id));
   }, [dispatch, id]);
 
   const order = unitState.units;
-
 
   if (!order) {
     return <p>Không có dữ liệu đơn hàng.</p>;
@@ -78,23 +75,6 @@ function OrderDetail() {
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="section__content section__content--p30">
-            <div className="container-fluid">
-              <div className="card">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="card-header">
-                      <div className="overview-wrap">
-                        <h2 className="title-5 m-b-35">Thông tin sản phẩm</h2>
-                      </div>
-                    </div>
-                    <div className="card-body">
                       <table className="table table-data2">
                         <thead>
                           <tr>
@@ -126,7 +106,7 @@ function OrderDetail() {
                               </td>
                             </tr>
                           )}
-                        </tbody>  
+                        </tbody>
                       </table>
                     </div>
                   </div>

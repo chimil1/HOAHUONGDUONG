@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
-import { fetchAddCoupon } from "../actions/couponAction";
+import { fetchAddCoupon } from "../actions/unitActions";
 
 function AddCoupon() {
   const dispatch = useDispatch();
