@@ -1,44 +1,33 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchOrders } from "../actions/unitActions";
+import { Link } from "react-router-dom";
+
 
 function QlDonHang() {
-  // Dữ liệu giả lập của đơn hàng
-  const orders = [
-    {
-      id: 1,
-      recipient: "Lori Lynch",
-      address: "124D,12H,Nguyễn Văn Linh, Cần Thơ",
-      phone: "0342453243",
-      status: "Đang giao",
-      products: [
-        { name: "Áo thun", quantity: 2, price: 200000 },
-        { name: "Quần jean", quantity: 1, price: 500000 }
-      ]
-    },
-    {
-      id: 2,
-      recipient: "John Doe",
-      address: "56 Đường Nguyễn Trãi, Hà Nội",
-      phone: "0987654321",
-      status: "Đã giao",
-      products: [
-        { name: "Giày thể thao", quantity: 1, price: 1000000 },
-        { name: "Áo khoác", quantity: 2, price: 750000 }
-      ]
-    },
-    {
-      id: 2,
-      recipient: "John Doe",
-      address: "56 Đường Nguyễn Trãi, Hà Nội",
-      phone: "0987654321",
-      status: "Đã Hủy",
-      products: [
-        { name: "Giày thể thao", quantity: 1, price: 1000000 },
-        { name: "Áo khoác", quantity: 2, price: 750000 }
-      ]
-    }
-  ];
+  
+  const dispatch = useDispatch();
+  const unitState = useSelector(state => state.unit);
+
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
+
+  if (unitState.loading) {
+    return <p>Đang tải...</p>;
+  }
+
+  if (unitState.error) {
+    return <p>Lỗi: {unitState.error}</p>;
+  }
+
+  // Kiểm tra nếu unitState.units là một mảng trước khi dùng map
+  if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
+    return <p>Lỗi: Định dạng dữ liệu không chính xác hoặc không có đơn hàng nào.</p>;
+  }
 
   return (
     <div className="page-wrapper">
@@ -60,40 +49,53 @@ function QlDonHang() {
                       <table className="table table-data2">
                         <thead>
                           <tr>
-                            <th>Hình ảnh</th>
                             <th>Tên người nhận</th>
+                            <th>Tổng giá</th>
+                            <th>Mã hóa đơn</th>
                             <th>Địa chỉ</th>
                             <th>SĐT</th>
-                            <th>Chi tiết đơn hàng</th>
                             <th>Trạng thái</th>
+                            <th>Trạng thái thanh toán</th> {/* Thêm cột trạng thái thanh toán */}
+                            <th>Chi tiết đơn hàng</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {orders.map((order, index) => (
+                          {unitState.units.map((item, index) => (
                             <tr key={index} className="tr-shadow">
                               <td>
-                                {/* Có thể hiển thị hình ảnh sản phẩm ở đây */}
                                 <img
                                   src="https://via.placeholder.com/50"
                                   alt="Hình ảnh"
                                 />
                               </td>
-                              <td>{order.recipient}</td>
-                              <td>{order.address}</td>
-                              <td>{order.phone}</td>
+                              <td>{item.username || 'Không có thông tin'}</td>
+                              <td>{item.shipping_address || 'Không có thông tin'}</td>
+                              <td>{item.shipping_phone || 'Không có thông tin'}</td>
                               <td>
-                                <ul>
-                                  {order.products.map((product, i) => (
-                                    <li key={i}>
-                                      {product.name} - Số lượng: {product.quantity} - Giá: {product.price.toLocaleString()} VND
-                                    </li>
-                                  ))}
-                                </ul>
+                              {item.status === 0 ? (
+                                <span className="badge badge-success">Thanh toán tiền mặt</span>
+                              ) : (
+                                <span className="badge badge-warning">Thanh toán tài khoản</span>
+                              )}
                               </td>
                               <td>
-                                <span className={`badge ${order.status === "Đã giao" ? "badge-success" : "badge-warning"}`}>
-                                  {order.status}
-                                </span>
+                              {item.payment_type === 0 ? (
+                                <span className="badge badge-success">Thanh toán tiền mặt</span>
+                              ) : (
+                                <span className="badge badge-warning">Thanh toán tài khoản</span>
+                              )}
+                              </td>
+                              <td>
+                              <div className="table-data-feature">
+                                <Link to={`/orderdetail/${item.id}`}>                               
+                                  <button
+                                    className="item"
+                                    title="Chi tiết"
+                                  >
+                                    <i className="zmdi zmdi-mail-send"></i>
+                                  </button>
+                                  </Link>
+                                </div>
                               </td>
                             </tr>
                           ))}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -12,7 +13,18 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::has('reviews')->withCount('reviews')
+            ->with('images:product_id,product_img')
+            ->get();
+        $products = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'img' => $product->images->first()->product_img,
+                'review_count' => $product->reviews_count,
+            ];
+        });
+        return response()->json($products);
     }
 
     /**
@@ -34,9 +46,10 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Review $review)
+    public function show($id)
     {
-        //
+        $relatedProducts = Review::where('product_id', $id)->get();
+        return response()->json(  $relatedProducts);
     }
 
     /**

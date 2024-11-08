@@ -34,7 +34,6 @@ function ThongKe() {
             <div className="section__content section__content--p30">
               <div className="container-fluid">
                 <div className="row m-t-25">
-                  {/* Total Earnings */}
                   <div className="col-sm-6 col-lg-3">
                     <div className="overview-item overview-item--c1">
                       <div className="overview__inner">
@@ -43,6 +42,7 @@ function ThongKe() {
                             <i className="zmdi zmdi-account-o"></i>
                           </div>
                           <div className="text">
+
                             <h2>${data.totalEarnings}</h2>
                             <span>Tổng thu nhập</span>
                           </div>
