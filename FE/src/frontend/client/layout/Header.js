@@ -47,22 +47,12 @@ function Header() {
 
                 <div className="wrap-icon-header flex-w flex-r-m">
                 <div className="container-search-header m-3"> 
-                <form action="/search" className="input-group w-100">
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="search"
-                    placeholder="Search..."
-                    aria-label="Search"
-                  />
-                  <div className="input-group-append">
-                    <button className="btn btn-outline-secondary" type="submit">
-                      <i className="zmdi zmdi-search"></i>
-                    </button>
-                  </div>
-                </form>
+                <Link to='/search' className="input-group w-100">
+                <div className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                  <i className="zmdi zmdi-search"></i>
                 </div>
-
+                </Link>
+                </div>
                   {isLoggedIn ? (
                       <>
                         <Link to="/cart" className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">

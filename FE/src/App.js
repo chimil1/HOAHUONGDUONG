@@ -14,9 +14,8 @@ import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
-import OrderDetails from "./frontend/admin/OrderDetails";
+import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
-
 
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
@@ -34,6 +33,7 @@ import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import Coupons from "./frontend/admin/Coupons";
 import Addcoupon from "./frontend/admin/Addcoupon";
 import EditCoupon from "./frontend/admin/EditCoupon";
+import Search from "./frontend/client/Search";
 
 function App() {
   return (
@@ -49,6 +49,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
+          <Route path="/search" element={<Search />} />
           <Route path='/profile' element={<Profile />}/>
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
@@ -67,10 +68,12 @@ function App() {
           <Route path="/editcoupon/:id" element={<EditCoupon />} />
           <Route path="/qldanhsach" element={<QlDanhSach />} />
           <Route path="/qldonhang" element={<QlDonHang />} />
+          <Route path="/qldonhang/:id" element={<QlDonHang />} />
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
-          <Route path="/orderdetails" element={<OrderDetails />} />
+          <Route path="/orderdetails" element={<OrderDetail/>} />
+
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />
           <Route path="/Addcoupon" element={<Addcoupon />} />
