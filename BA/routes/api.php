@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CategoriController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ShippingAddressController;
 
 
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
@@ -22,10 +23,13 @@ Route::post('login', [UserController::class, 'login']);
 Route::get('/auth/redirect', [GoogleController::class, 'redirectToProvider']);
 Route::post('/auth/callback', [GoogleController::class, 'handleProviderCallback']);
 
-Route::apiResource('user', UserController::class);
+Route::get('/typeCate',[CategoryController::class,'Type']);
 
+
+Route::middleware('auth:api')->apiResource('user', UserController::class);
 Route::apiResource('category', CategoryController::class);
 Route::apiResource('order', OrderController::class);
 Route::apiResource('review', ReviewController::class);
 Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
+Route::apiResource('sphippingAddress',ShippingAddressController::class);

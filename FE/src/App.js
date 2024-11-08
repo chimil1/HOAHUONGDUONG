@@ -33,7 +33,7 @@ import Profile from "./frontend/client/Profile";
 import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register"
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
-import ComfirmPassword from "./frontend/client/auth/ComfirmPassword";
+import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import OrderDetail from "./frontend/admin/orderDetail";
 
 function App() {
@@ -50,11 +50,12 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
-          <Route path='/profile' element={<Profile />}/>
+          <Route path='/profile/:id' element={<Profile />}/>
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
           <Route path='/forgot-password'  element={<ForgotPassword />}/>
           <Route path='/reset-password'  element={<ConfirmPassword />}/>
+
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />

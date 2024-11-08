@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchAddProduct } from "../actions/productAction";
 import { useForm } from "react-hook-form";
+import {fetchAddProduct} from "../actions/unitActions"
 import Swal from "sweetalert2";
 
 import Footer from "./layout/Footer";
@@ -99,16 +99,12 @@ function AddProduct() {
                         class="form-control"
                         id="description"
                         name="description"
-                        value={product.description}
-                        onChange={handleChange}
                       />
                     </div>
                     <div className="form-group">
                       <label>Trạng thái</label>
                       <select
                         className="form-control"
-                        value={product.status}
-                        onChange={handleChange}
                       >
                         <option value="Có sẵn">Có sẵn</option>
                         <option value="Hết hàng">Hết hàng</option>
@@ -119,8 +115,8 @@ function AddProduct() {
                       <label>Chọn danh mục</label>
                       <select
                         className="form-control"
-                        value={product.category_id}
-                        onChange={handleChange}
+
+
                       >
                         <option value="Quần">Quần</option>
                         <option value="Áo">Áo</option>

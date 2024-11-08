@@ -17,9 +17,12 @@ class ProductFactory extends Factory
         $shoes = ['Giày Thể Thao Trơn G010 Màu Đen', 'Giày Slip On Jeans G016 Màu Đen', 'Giày Tây 4MEN G014 Màu Đen', 'Giày Chelsea Boots All Black G018 Màu Đen','Dép sandal quai chéo da Microfiber đế TPR','Dép da Microfiber đế trấu DE003'];
         $accessories = ['Tissot Le Locle Powermatic 80', 'Doxa Noble D173TCM', 'Lắc tay Cuban bạc phiên bản 13mm đặc LTA0081', 'Vòng tay bạc nam trơn đơn giản LTA0053','Nhẫn cặp đôi bạc đính kim cương Moissanite Layla LILI_054884','Nhẫn bạc nam đính kim cương Moissanite Kane LILI_833779'];
         $productNames = array_merge($shirts, $tshirts, $shoes, $accessories);
-
+        static $index = 0;
+        if ($index >= count($productNames)) {
+            $index = 0;
+        }
         return [
-            'product_name' => $this->faker->randomElement($productNames),
+            'product_name' => $productNames[$index++],
             'price' => $this->faker->numberBetween(10000, 100000),
             'description' => $this->faker->sentence(),
             'status' => $this->faker->randomElement([1, 0]),

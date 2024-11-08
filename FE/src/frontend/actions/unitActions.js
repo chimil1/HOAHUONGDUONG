@@ -1,37 +1,76 @@
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export const FETCH_UNITS_REQUEST = "FETCH_UNITS_REQUEST";
 export const FETCH_UNITS_SUCCESS = "FETCH_UNITS_SUCCESS";
 export const FETCH_UNITS_FAILURE = "FETCH_UNITS_FAILURE";
 
 const url = 'http://localhost:8000/api';
 
-export const fetchUnitsRequest = () => {
-  return {
+
+const fetchUnitsRequest = () => ({
     type: FETCH_UNITS_REQUEST,
-  };
-};
+});
 
-export const fetchUnitsSuccess = (units) => {
-  return {
+const fetchUnitsSuccess = (userData) => ({
     type: FETCH_UNITS_SUCCESS,
-    payload: units,
-  };
+    payload: userData, // Dữ liệu người dùng
+});
+
+const fetchUnitsFailure = (errorMessage) => ({
+    type: FETCH_UNITS_FAILURE,
+    payload: errorMessage,
+});
+//User
+export const fetchUser = (id) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        axios
+            .get(`${url}/user/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Gửi token trong header
+                },
+            })
+            .then((response) => {
+                const user = response.data;
+                dispatch(fetchUnitsSuccess(user));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
 };
 
-export const fetchUnitsFailure = (error) => {
-  return {
-    type: FETCH_UNITS_FAILURE,
-    payload: error,
-  };
+//** để ở Đây
+export const updateUser = (id, data) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        axios
+            .put(`http://localhost:8000/api/user/${id}`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Gửi token trong header
+                },
+            })
+            .then((response) => {
+                const update = response.data;
+                dispatch(fetchUnitsSuccess(update));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
 };
+
 
 //Product
 export const fetchProducts = () => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .get("http://localhost:8000/api/product")
+      .get(url+ "/product")
       .then((response) => {
         const units = response.data;
         dispatch(fetchUnitsSuccess(units));
@@ -154,6 +193,21 @@ export const fetchOrders = () => {
         });
     };
   };
+export const fetchCategoryType = () => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    axios
+        .get(url+'/typeCate')
+        .then((response) => {
+          const units = response.data;
+          dispatch(fetchUnitsSuccess(units));
+        })
+        .catch((error) => {
+          const errorMsg = error.message;
+          dispatch(fetchUnitsFailure(errorMsg));
+        });
+  };
+};
 
   export const fetchCategoryDelete = (id) => {
     return (dispatch) => {

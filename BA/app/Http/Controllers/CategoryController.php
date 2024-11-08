@@ -15,7 +15,21 @@ class CategoryController extends Controller
         $categories = Category::all();
         return response()->json($categories);
     }
+    // CategoryController.php
+    public function Type() {
+        $groupedCategories = [
+            'Trousers' => Category::where('name', 'LIKE', '%Quan%')->get(),
+            'Shirt' => Category::where('name', 'LIKE', '%Áo%')->get(),
+            'Shoe' => Category::where('name', 'LIKE', '%Giày%')->get(),
+            'accessory' => Category::where('name', 'LIKE', '%Dây chuyền%')
+                ->orWhere('name', 'LIKE', '%Vòng tay%')
+                ->orWhere('name', 'LIKE', '%Nhẫn%')
+                ->orWhere('name', 'LIKE', '%Đồng hồ%')
+                ->get(),
+        ];
 
+        return response()->json($groupedCategories);
+    }
     public function store(Request $request, Category $category)
     {
         try {
@@ -38,7 +52,7 @@ class CategoryController extends Controller
                 'success' => false,
                 'message' => 'Thêm dữ liệu không thành công.',
             ], 500);
-        }        
+        }
     }
 
     public function show(Category $category)
@@ -46,7 +60,7 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    
+
     public function update(Request $request, Category $category)
     {
         try {

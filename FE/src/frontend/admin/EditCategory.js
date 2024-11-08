@@ -31,7 +31,6 @@ function EditCategory() {
       setValue("name", categoryState.selectedUnit.name);
       setValue("description", categoryState.selectedUnit.description);
       setValue("status", categoryState.selectedUnit.status);
-      // Assuming image data might come as URL
       setValue("img", categoryState.selectedUnit.img);
     }
   }, [categoryState.selectedUnit, setValue]);
@@ -55,7 +54,7 @@ function EditCategory() {
 
  
     try {
-      dispatch(updateCategory(id, jsonData));   // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
+      dispatch(updateCategory(id, jsonData));
       Swal.fire({
         text: "Cập nhật danh mục thành công!",
         icon: "success",

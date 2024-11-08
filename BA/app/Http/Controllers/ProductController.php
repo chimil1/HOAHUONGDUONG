@@ -18,6 +18,8 @@ class ProductController extends Controller
             ->get();
         $products->map(function ($product) {
             $product->name_category = $product->category->name;
+            $product->img = $product->images->isNotEmpty() ? $product->images->first()->product_img : null;
+            unset($product->images);
             unset($product->category);
             return $product;
         });

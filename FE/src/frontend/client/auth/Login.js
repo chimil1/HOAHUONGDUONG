@@ -37,11 +37,15 @@ function Login() {
         login,
         password,
       });
+
+      // Lưu token vào localStorage khi đăng nhập thành công
       localStorage.setItem("token", response.data.token);
-      setError("");
-      navigate("/home");
+      localStorage.setItem("user", response.data.user);
+
+      setError("");  // Xóa lỗi nếu có
+      navigate("/home");  // Chuyển hướng đến trang home sau khi đăng nhập thành công
     } catch (error) {
-      setError("Tên đăng nhập hoặc mật khẩu không đúng!");
+      setError("Tên đăng nhập hoặc mật khẩu không đúng!");  // Hiển thị lỗi nếu đăng nhập không thành công
     }
   };
 
@@ -52,13 +56,14 @@ function Login() {
         const user = await authInstance.signIn();
         const idToken = user.getAuthResponse().id_token;
 
+        // Gửi idToken đến server để xác thực
         const response = await axios.post("http://127.0.0.1:8000/api/auth/callback", {
           id_token: idToken,
         });
 
         if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-          navigate("/home");
+          localStorage.setItem("token", response.data.token);  // Lưu token vào localStorage
+          navigate("/home");  // Chuyển hướng đến trang home
         } else {
           setError("Đăng nhập không thành công.");
         }

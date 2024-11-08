@@ -62,11 +62,13 @@ class UserController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => $user->id,
             'token' => $token,
             'message' => 'Đăng nhập thành công'
         ]);
     }
+
+
 
     public function create()
     {
@@ -79,7 +81,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        //
+        return response()->json($user);
     }
 
     /**
@@ -95,7 +97,33 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        try {
+            $request->validate([
+                'name' => 'nullable|string',
+                'password' => 'required|string',
+                'oldPw' => 'nullable|string',
+            ]);
+            if (Hash::check($request->oldPw, $user->password)) {
+                $user->update([
+                    'name' => $request->name ?? $user->name,
+                    'password'=>Hash::make($request->password),
+                ]);
+                return response()->json([
+                    'message' => 'Sủa Dữ Liệu Thành Công',
+                    'user' => $user
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Sai mật khẩu',
+                    'user' => $user
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Sữa Dữ Liệu Không Thành Công!',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
