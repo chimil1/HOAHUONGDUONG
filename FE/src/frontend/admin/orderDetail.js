@@ -78,23 +78,6 @@ function OrderDetail() {
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="section__content section__content--p30">
-            <div className="container-fluid">
-              <div className="card">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="card-header">
-                      <div className="overview-wrap">
-                        <h2 className="title-5 m-b-35">Thông tin sản phẩm</h2>
-                      </div>
-                    </div>
-                    <div className="card-body">
                       <table className="table table-data2">
                         <thead>
                           <tr>
@@ -130,17 +113,16 @@ function OrderDetail() {
                       </table>
                     </div>
                   </div>
-                </div>
-                <div className="card-footer">
+                  <div className="card-footer">
                   <Footer />
+                </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
+    </div>
   );
 }
-
 export default OrderDetail;

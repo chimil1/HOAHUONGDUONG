@@ -5,10 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
-
-=========
->>>>>>>>> Temporary merge branch 2
-
 class CategoryController extends Controller
 {
 
@@ -83,13 +79,6 @@ class CategoryController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-            $category->delete();
-            return response()->json(['message' => 'Đã xóa danh mục thành công'], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Danh mục tồn tại sản phẩm không thể xóa',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    
     }
 }

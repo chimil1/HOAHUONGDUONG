@@ -73,7 +73,7 @@ function App() {
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
           <Route path="/orderdetails" element={<OrderDetail/>} />
-
+          <Route path="/orderdetails/:id" element={<OrderDetail/>} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />
           <Route path="/Addcoupon" element={<Addcoupon />} />

@@ -3,18 +3,22 @@ import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchOrders } from "../actions/unitActions";
-import { Link } from "react-router-dom";
-
+import { fetchOrders, approveOrder } from "../actions/unitActions";
+import { Link, useNavigate } from "react-router-dom";
 
 function QlDonHang() {
-  
   const dispatch = useDispatch();
-  const unitState = useSelector(state => state.unit);
+  const navigate = useNavigate();
+  const unitState = useSelector((state) => state.unit);
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
+
+  const handleApproveOrder = (id) => {
+    dispatch(approveOrder(id));
+    navigate("/qldonhang"); 
+  };
 
   if (unitState.loading) {
     return <p>Đang tải...</p>;
@@ -24,7 +28,6 @@ function QlDonHang() {
     return <p>Lỗi: {unitState.error}</p>;
   }
 
-  // Kiểm tra nếu unitState.units là một mảng trước khi dùng map
   if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
     return <p>Lỗi: Định dạng dữ liệu không chính xác hoặc không có đơn hàng nào.</p>;
   }
@@ -49,53 +52,58 @@ function QlDonHang() {
                       <table className="table table-data2">
                         <thead>
                           <tr>
+                            <th>Hình ảnh</th>
                             <th>Tên người nhận</th>
-                            <th>Tổng giá</th>
-                            <th>Mã hóa đơn</th>
                             <th>Địa chỉ</th>
-                            <th>SĐT</th>
+                            <th>SDT</th>
                             <th>Trạng thái</th>
-                            <th>Trạng thái thanh toán</th> {/* Thêm cột trạng thái thanh toán */}
-                            <th>Chi tiết đơn hàng</th>
+                            <th>Trạng thái thanh toán</th>
+                            <th></th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {unitState.units.map((item, index) => (
-                            <tr key={index} className="tr-shadow">
+                          {unitState.units.map((item) => (
+                            <tr key={item.id} className="tr-shadow">
                               <td>
-                                <img
-                                  src="https://via.placeholder.com/50"
-                                  alt="Hình ảnh"
-                                />
+                                <img src="https://via.placeholder.com/50" alt="Hình ảnh" />
                               </td>
-                              <td>{item.username || 'Không có thông tin'}</td>
-                              <td>{item.shipping_address || 'Không có thông tin'}</td>
-                              <td>{item.shipping_phone || 'Không có thông tin'}</td>
+                              <td>{item.username || "Không có thông tin"}</td>
+                              <td>{item.shipping_address || "Không có thông tin"}</td>
+                              <td>{item.shipping_phone || "Không có thông tin"}</td>
                               <td>
                               {item.status === 0 ? (
-                                <span className="badge badge-success">Thanh toán tiền mặt</span>
+                                <span className="badge badge-success">Đã xác nhận</span>
                               ) : (
-                                <span className="badge badge-warning">Thanh toán tài khoản</span>
+                                <span className="badge badge-warning">Chờ xác nhận</span>
                               )}
                               </td>
                               <td>
-                              {item.payment_type === 0 ? (
-                                <span className="badge badge-success">Thanh toán tiền mặt</span>
-                              ) : (
-                                <span className="badge badge-warning">Thanh toán tài khoản</span>
-                              )}
+                                {item.payment_type === 0 ? (
+                                  <span className="badge badge-success">Thanh toán tiền mặt</span>
+                                ) : (
+                                  <span className="badge badge-warning">Thanh toán tài khoản</span>
+                                )}
                               </td>
                               <td>
-                              <div className="table-data-feature">
-                                <Link to={`/orderdetail/${item.id}`}>                               
-                                  <button
-                                    className="item"
-                                    title="Chi tiết"
-                                  >
-                                    <i className="zmdi zmdi-mail-send"></i>
-                                  </button>
+                                <div className="table-data-feature">
+                                  <Link to={`/orderdetails/${item.id}`}>
+                                    <button className="item" title="Chi tiết">
+                                      <i className="zmdi zmdi-mail-send"></i>
+                                    </button>
                                   </Link>
                                 </div>
+                              </td>
+                              <td>
+                                <div className="table-data-feature">
+                                  <button
+                                    onClick={() => handleApproveOrder(item.id)}
+                                    className="item"
+                                    title="Duyệt đơn hàng"
+                                  >
+                                    <i className="zmdi zmdi-check"></i>
+                                  </button>
+                                </div>  
                               </td>
                             </tr>
                           ))}
