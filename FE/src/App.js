@@ -18,6 +18,8 @@ import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
 import ProductDetails from "./frontend/admin/ProductDetails";
 
+
+
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
@@ -88,6 +90,9 @@ function App() {
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />
           <Route path="/Addcoupon" element={<Addcoupon />} />
+          <Route path="/addproduct" element={<AddProduct />} />
+          <Route path="/reviewdetail" element={<ReviewDetail />} />
+          <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
           <Route path="/home" element={<Home />} />
           <Route path="/admin/login" element={<LoginForm />} />
         </Routes>
