@@ -1,8 +1,78 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import { Link } from "react-router-dom";
+import React, { useState,useEffect } from "react";
 
 function Productdetail() {
+  const [rating, setRating] = useState(0); // Trạng thái rating
+  const [reviewText, setReviewText] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [reviewCount, setReviewCount] = useState(0);
+    useEffect(() => {
+      async function fetchProductData() {
+        try {
+          const response = await fetch(`/api/product/${}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch product data');
+          }
+          const productData = await response.json();
+    
+          // Kiểm tra nếu productData và review_count tồn tại
+          if (productData && typeof productData.review_count === 'number') {
+            setReviewCount(productData.review_count); // Cập nhật số lượng đánh giá
+          } else {
+            setReviewCount(0); // Mặc định nếu không có review_count
+          }
+        } catch (error) {
+          console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
+          setReviewCount(0); // Đặt giá trị mặc định nếu có lỗi xảy ra
+        }
+      }
+    
+      fetchProductData();
+    }, [product_id]); 
+
+  // Xử lý click vào sao để cập nhật rating
+  const handleRating = (rate) => {
+    setRating(rate);
+  };
+
+  // Xử lý submit form và gửi dữ liệu lên API
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Dữ liệu cần gửi lên API
+    const reviewData = {
+      product_id: 1, // ID sản phẩm cần được thay thế bằng dynamic product_id
+      review: reviewText,
+      rating: rating,
+      name: name,
+      email: email,
+    };
+
+    // Gửi POST request lên API
+    try {
+      const response = await fetch("/api/review", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reviewData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Đánh giá đã được gửi thành công!");
+      } else {
+        alert(`Lỗi: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Có lỗi xảy ra:", error);
+      alert("Đã có lỗi xảy ra, vui lòng thử lại.");
+    }
+  };
+
   return (
     <div>
       <Header></Header>
@@ -124,16 +194,17 @@ function Productdetail() {
 
                 <span className="mtext-106 cl2 p-b-5">58.790đ</span>
                 <div className="mtext-106 cl js-name-detail p-b-2 ">Mô tả</div>
-                <p className="stext-102 cl3 p-t-10">
-                gfdsfsfshdfsgfysvdfhs
-                </p>
+                <p className="stext-102 cl3 p-t-10">gfdsfsfshdfsgfysvdfhs</p>
 
                 <div className="p-t-33">
                   <div className="flex-w flex-r-m p-b-10">
                     <div className="size-203 flex-c-m respon6">Kích cỡ</div>
 
                     <div className="size-204 respon6-next">
-                      <select className="form-select form-select-sm" name="time">
+                      <select
+                        className="form-select form-select-sm"
+                        name="time"
+                      >
                         <option>Chọn size</option>
                         <option>Size S</option>
                         <option>Size M</option>
@@ -148,7 +219,10 @@ function Productdetail() {
                     <div className="size-203 flex-c-m respon6">Màu</div>
 
                     <div className="size-204 respon6-next">
-                      <select className="form-select form-select-sm" name="time">
+                      <select
+                        className="form-select form-select-sm"
+                        name="time"
+                      >
                         <option>Chọn màu</option>
                         <option>Red</option>
                         <option>Blue</option>
@@ -160,7 +234,7 @@ function Productdetail() {
                   </div>
 
                   <div className="flex-w flex-r-m p-b-10">
-                  <div className="size-203 flex-c-m respon6">Số lượng</div>
+                    <div className="size-203 flex-c-m respon6">Số lượng</div>
                     <div className="size-204 flex-w flex-m respon6-next">
                       <div className="wrap-num-product flex-w m-r-20 m-tb-10">
                         <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
@@ -178,20 +252,18 @@ function Productdetail() {
                           <i className="fs-16 zmdi zmdi-plus"></i>
                         </div>
                       </div>
-                  
                     </div>
-                    
                   </div>
                 </div>
                 <div className="d-grid gap-2 d-md-block">
-                <button className="btn btn-dark btn-lg m-2 rounded-pill">
-                  Thêm vào giỏ
-                </button>
-                
-                <button className="btn btn-dark btn-lg rounded-pill">
-                Mua hàng
-              </button>
-              </div>
+                  <button className="btn btn-dark btn-lg m-2 rounded-pill">
+                    Thêm vào giỏ
+                  </button>
+
+                  <button className="btn btn-dark btn-lg rounded-pill">
+                    Mua hàng
+                  </button>
+                </div>
 
                 <div className="flex-w flex-m p-l-100 p-t-40 respon7">
                   <div className="flex-m bor9 p-r-10 m-r-11">
@@ -253,7 +325,7 @@ function Productdetail() {
                     href="#reviews"
                     role="tab"
                   >
-                    Đánh giá (1)
+                    Đánh giá ({reviewCount})
                   </a>
                 </li>
               </ul>
@@ -265,9 +337,7 @@ function Productdetail() {
                   role="tabpanel"
                 >
                   <div className="how-pos2 p-lr-15-md">
-                    <p className="stext-102 cl6">
-
-                    </p>
+                    <p className="stext-102 cl6"></p>
                   </div>
                 </div>
 
@@ -329,7 +399,10 @@ function Productdetail() {
                       <div className="p-b-30 m-lr-15-sm">
                         <div className="flex-w flex-t p-b-68">
                           <div className="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-                            <img src="../../asset/images/avatar-01.jpg" alt="AVATAR" />
+                            <img
+                              src="../../asset/images/avatar-01.jpg"
+                              alt="AVATAR"
+                            />
                           </div>
 
                           <div className="size-207">
@@ -363,65 +436,89 @@ function Productdetail() {
                             fields are marked *
                           </p>
 
-                          <div className="flex-w flex-m p-t-50 p-b-23">
-                            <span className="stext-102 cl3 m-r-16">
-                              Your Rating
-                            </span>
+                          <div>
+                            <div className="flex-w flex-m p-t-50 p-b-23">
+                              <span className="stext-102 cl3 m-r-16">
+                                Your Rating
+                              </span>
+                              <span className="wrap-rating fs-18 cl11 pointer">
+                                {/* Các sao được render ra */}
+                                {[1, 2, 3, 4, 5].map((rate) => (
+                                  <i
+                                    key={rate}
+                                    className={`item-rating pointer zmdi zmdi-star-outline ${
+                                      rating >= rate ? "zmdi-star" : ""
+                                    }`}
+                                    onClick={() => handleRating(rate)}
+                                  ></i>
+                                ))}
+                                <input
+                                  className="dis-none"
+                                  type="number"
+                                  name="rating"
+                                  value={rating}
+                                />
+                              </span>
+                            </div>
 
-                            <span className="wrap-rating fs-18 cl11 pointer">
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <input
-                                className="dis-none"
-                                type="number"
-                                name="rating"
-                              />
-                            </span>
+                            <div className="row p-b-25">
+                              <div className="col-12 p-b-5">
+                                <label
+                                  className="stext-102 cl3"
+                                  htmlFor="review"
+                                >
+                                  Your review
+                                </label>
+                                <textarea
+                                  className="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10"
+                                  id="review"
+                                  name="review"
+                                  value={reviewText}
+                                  onChange={(e) =>
+                                    setReviewText(e.target.value)
+                                  }
+                                ></textarea>
+                              </div>
+
+                              <div className="col-sm-6 p-b-5">
+                                <label className="stext-102 cl3" htmlFor="name">
+                                  Name
+                                </label>
+                                <input
+                                  className="size-111 bor8 stext-102 cl2 p-lr-20"
+                                  id="name"
+                                  type="text"
+                                  name="name"
+                                  value={name}
+                                  onChange={(e) => setName(e.target.value)}
+                                />
+                              </div>
+
+                              <div className="col-sm-6 p-b-5">
+                                <label
+                                  className="stext-102 cl3"
+                                  htmlFor="email"
+                                >
+                                  Email
+                                </label>
+                                <input
+                                  className="size-111 bor8 stext-102 cl2 p-lr-20"
+                                  id="email"
+                                  type="text"
+                                  name="email"
+                                  value={email}
+                                  onChange={(e) => setEmail(e.target.value)}
+                                />
+                              </div>
+                            </div>
+
+                            <button
+                              className="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10"
+                              onClick={handleSubmit}
+                            >
+                              Submit
+                            </button>
                           </div>
-
-                          <div className="row p-b-25">
-                            <div className="col-12 p-b-5">
-                              <label className="stext-102 cl3" for="review">
-                                Your review
-                              </label>
-                              <textarea
-                                className="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10"
-                                id="review"
-                                name="review"
-                              ></textarea>
-                            </div>
-
-                            <div className="col-sm-6 p-b-5">
-                              <label className="stext-102 cl3" for="name">
-                                Name
-                              </label>
-                              <input
-                                className="size-111 bor8 stext-102 cl2 p-lr-20"
-                                id="name"
-                                type="text"
-                                name="name"
-                              />
-                            </div>
-
-                            <div className="col-sm-6 p-b-5">
-                              <label className="stext-102 cl3" for="email">
-                                Email
-                              </label>
-                              <input
-                                className="size-111 bor8 stext-102 cl2 p-lr-20"
-                                id="email"
-                                type="text"
-                                name="email"
-                              />
-                            </div>
-                          </div>
-
-                          <button className="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
-                            Submit
-                          </button>
                         </form>
                       </div>
                     </div>
