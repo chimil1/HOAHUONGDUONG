@@ -88,7 +88,7 @@ function Home() {
             className="text-center flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04"
             style={{ borderRadius: "30px" }}
           >
-            {visibleProducts >= productState.units.length ? "Rút ngắn" : "Xem thêm"}
+            {visibleProducts >= productState.units.length ? "Rút gọn" : "Xem thêm"}
           </button>
         </div>
       </div>
@@ -106,17 +106,17 @@ function Home() {
                 >
                   <div class="block1-txt-child1 flex-col-l">
                     <span class="block1-name ltext-102 trans-04 p-b-8">
-                      Men
+                      Nam
                     </span>
 
                     <span class="block1-info stext-102 trans-04">
-                      Spring 2018
+                      Spring 2024
                     </span>
                   </div>
 
                   <div class="block1-txt-child2 p-b-4 trans-05">
                     <div class="block1-link stext-101 cl0 trans-09">
-                      Shop Now
+                      Mua ngay
                     </div>
                   </div>
                 </a>
@@ -155,17 +155,17 @@ function Home() {
                 >
                   <div class="block1-txt-child1 flex-col-l">
                     <span class="block1-name ltext-102 trans-04 p-b-8">
-                      Accessories
+                      Phụ kiện
                     </span>
 
                     <span class="block1-info stext-102 trans-04">
-                      New Trend
+                      Xu hướng mới
                     </span>
                   </div>
 
                   <div class="block1-txt-child2 p-b-4 trans-05">
                     <div class="block1-link stext-101 cl0 trans-09">
-                      Shop Now
+                      Mua ngay
                     </div>
                   </div>
                 </a>
@@ -181,76 +181,57 @@ function Home() {
             <h3 className="text-center text-dark fw-semibold display-6 my-4">TỔNG QUAN SẢN PHẨM</h3>
           </div>
           <div className="row isotope-grid my-2">
-            {[
-              {
-                imgSrc: "../../asset/images/product-01.jpg",
-                title: "Esprit Ruffle Shirt",
-                price: "400.000đ",
-              },
-              {
-                imgSrc: "../../asset/images/product-02.jpg",
-                title: "Herschel supply",
-                price: "350. 000đ",
-              },
-              {
-                imgSrc: "../../asset/images/product-03.jpg",
-                title: "Only Check Trouser",
-                price: "250.000đ",
-              },
-              {
-                imgSrc: "../../asset/images/product-04.jpg",
-                title: "Classic Trench Coat",
-                price: "750.000đ",
-              },
-            ].map((product, index) => (
-              <div
-                key={index}
-                className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item"
-              >
-                <div className="block2">
-                  <div className="block2-pic hov-img0">
-                    <img src={product.imgSrc} alt="IMG-PRODUCT" />
+          {productState.units.slice(0, 4).map((product) => (
+            <div
+              key={product.id}
+              className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women"
+            >
+              <div className="block2">
+                <div className="block2-pic hov-img0 position-relative">
+                  <img src={product.images} alt="IMG-PRODUCT" />
+                  <button
+                    type="button"
+                    className="btn btn-dark text-white mt-2 position-absolute cart-button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    <i className="fas fa-cart-plus"></i>
+                  </button>
+                </div>
+                <div className="block2-txt flex-w flex-t p-t-14">
+                  <div className="block2-txt-child1 flex-col-l">
                     <Link
-                      to="/Productdetail"
-                      className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                      to={`${product.id}`}
+                      className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                     >
-                      Xem
+                      {product.product_name}
                     </Link>
+                    <span className="stext-105 cl3">{product.price}</span>
                   </div>
-                  <div className="block2-txt flex-w flex-t p-t-14">
-                    <div className="block2-txt-child1 flex-col-l">
-                      <a
-                        href="product-detail.html"
-                        className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                      >
-                        {product.title}
-                      </a>
-                      <span className="stext-105 cl4">{product.price}</span>
-                    </div>
-                    <div className="block2-txt-child2 flex-r p-t-3">
-                      <Link
-                        to="#"
-                        className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                      >
-                        <img
-                          className="icon-heart1 dis-block trans-04"
-                          src="../../asset/images/icons/icon-heart-01.png"
-                          alt="ICON"
-                        />
-                        <img
-                          className="icon-heart2 dis-block trans-04 ab-t-l"
-                          src="../../asset/images/icons/icon-heart-02.png"
-                          alt="ICON"
-                        />
-                      </Link>
-                    </div>
+                  <div className="block2-txt-child2 flex-r p-t-3">
+                    <Link
+                      to="#"
+                      className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
+                    >
+                      <img
+                        className="icon-heart1 dis-block trans-04"
+                        src="../../asset/images/icons/icon-heart-01.png"
+                        alt="ICON"
+                      />
+                      <img
+                        className="icon-heart2 dis-block trans-04 ab-t-l"
+                        src="../../asset/images/icons/icon-heart-02.png"
+                        alt="ICON"
+                      />
+                    </Link>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
             <div className="flex-c-m flex-w w-full p-t-45">
               <Link
-                to="#"
+                to="/product"
                 className="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04"
               >
                 Xem thêm
