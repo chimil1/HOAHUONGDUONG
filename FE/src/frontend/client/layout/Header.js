@@ -46,10 +46,13 @@ function Header() {
                 </div>
 
                 <div className="wrap-icon-header flex-w flex-r-m">
-                  <div className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-                    <i className="zmdi zmdi-search"></i>
-                  </div>
-
+                <div className="container-search-header m-3"> 
+                <Link to='/search' className="input-group w-100">
+                <div className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                  <i className="zmdi zmdi-search"></i>
+                </div>
+                </Link>
+                </div>
                   {isLoggedIn ? (
                       <>
                         <Link to="/cart" className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
@@ -94,20 +97,7 @@ function Header() {
             </div>
           </div>
 
-          <div className="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-            <div className="container-search-header">
-              <button className="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                <img src="../../asset/images/icons/icon-close2.png" alt="CLOSE" />
-              </button>
-
-              <form className="wrap-search-header flex-w p-l-15">
-                <button className="flex-c-m trans-04">
-                  <i className="zmdi zmdi-search"></i>
-                </button>
-                <input className="plh3" type="text" name="search" placeholder="Search..." />
-              </form>
-            </div>
-          </div>
+         
         </header>
       </div>
   );

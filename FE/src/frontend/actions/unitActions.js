@@ -122,6 +122,19 @@ export const fetchOrders = () => {
         });
     };
   };
+  export const approveOrder = (id) => {
+    return (dispatch) => {
+      return axios
+        .put(`http://localhost:8000/api/order/approve/${id}`)
+        .then(() => {
+          dispatch(fetchOrders());
+        })
+        .catch((error) => {
+          console.error("Lỗi khi duyệt đơn hàng:", error);
+        });
+    };
+
+  }
   export const fetchOrderDetails = (id) => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());

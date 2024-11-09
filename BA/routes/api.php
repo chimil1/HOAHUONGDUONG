@@ -22,10 +22,17 @@ Route::post('login', [UserController::class, 'login']);
 Route::get('/auth/redirect', [GoogleController::class, 'redirectToProvider']);
 Route::post('/auth/callback', [GoogleController::class, 'handleProviderCallback']);
 
+Route::get('/products/search', [ProductController::class, 'search']);
+
 Route::apiResource('user', UserController::class);
 
 Route::apiResource('category', CategoryController::class);
 Route::apiResource('order', OrderController::class);
+Route::put('/order/approve/{id}', [OrderController::class, 'approveOrder']);
 Route::apiResource('review', ReviewController::class);
 Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
+
+
+
+Route::get('checkCode/{code_name}', [CouponController::class, 'checkCode']);

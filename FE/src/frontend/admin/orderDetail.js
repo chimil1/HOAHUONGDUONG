@@ -110,17 +110,16 @@ function OrderDetail() {
                       </table>
                     </div>
                   </div>
-                </div>
-                <div className="card-footer">
+                  <div className="card-footer">
                   <Footer />
+                </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
+    </div>
   );
 }
-
 export default OrderDetail;

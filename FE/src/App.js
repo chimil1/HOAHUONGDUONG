@@ -18,7 +18,6 @@ import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
 import ProductDetails from "./frontend/admin/ProductDetails";
 
-
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
@@ -38,6 +37,7 @@ import EditCoupon from "./frontend/admin/EditCoupon";
 import Shipping from "./frontend/client/Shipping";
 import AddShipping from "./frontend/client/AddShipping";
 import ListAddress from "./frontend/client/listAddess";
+import Search from "./frontend/client/Search";
 
 function App() {
   return (
@@ -53,6 +53,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
+          <Route path="/search" element={<Search />} />
           <Route path='/profile' element={<Profile />}/>
           <Route path='/shipping' element={<Shipping />}/>
           <Route path='/addshipping'  element={<AddShipping />}/>
@@ -76,6 +77,7 @@ function App() {
           <Route path="/editcoupon/:id" element={<EditCoupon />} />
           <Route path="/qldanhsach" element={<QlDanhSach />} />
           <Route path="/qldonhang" element={<QlDonHang />} />
+          <Route path="/qldonhang/:id" element={<QlDonHang />} />
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/productdetail" element={<ProductDetails />} />
