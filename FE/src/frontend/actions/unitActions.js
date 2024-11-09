@@ -142,7 +142,7 @@ export const fetchOrders = () => {
   export const fetchCategory = () => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());
-      axios(`http://localhost:8000/api/category`)
+      axios(url+'/category')
         .then((response) => {
           const units = response.data;
           dispatch(fetchUnitsSuccess(units));
