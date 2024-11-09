@@ -35,7 +35,7 @@ function Contact() {
             {/* Title page */}
             <section className="bg-img1 txt-center p-lr-15 p-tb-92" style={{ backgroundImage: "url('../../asset/images/bg-01.jpg')" }}>
                 <h2 className="ltext-105 cl0 txt-center">
-                    Liên hệ
+                    Góp ý
                 </h2>
             </section>
 
@@ -50,12 +50,12 @@ function Contact() {
                                 </h4>
 
                                 <div className="bor8 m-b-20 how-pos4-parent">
-                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email" placeholder="Địa chỉ Email của bạn" value={data.email} onChange={handChange}/>
+                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email" placeholder="Nhập địa chỉ Email của bạn" value={data.email} onChange={handChange}/>
                                     <img className="how-pos4 pointer-none" src="../../asset/images/icons/icon-email.png" alt="ICON" />
                                 </div>
 
                                 <div className="bor8 m-b-30">
-                                    <textarea className="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" type="text" name="name" placeholder="Chúng tôi có thể giúp gì?" value={data.name} onChange={handChange}></textarea>
+                                    <textarea className="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" type="text" name="name" placeholder="Chúng tôi có thể giúp gì cho bạn?" value={data.name} onChange={handChange}></textarea>
                                 </div>
 
                                 <button className="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" type="submit">

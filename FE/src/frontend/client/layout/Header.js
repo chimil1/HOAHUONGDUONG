@@ -36,7 +36,7 @@ function Header() {
                   </li>
 
                   <li>
-                    <Link to="/contact">Liên hệ</Link>
+                    <Link to="/contact">Góp ý</Link>
                   </li>
                 </ul>
               </div>

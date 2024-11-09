@@ -12,18 +12,18 @@ app.use(cors());
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'phanhuy2ka4@gmail.com',
-        pass: 'jfdjhyfhaghcopgu'
+        user: 'hoaahuongduongg@gmail.com',
+        pass: 'flfvibddgrnfnkep'
     }
 });
 
 app.post('/send-email', (req, res) => {
     const userInfo = req.body;
     const mailOptions = {
-        from: 'phanhuy2ka4@gmail.com',
+        from: 'hoaahuongduongg@gmail.com',
         to: userInfo.email,
-        subject: 'Welcome to Dotnet Edu',
-        text: `Hello ${userInfo.name}, welcom to Dotnet Edu.`
+        subject: 'Welcome to HoaHuongDuong',
+        text: `${userInfo.name} `
     };
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
