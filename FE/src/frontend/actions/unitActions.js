@@ -4,6 +4,10 @@ export const FETCH_UNITS_REQUEST = "FETCH_UNITS_REQUEST";
 export const FETCH_UNITS_SUCCESS = "FETCH_UNITS_SUCCESS";
 export const FETCH_UNITS_FAILURE = "FETCH_UNITS_FAILURE";
 
+export const LOCK_USER_REQUEST = 'LOCK_USER_REQUEST';
+export const LOCK_USER_SUCCESS = 'LOCK_USER_SUCCESS';
+export const LOCK_USER_FAILURE = 'LOCK_USER_FAILURE';
+
 const url = 'http://localhost:8000/api';
 
 
@@ -41,6 +45,35 @@ export const fetchUser = (id) => {
             });
     };
 };
+export const fetchKhachHangs = () =>{
+    return(dispatch) => {
+        dispatch(fetchUnitsRequest());
+        axios
+            .get(url+'/user')
+            .then((response) => {
+                const units = response.data;
+                dispatch(fetchUnitsSuccess(units));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    }
+}
+export const lockUser = (id, lockStatus) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        return axios
+            .put(`${url}/lock/${id}`, { lock: lockStatus })
+            .then((response) => {
+                dispatch(fetchUnitsSuccess(response.data));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
 
 //** để ở Đây
 export const updateUser = (id, data) => {
@@ -50,7 +83,7 @@ export const updateUser = (id, data) => {
         axios
             .put(`http://localhost:8000/api/user/${id}`, data, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Gửi token trong header
+                    Authorization: `Bearer ${token}`,
                 },
             })
             .then((response) => {
@@ -64,6 +97,67 @@ export const updateUser = (id, data) => {
     };
 };
 
+//****Adderss
+//List
+export const fetchShippingAddresses = (id) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        axios
+            .get(`${url}/shipping-address/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                const unit = response.data;
+                dispatch(fetchUnitsSuccess(unit));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
+// delete
+export const fetchShippingDelete = (id) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+
+        axios
+            .delete(url + `/shipping/${id}`)
+            .then((response) => {
+                const successMessage = response.data.message;
+                dispatch(fetchUnitsSuccess(successMessage));
+                dispatch(fetchCategory());
+            })
+            .catch((error) => {
+                const errorMsg = error.response ? error.response.data.message : error.message;
+
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
+
+// ADD Địa Chỉ
+export const fetchAddAddress = (id, jsonData) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        axios
+            .post(url+`/shipping-addresses/${id}`,jsonData,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                dispatch(fetchUnitsSuccess(response.data));
+            })
+            .catch((error) => {
+                dispatch(fetchUnitsFailure(error.message));
+            });
+    };
+}
 
 //Product
 export const fetchProducts = () => {

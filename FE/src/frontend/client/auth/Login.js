@@ -38,17 +38,24 @@ function Login() {
         password,
       });
 
-      // Lưu token vào localStorage khi đăng nhập thành công
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", response.data.user);
+      const user = response.data.user;
 
-      setError("");  // Xóa lỗi nếu có
-      navigate("/home");  // Chuyển hướng đến trang home sau khi đăng nhập thành công
+      if (user.role === 2) {
+        setError("Tài khoản này đã bị khóa.");
+      } else {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(user));
+        setError("");
+        navigate("/home");
+      }
     } catch (error) {
-      setError("Tên đăng nhập hoặc mật khẩu không đúng!");  // Hiển thị lỗi nếu đăng nhập không thành công
+      if (error.response && error.response.status === 403) {
+        setError("Tài khoản này đã bị khóa.");
+      } else {
+        setError("Tên đăng nhập hoặc mật khẩu không đúng!");
+      }
     }
   };
-
   const handleGoogleLogin = async () => {
     try {
       const authInstance = gapi.auth2.getAuthInstance();

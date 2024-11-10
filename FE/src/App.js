@@ -18,8 +18,9 @@ import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import AddCategory from "./frontend/admin/AddCategory";
 import AddPersonnel from "./frontend/admin/AddPersonnel";
 import AddProduct from "./frontend/admin/AddProduct";
-import Orderdetails from"./frontend/admin/orderDetail"
-
+import Orderdetails from"./frontend/admin/orderDetail";
+import Addshipping from"./frontend/client/addshipping";
+import Editshipping from "./frontend/client/editShipping";
 
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
@@ -35,6 +36,7 @@ import Register from "./frontend/client/auth/Register"
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import OrderDetail from "./frontend/admin/orderDetail";
+import ListAddress from "./frontend/client/ShippingList";
 
 function App() {
   return (
@@ -55,6 +57,10 @@ function App() {
           <Route path='/register'  element={<Register />}/>
           <Route path='/forgot-password'  element={<ForgotPassword />}/>
           <Route path='/reset-password'  element={<ConfirmPassword />}/>
+          <Route path='/addshipping/:id'  element={<Addshipping />}/>
+          <Route path='/editshipping/:id'  element={<Editshipping />}/>
+          <Route path='/listaddress/:id'  element={<ListAddress/>}/>
+
 
 
           {/* Các Route cho admin */}

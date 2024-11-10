@@ -85,7 +85,6 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:categories,id',
                 // 'images' => 'required',
             ]);
-
             $product->update($request->all());
             return response()->json($product);
         } catch (\Exception $e) {

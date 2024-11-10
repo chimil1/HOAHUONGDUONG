@@ -5,13 +5,28 @@ import Footer from "./layout/Footer";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, updateUser } from "../actions/unitActions";
 import { useForm } from "react-hook-form";
+
 import Swal from "sweetalert2";
 
 function Profile() {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
   const userState = useSelector((state) => state.unit);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("user");
+    if (token) {
+      setIsLoggedIn(true);
+      setUserId(userId);
+    } else {
+      setIsLoggedIn(false);
+      setUserId(null);
+    }
+  }, []);
 
   const {
     register,
@@ -37,14 +52,13 @@ function Profile() {
   }
 
   const user = userState.user;
-  // console.log(user);
 
   if (!user) {
     return <p>No user data available.</p>;
   }
 
-  const submit = (data) => {
-
+  const submit = (data, event) => {
+    event.preventDefault();
     if (newPassword !== confirmPassword) {
       Swal.fire({
         text: "Mật khẩu mới và xác nhận mật khẩu không khớp!",
@@ -57,25 +71,25 @@ function Profile() {
       password: data.newPassword,
       oldPw: data.oldPassword,
     };
+
     try {
       dispatch(updateUser(id, jsonData));
       Swal.fire({
         text: "Đổi mật khẩu thành công!",
         icon: "success",
       });
-      navigate(`/home`);
     } catch (error) {
       Swal.fire({
         text: "Có lỗi xảy ra khi đổi mật khẩu!",
         icon: "error",
       });
     }
-    }
+  };
 
   return (
       <div>
-        <Header/>
-        <section className="pt-5" style={{backgroundColor: "#eee"}}>
+        <Header />
+        <section className="pt-5" style={{ backgroundColor: "#eee" }}>
           <div className="container py-5">
             <div className="row">
               <div className="col-lg-4">
@@ -85,7 +99,7 @@ function Profile() {
                         src="../../asset/images/avatar.jpg"
                         alt="avatar"
                         className="rounded-circle img-fluid"
-                        style={{width: "150px"}}
+                        style={{ width: "150px" }}
                     />
                     <div>
                       {userState.user && (
@@ -109,7 +123,7 @@ function Profile() {
                         <p className="text-success mb-0">{user.name}</p>
                       </div>
                     </div>
-                    <hr/>
+                    <hr />
                     <div className="row">
                       <div className="col-sm-3">
                         <p className="mb-0 text-muted">Email:</p>
@@ -118,7 +132,7 @@ function Profile() {
                         <p className="text-success mb-0">{user.email}</p>
                       </div>
                     </div>
-                    <hr/>
+                    <hr />
                     <div className="row">
                       <div className="col-sm-3">
                         <p className="mb-0 text-muted">Phone:</p>
@@ -127,18 +141,25 @@ function Profile() {
                         <p className="text-success mb-0">{user.phone}</p>
                       </div>
                     </div>
-                    <hr/>
+                    <hr />
                     <div className="mt-5">
                       <form action="" method="post">
                         <Link to="">
                           <button
                               type="button"
-                              className="btn btn-success"
+                              className="btn btn-outline-dark me-2"
                               data-bs-toggle="modal"
                               data-bs-target="#examppass"
                           >
                             Đổi mật khẩu
                           </button>
+                        </Link>
+                        <Link
+                            name=""
+                            className="btn btn-outline-dark me-2"
+                            to={`/listaddress/${userId}`}
+                        >
+                          Địa Chỉ Giao Hàng
                         </Link>
                       </form>
                     </div>
@@ -150,20 +171,27 @@ function Profile() {
         </section>
 
         {/* Modal đổi mật khẩu */}
-        <form onSubmit={handleSubmit(submit)}>
-          <div className="modal fade" id="examppass" tabIndex="-1" aria-labelledby="exampleModalLabel"
-               aria-hidden="true">
+        <form onSubmit={(e) => handleSubmit((data) => submit(data, e))(e)}>
+          <div
+              className="modal fade"
+              id="examppass"
+              tabIndex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+          >
             <div className="modal-dialog modal-lg modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalLabel">Đổi Mật Khẩu</h5>
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Đổi Mật Khẩu
+                  </h5>
                   <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
                   <div className="mb-3">
                     <label className="form-label">Mật khẩu cũ</label>
                     <input
-                        {...register("oldPassword", {required: "Mật khẩu cũ là bắt buộc"})}
+                        {...register("oldPassword", { required: "Mật khẩu cũ là bắt buộc" })}
                         type="password"
                         className="form-control"
                     />
@@ -172,7 +200,7 @@ function Profile() {
                   <div className="mb-3">
                     <label className="form-label">Mật khẩu mới</label>
                     <input
-                        {...register("newPassword", {required: "Mật khẩu mới là bắt buộc"})}
+                        {...register("newPassword", { required: "Mật khẩu mới là bắt buộc" })}
                         type="password"
                         className="form-control"
                     />
@@ -181,7 +209,7 @@ function Profile() {
                   <div className="mb-3">
                     <label className="form-label">Nhập lại mật khẩu mới</label>
                     <input
-                        {...register("confirmPassword", {required: "Xác nhận mật khẩu là bắt buộc"})}
+                        {...register("confirmPassword", { required: "Xác nhận mật khẩu là bắt buộc" })}
                         type="password"
                         className="form-control"
                     />
@@ -189,8 +217,12 @@ function Profile() {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                  <button type="submit" className="btn btn-success">Đồng ý</button>
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                    Đóng
+                  </button>
+                  <button type="submit" className="btn btn-success">
+                    Đồng ý
+                  </button>
                 </div>
               </div>
             </div>
