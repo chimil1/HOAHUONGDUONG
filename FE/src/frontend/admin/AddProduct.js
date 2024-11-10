@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchAddProduct } from "../actions/productAction";
+import { fetchAddProduct } from "../actions/unitActions";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
@@ -13,20 +13,43 @@ function AddProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const unitState = useSelector((state) => state.unit);
+  const [options, setOptions] = useState([{ name: "", values: [""] }]);
+  const [imageInputs, setImageInputs] = useState([{ file: null }]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm();
 
-  if (unitState.loading) {
-    return <p>Loading...</p>;
-  }
+  // Thay đổi hàm handleAddOption
+  const handleAddOption = () => {
+    setOptions([...options, { name: "", values: [""] }]);
+  };
 
-  if (unitState.error) {
-    return <p>Error: {unitState.error}</p>;
-  }
+  // Thêm hàm để thêm value cho mỗi option
+  const handleAddValue = (optionIndex) => {
+    const newOptions = [...options];
+    newOptions[optionIndex].values.push(""); // Thêm một value mới (chuỗi rỗng)
+    setOptions(newOptions);
+  };
+
+  // Hàm để thay đổi giá trị của mỗi value
+  const handleValueChange = (optionIndex, valueIndex, event) => {
+    const newOptions = [...options];
+    newOptions[optionIndex].values[valueIndex] = event.target.value;
+    setOptions(newOptions);
+  };
+
+  const handleImageChange = (index, event) => {
+    const newImageInputs = [...imageInputs];
+    newImageInputs[index].file = event.target.files[0];
+    setImageInputs(newImageInputs);
+  };
+
+  const handleAddImageInput = () => {
+    setImageInputs([...imageInputs, { file: null }]);
+  };
 
   const submit = (data) => {
     const formData = new FormData();
@@ -36,62 +59,138 @@ function AddProduct() {
     formData.append("status", data.status);
     formData.append("category_id", data.category_id);
 
-    dispatch(fetchAddProduct(formData));
-    console.log(data);
+    const images = imageInputs
+      .filter((input) => input.file)
+      .map((input) => input.file.name);
+
+    // Loại bỏ các giá trị trống trong options
+    const filteredOptions = options
+      .map((option) => ({
+        ...option,
+        values: option.values.filter((value) => value.trim() !== ""),
+      }))
+      .filter(
+        (option) => option.name.trim() !== "" && option.values.length > 0
+      );
+
+    data.options = filteredOptions; // Giả sử options là một mảng
+    data.images = images; // images là mảng tên tệp hình ảnh
+
+    // Thêm các trường còn lại vào formData
+    formData.append("options", JSON.stringify(data.options));
+    formData.append("images", JSON.stringify(data.images));
+
+    // Log dữ liệu (chỉ để kiểm tra)
+    console.log("Product Data:", data);
+
+    dispatch(fetchAddProduct(data));
     Swal.fire({
       text: "Thêm sản phẩm thành công!",
       icon: "success",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/qlproduct");
+        navigate("/qlsanpham");
       }
     });
   };
+  if (unitState.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (unitState.error) {
+    return <p>Error: {unitState.error}</p>;
+  }
 
   return (
-    <div class="page-wrapper">
+    <div className="page-wrapper">
       <Menu />
-      <div class="page-container">
+      <div className="page-container">
         <Header />
-        <div class="main-content">
-          <div class="section__content section__content--p30">
-            <div class="container-fluid">
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="title-5 m-b-35">Thêm sản phẩm mới</h3>
+        <div className="main-content">
+          <div className="section__content section__content--p30">
+            <div className="container-fluid">
+              <div className="card">
+                <div className="card-header">
+                  <h3 className="title-5 m-b-35">Thêm sản phẩm mới</h3>
                 </div>
-                <div class="card-body">
+                <div className="card-body">
                   <form onSubmit={handleSubmit(submit)}>
-                    <div className="mb-3">
-                      <label htmlFor="product_name" className="form-label">
-                        Tên sản phẩm
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="product_name"
-                        {...register("product_name", { required: true })}
-                      />
-                      {errors.product_name && (
-                        <small className="text-danger">
-                          Tên sản phẩm là bắt buộc
-                        </small>
-                      )}
+                    <div className="row">
+                      {/* Hàng đầu tiên */}
+                      <div className="col-md-6 mb-3">
+                        <label htmlFor="product_name" className="form-label">
+                          Tên sản phẩm
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="product_name"
+                          {...register("product_name", { required: true })}
+                        />
+                        {errors.product_name && (
+                          <small className="text-danger">
+                            Tên sản phẩm là bắt buộc
+                          </small>
+                        )}
+                      </div>
+                      <div className="col-md-6 mb-3">
+                        <label htmlFor="price" className="form-label">
+                          Giá
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="price"
+                          {...register("price", { required: true })}
+                        />
+                        {errors.price && (
+                          <small className="text-danger">Giá là bắt buộc</small>
+                        )}
+                      </div>
+
+                      {/* Hàng thứ hai */}
+                      <div className="col-md-6 mb-3">
+                        <label htmlFor="status" className="form-label">
+                          Trạng thái
+                        </label>
+                        <select
+                          id="status"
+                          className="form-select"
+                          {...register("status", { required: true })}
+                        >
+                          <option value="">Chọn trạng thái</option>
+                          <option value="0">Đang hoạt động</option>
+                          <option value="1">Không hoạt động</option>
+                        </select>
+                        {errors.status && (
+                          <small className="text-danger">
+                            Trạng thái là bắt buộc
+                          </small>
+                        )}
+                      </div>
+                      <div className="col-md-6 mb-3">
+                        <label htmlFor="category_id" className="form-label">
+                          Danh mục
+                        </label>
+                        <select
+                          id="category_id"
+                          className="form-select"
+                          {...register("category_id", { required: true })}
+                        >
+                          <option value="">Chọn danh mục</option>
+                          <option value="4">Áo thun</option>
+                          <option value="3">Áo khoác</option>
+                          <option value="7">Quần jean</option>
+                        </select>
+                        {errors.category_id && (
+                          <small className="text-danger">
+                            Danh mục là bắt buộc
+                          </small>
+                        )}
+                      </div>
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="price" className="form-label">
-                        Giá
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="price"
-                        {...register("price", { required: true })}
-                      />
-                      {errors.price && (
-                        <small className="text-danger">Giá là bắt buộc</small>
-                      )}
-                    </div>
+
+                    {/* Mô tả */}
                     <div className="mb-3">
                       <label htmlFor="description" className="form-label">
                         Mô tả
@@ -103,58 +202,178 @@ function AddProduct() {
                         {...register("description")}
                       ></textarea>
                     </div>
+
+                    {/* Thêm trường ảnh */}
                     <div className="mb-3">
-                      <label htmlFor="status" className="form-label">
-                        Trạng thái
-                      </label>
-                      <select
-                        id="status"
-                        className="form-select"
-                        {...register("status", { required: true })}
-                      >
-                        <option value="">Chọn trạng thái</option>
-                        <option value="0">Đang hoạt động</option>
-                        <option value="1">Không hoạt động</option>
-                      </select>
-                      {errors.status && (
-                        <small className="text-danger">
-                          Trạng thái là bắt buộc
-                        </small>
-                      )}
+                      <label className="form-label">Ảnh sản phẩm</label>
+                      {imageInputs.map((input, index) => (
+                        <div key={index} className="mb-2">
+                          <input
+                            type="file"
+                            id={`images[${index}]`}
+                            className="form-control"
+                            onChange={(e) => handleImageChange(index, e)}
+                          />
+                        </div>
+                      ))}
+                      <div className="d-flex justify-content-end">
+                        <button
+                          type="button"
+                          className=" btn-WHITE my-3"
+                          onClick={handleAddImageInput}
+                        >
+                          <span className="Polaris-Text--root Polaris-Text--bodySm Polaris-Text--medium">
+                            <svg
+                              width="18px"
+                              height="18px"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                              <g
+                                id="SVGRepo_tracerCarrier"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></g>
+                              <g id="SVGRepo_iconCarrier">
+                                {" "}
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="#050505"
+                                  stroke-width="1.5"
+                                ></circle>{" "}
+                                <path
+                                  d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+                                  stroke="#050505"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                ></path>{" "}
+                              </g>
+                            </svg>
+                            <span class="Polaris-Text--root Polaris-Text--bodySm Polaris-Text--medium">
+                              Thêm ảnh
+                            </span>
+                          </span>
+                        </button>
+                      </div>
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="category_id" className="form-label">
-                        Danh mục
-                      </label>
-                      <select
-                        id="category_id"
-                        className="form-select"
-                        {...register("category_id", { required: true })}
+
+                    {/* Options */}
+                    <h4 className="mt-4">Biến thể</h4>
+                    {options.map((option, optionIndex) => (
+                      <div key={optionIndex} className="my-3">
+                        <label className="form-label">Tên biến thể*</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={option.name}
+                          onChange={(e) => {
+                            const newOptions = [...options];
+                            newOptions[optionIndex].name = e.target.value;
+                            setOptions(newOptions);
+                          }}
+                          placeholder="Nhập biến thể"
+                        />
+
+                        <label className="form-label mt-3">
+                          Giá trị biến thể*
+                        </label>
+                        {option.values.map((value, valueIndex) => (
+                          <div
+                            key={valueIndex}
+                            className="d-flex align-items-center mt-2"
+                          >
+                            <input
+                              type="text"
+                              className="form-control me-2"
+                              value={value}
+                              onChange={(e) =>
+                                handleValueChange(optionIndex, valueIndex, e)
+                              }
+                              placeholder="Nhập giá trị biến thể"
+                            />
+                          </div>
+                        ))}
+
+                        <button
+                          type="button"
+                          className="mt-2"
+                          onClick={() => handleAddValue(optionIndex)}
+                        >
+                          <span className="Polaris-Text--root Polaris-Text--bodySm Polaris-Text--medium">
+                            <svg
+                              width="18px"
+                              height="18px"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="#050505"
+                                strokeWidth="1.5"
+                              ></circle>
+                              <path
+                                d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+                                stroke="#050505"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                              ></path>
+                            </svg>
+                            <span className="Polaris-Text--root Polaris-Text--bodySm Polaris-Text--medium">
+                              Thêm giá trị
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    ))}
+
+                    <div className="d-flex justify-content-end">
+                      <button
+                        type="button"
+                        className="btn-WHITE my-3"
+                        onClick={handleAddOption}
                       >
-                        <option value="">Chọn danh mục</option>
-                        <option value="1">Áo thun</option>
-                        <option value="2">Áo khoác</option>
-                        <option value="3">Quần jean</option>
-                      </select>
-                      {errors.category_id && (
-                        <small className="text-danger">
-                          Danh mục là bắt buộc
-                        </small>
-                      )}
+                        <span className="Polaris-Text--root Polaris-Text--bodySm Polaris-Text--medium">
+                          <svg
+                            width="18px"
+                            height="18px"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="#050505"
+                              strokeWidth="1.5"
+                            ></circle>
+                            <path
+                              d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+                              stroke="#050505"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            ></path>
+                          </svg>
+                          <span className="Polaris-Text--root Polaris-Text--bodySm Polaris-Text--medium">
+                            Thêm Options
+                          </span>
+                        </span>
+                      </button>
                     </div>
-                    {/* Hình ảnh (Nếu có) */}
-                    {/* <div className="mb-3">
-                  <label htmlFor="image" className="form-label">
-                    Hình ảnh
-                  </label>
-                  <input type="file" className="form-control" id="image" {...register("image")} />
-                </div> */}
+
                     <button type="submit" className="btn btn-dark w-100">
                       Thêm sản phẩm
                     </button>
                   </form>
                 </div>
-                <div class="card-footer">
+                <div className="card-footer">
                   <Footer />
                 </div>
               </div>

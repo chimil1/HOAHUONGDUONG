@@ -92,10 +92,10 @@ export const updateProduct = (id, product) => {
   };
 };
 
-export const fetchAddProduct = (product) => {
+export const fetchAddProduct = (data) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
-    axios.post("http://localhost:8000/api/product", product)
+    axios.post("http://localhost:8000/api/product", data)
       .then(response => {
         dispatch(fetchUnitsSuccess(response.data));
       })
