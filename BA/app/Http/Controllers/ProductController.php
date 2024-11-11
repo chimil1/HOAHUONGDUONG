@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Product_image;
 use Illuminate\Http\Request;
 
@@ -66,9 +67,44 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load('images');
-        return response()->json($product);
+        try {
+            $product->load(relations: [
+                'images',
+                'options.optionValues',
+                'productSkus.skuValues.option',
+                'productSkus.skuValues.optionValue'
+            ]);
+
+            return response()->json($product);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'L��i khi lấy chi tiết sản phẩm: ' . $e->getMessage()], 500);
+        }
     }
+
+    public function getRelatedProducts($category_id)
+    {
+        try {
+            $relatedProducts = Product::where('category_id', $category_id)
+            ->with('images:product_id,product_img')
+            ->get();
+    
+            // Check if any products were found
+            if ($relatedProducts->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No related products found for this category.'
+                ], 404);
+            }
+                return response()->json($relatedProducts);
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching related products. Please try again later.'
+            ], 500);
+        }
+    }
+    
 
     /**
      * Update the specified resource in storage.

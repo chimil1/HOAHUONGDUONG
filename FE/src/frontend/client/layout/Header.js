@@ -40,7 +40,7 @@ function Header() {
                       <Link to="/about">Giới thiệu</Link>
                     </li>
                     <li>
-                      <Link to="/contact">Liên hệ</Link>
+                      <Link to="/contact">Góp ý</Link>
                     </li>
                   </ul>
                 </div>

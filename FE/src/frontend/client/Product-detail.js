@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { fetchProductDetails } from "../actions/unitActions";
+import {
+  fetchProductDetails,
+  fetchRelatedProducts,
+} from "../actions/unitActions";
 import { useDispatch, useSelector } from "react-redux";
 
 import Footer from "./layout/Footer";
@@ -10,6 +13,8 @@ function Productdetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
+  // const relatedProducts = useSelector((state) => state.unit);
+
   const initialImage =
     Array.isArray(productState.units.images) &&
     productState.units.images.length > 0
@@ -34,8 +39,16 @@ function Productdetail() {
   }, [productState]);
 
   const product = productState.units;
-
   const [quantity, setQuantity] = useState(1);
+
+  // useEffect(() => {
+  //   if (product.category_id) {
+  //     dispatch(fetchRelatedProducts(product.category_id));
+  //   }
+  // }, [dispatch, product.category_id]);
+
+  // const relatedProduct = relatedProducts.units;
+  // console.log(relatedProduct);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -112,7 +125,6 @@ function Productdetail() {
                           <p>Không có hình ảnh nào cho sản phẩm này.</p>
                         )}
                       </div>
-
                       {/* Hình ảnh nhỏ */}
                       <div className="small-images">
                         {Array.isArray(productState.units.images) &&
@@ -150,7 +162,9 @@ function Productdetail() {
                 <h4 className="mtext-105 cl2 js-name-detail p-b-14">
                   {product.product_name}
                 </h4>
-                <span className="mtext-106 cl2 p-b-5">Giá bán: {formatPrice(product.price)}</span>
+                <span className="mtext-106 cl2 p-b-5">
+                  Giá bán: {formatPrice(product.price)}
+                </span>
                 <div className="mt-3">
                   <h5 className="mtext-100">Mô tả</h5>
                   <div className="mt-2">
@@ -159,41 +173,29 @@ function Productdetail() {
                 </div>
 
                 <div className="p-t-33">
-                  <div className="flex-w flex-r-m p-b-10">
-                    <div className="size-203 flex-c-m respon6">Kích cỡ</div>
+                  {product.options.map((options) => (
+                    // item.option_name
+                    <div className="flex-w flex-r-m p-b-10">
+                      <div className="size-203 flex-c-m respon6">
+                        {options.option_name}
+                      </div>
 
-                    <div className="size-204 respon6-next">
-                      <select
-                        className="form-select form-select-sm"
-                        name="time"
-                      >
-                        <option>Chọn size</option>
-                        <option>Size S</option>
-                        <option>Size M</option>
-                        <option>Size L</option>
-                        <option>Size XL</option>
-                      </select>
-                      <div className="dropDownSelect2"></div>
+                      <div className="size-204 respon6-next">
+                        <select
+                          className="form-select form-select-sm"
+                          name="time"
+                        >
+                          <option>Chọn {options.option_name}</option>
+                          {options.option_values.map((values) => (
+                            <option value={values.id}>
+                              {values.value_name}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="dropDownSelect2"></div>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex-w flex-r-m p-b-10">
-                    <div className="size-203 flex-c-m respon6">Màu</div>
-
-                    <div className="size-204 respon6-next">
-                      <select
-                        className="form-select form-select-sm"
-                        name="time"
-                      >
-                        <option>Chọn màu</option>
-                        <option>Red</option>
-                        <option>Blue</option>
-                        <option>White</option>
-                        <option>Grey</option>
-                      </select>
-                      <div className="dropDownSelect2"></div>
-                    </div>
-                  </div>
+                  ))}
 
                   <div className="flex-w flex-r-m p-b-10">
                     <div className="size-203 flex-c-m respon6">Số lượng</div>
@@ -241,10 +243,7 @@ function Productdetail() {
             <div className="tab01">
               <ul className="nav nav-tabs" role="tablist">
                 <li className="nav-item p-b-10">
-                  <p
-                    className="nav-link active"
-                    role="tab"
-                  >
+                  <p className="nav-link active" role="tab">
                     MÔ TẢ SẢN PHẨM
                   </p>
                   <div className="mt-3">
@@ -445,204 +444,48 @@ function Productdetail() {
           <div className="p-b-45">
             <h3 className="ltext-106 cl5 txt-center">Sản phẩm liên quan</h3>
           </div>
-
           <div className="wrap-slick2">
             <div className="row isotope-grid">
-              <div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
-                <div className="block2">
-                  <div className="block2-pic hov-img0">
-                    <img
-                      src="../../asset/images/product-01.jpg"
-                      alt="IMG-PRODUCT"
-                    />
-
-                    <Link
-                      to="#"
-                      className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                    >
-                      Quick View
-                    </Link>
-                  </div>
-
-                  <div className="block2-txt flex-w flex-t p-t-14">
-                    <div className="block2-txt-child1 flex-col-l ">
-                      <Link
-                        to="product-detail.html"
-                        className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                      >
-                        Esprit Ruffle Shirt
-                      </Link>
-
-                      <span className="stext-105 cl3">$16.64</span>
-                    </div>
-
-                    <div className="block2-txt-child2 flex-r p-t-3">
-                      <Link
-                        to="#"
-                        className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                      >
+              {/* {Array.isArray(relatedProduct) && relatedProduct.length > 0 ? (
+                relatedProduct.map((relatedProduct) => (
+                  <div
+                    className="col-sm-6 col-md-4 col-lg-3 p-b-35"
+                    key={relatedProduct.category_id}
+                  >
+                    <div className="block2">
+                      <div className="block2-pic hov-img0">
                         <img
-                          className="icon-heart1 dis-block trans-04"
-                          src="../../asset/images/icons/icon-heart-01.png"
-                          alt="ICON"
+                          // src={relatedProduct.img || "../../asset/images/default-image.png"}
+                          alt="IMG-PRODUCT"
                         />
-                        <img
-                          className="icon-heart2 dis-block trans-04 ab-t-l"
-                          src="../../asset/images/icons/icon-heart-02.png"
-                          alt="ICON"
-                        />
-                      </Link>
+                        <Link
+                          to="#"
+                          className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                        >
+                          Quick View
+                        </Link>
+                      </div>
+                      <div className="block2-txt flex-w flex-t p-t-14">
+                        <div className="block2-txt-child1 flex-col-l">
+                          <Link
+                            to={`/product/${relatedProduct.category_id}`}
+                            className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
+                          >
+                            {relatedProduct.product_name || "Tên sản phẩm"}
+                          </Link>
+                          <span className="stext-105 cl3">
+                            {relatedProduct.price
+                              ? formatPrice(relatedProduct.price)
+                              : "Liên hệ"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
-                <div className="block2">
-                  <div className="block2-pic hov-img0">
-                    <img
-                      src="../../asset/images/product-02.jpg"
-                      alt="IMG-PRODUCT"
-                    />
-
-                    <Link
-                      to="#"
-                      className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                    >
-                      Quick View
-                    </Link>
-                  </div>
-
-                  <div className="block2-txt flex-w flex-t p-t-14">
-                    <div className="block2-txt-child1 flex-col-l ">
-                      <Link
-                        to="product-detail.html"
-                        className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                      >
-                        Herschel supply
-                      </Link>
-
-                      <span className="stext-105 cl3">$35.31</span>
-                    </div>
-
-                    <div className="block2-txt-child2 flex-r p-t-3">
-                      <Link
-                        to="#"
-                        className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                      >
-                        <img
-                          className="icon-heart1 dis-block trans-04"
-                          src="../../asset/images/icons/icon-heart-01.png"
-                          alt="ICON"
-                        />
-                        <img
-                          className="icon-heart2 dis-block trans-04 ab-t-l"
-                          src="../../asset/images/icons/icon-heart-02.png"
-                          alt="ICON"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
-                <div className="block2">
-                  <div className="block2-pic hov-img0">
-                    <img
-                      src="../../asset/images/product-03.jpg"
-                      alt="IMG-PRODUCT"
-                    />
-
-                    <Link
-                      to="#"
-                      className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                    >
-                      Quick View
-                    </Link>
-                  </div>
-
-                  <div className="block2-txt flex-w flex-t p-t-14">
-                    <div className="block2-txt-child1 flex-col-l ">
-                      <Link
-                        to="product-detail.html"
-                        className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                      >
-                        Only Check Trouser
-                      </Link>
-
-                      <span className="stext-105 cl3">$25.50</span>
-                    </div>
-
-                    <div className="block2-txt-child2 flex-r p-t-3">
-                      <Link
-                        to="#"
-                        className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                      >
-                        <img
-                          className="icon-heart1 dis-block trans-04"
-                          src="../../asset/images/icons/icon-heart-01.png"
-                          alt="ICON"
-                        />
-                        <img
-                          className="icon-heart2 dis-block trans-04 ab-t-l"
-                          src="../../asset/images/icons/icon-heart-02.png"
-                          alt="ICON"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-sm-6 col-md-4 col-lg-3 p-b-35">
-                <div className="block2">
-                  <div className="block2-pic hov-img0">
-                    <img
-                      src="../../asset/images/product-04.jpg"
-                      alt="IMG-PRODUCT"
-                    />
-
-                    <Link
-                      to="#"
-                      className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                    >
-                      Quick View
-                    </Link>
-                  </div>
-
-                  <div className="block2-txt flex-w flex-t p-t-14">
-                    <div className="block2-txt-child1 flex-col-l ">
-                      <Link
-                        to="product-detail.html"
-                        className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                      >
-                        classNameic Trench Coat
-                      </Link>
-
-                      <span className="stext-105 cl3">$75.00</span>
-                    </div>
-
-                    <div className="block2-txt-child2 flex-r p-t-3">
-                      <Link
-                        to="#"
-                        className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                      >
-                        <img
-                          className="icon-heart1 dis-block trans-04"
-                          src="../../asset/images/icons/icon-heart-01.png"
-                          alt="ICON"
-                        />
-                        <img
-                          className="icon-heart2 dis-block trans-04 ab-t-l"
-                          src="../../asset/images/icons/icon-heart-02.png"
-                          alt="ICON"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                ))
+              ) : (
+                <p>Không có sản phẩm liên quan.</p>
+              )} */}
             </div>
           </div>
         </div>

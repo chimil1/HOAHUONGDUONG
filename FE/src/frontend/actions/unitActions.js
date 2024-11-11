@@ -106,6 +106,24 @@ export const fetchAddProduct = (product) => {
   };
 };
 
+export const fetchRelatedProducts = (category_id) => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    return axios 
+      .get(`http://localhost:8000/api/product/related/${category_id}`)
+      .then((response) => {
+        const relatedProducts = response.data;
+        dispatch(fetchUnitsSuccess(relatedProducts));
+        return relatedProducts; 
+     })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+        throw error;
+      });
+  };
+};
+
 //Order
 export const fetchOrders = () => {
     return (dispatch) => {
@@ -328,9 +346,8 @@ export const fetchReview = () => {
       });
   };
 };
+
 //details review
-
-
 export const fetchReviewDetails = (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());

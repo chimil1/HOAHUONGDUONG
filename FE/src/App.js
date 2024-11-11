@@ -5,7 +5,6 @@ import CNDanhMuc from "./frontend/admin/CNDanhMuc";
 import CNDonHang from "./frontend/admin/CNDonHang";
 import CNSanPham from "./frontend/admin/CNSanPham";
 import CNTaiKhoan from "./frontend/admin/CNTaiKhoan";
-import DanhGia from "./frontend/admin/DanhGia";
 import QlDanhMuc from "./frontend/admin/QlDanhMuc";
 import AddCategory from "./frontend/admin/AddCategory";
 import EditCategory from "./frontend/admin/EditCategory";
@@ -17,14 +16,17 @@ import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
 import ProductDetails from "./frontend/admin/ProductDetails";
-
-
+import ReviewDetail from "./frontend/admin/ReviewDetails";
+import Coupons from "./frontend/admin/Coupons";
+import Review from "./frontend/admin/Review";
+import Addcoupon from "./frontend/admin/Addcoupon";
+import EditCoupon from "./frontend/admin/EditCoupon";
+import LoginForm from "./frontend/admin/LoginForm";
 
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
 import Contact from "./frontend/client/Contact";
-import LoginForm from "./frontend/admin/LoginForm";
 import Productdetail from "./frontend/client/Product-detail";
 import Blog from "./frontend/client/Blog";
 import ShoppingCart from "./frontend/client/ShoppingCart";
@@ -33,9 +35,6 @@ import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register"
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
-import Coupons from "./frontend/admin/Coupons";
-import Addcoupon from "./frontend/admin/Addcoupon";
-import EditCoupon from "./frontend/admin/EditCoupon";
 import Shipping from "./frontend/client/Shipping";
 import AddShipping from "./frontend/client/AddShipping";
 import ListAddress from "./frontend/client/listAddess";
@@ -72,7 +71,7 @@ function App() {
           <Route path="/cndonhang" element={<CNDonHang />} />
           <Route path="/cnsanpham" element={<CNSanPham />} />
           <Route path="/cntaikhoan" element={<CNTaiKhoan />} />
-          <Route path="/danhgia" element={<DanhGia />} />
+          <Route path="/review" element={<Review />} />
           <Route path="/qldanhmuc" element={<QlDanhMuc />} />
           <Route path="/addcategory" element={<AddCategory />} />
           <Route path="/editcategory/:id" element={<EditCategory />} />

@@ -23,9 +23,9 @@ function Menu() {
             </Link>
           </li>
             <li className="has-sub">
-              <Link className="js-arrow" to="/DanhGia">
+              <Link className="js-arrow" to="/review">
                 <i className="fas fa-comment-alt"></i>Đánh giá
-                <span className="inbox-num">3</span>
+                {/* <span className="inbox-num">3</span> */}
               </Link>
             </li>
             <li className="has-sub">

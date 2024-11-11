@@ -32,7 +32,7 @@ Route::put('/order/approve/{id}', [OrderController::class, 'approveOrder']);
 Route::apiResource('review', ReviewController::class);
 Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
-
+Route::get('product/related/{category_id}', [ProductController::class, 'getRelatedProducts']);
 
 
 Route::get('checkCode/{code_name}', [CouponController::class, 'checkCode']);
