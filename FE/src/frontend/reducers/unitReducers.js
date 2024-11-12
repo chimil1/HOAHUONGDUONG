@@ -7,6 +7,7 @@ import {
 const initialState = {
     selectedUnit: null, 
     loading: false,
+    user: null,
     units: [],
     error: ''
 };
@@ -23,6 +24,7 @@ const unitReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 units: action.payload,
+                user: action.payload,
                 selectedUnit: action.payload,
                 error: ''
             };
@@ -32,6 +34,7 @@ const unitReducer = (state = initialState, action) => {
                 loading: false,
                 selectedUnit: null,
                 units: [],
+                user: null,
                 error: action.payload
             };
 

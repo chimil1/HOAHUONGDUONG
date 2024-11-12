@@ -19,6 +19,8 @@ class ProductController extends Controller
             ->get();
         $products->map(function ($product) {
             $product->name_category = $product->category->name;
+            $product->img = $product->images->isNotEmpty() ? $product->images->first()->product_img : null;
+            unset($product->images);
             unset($product->category);
             return $product;
         });
@@ -119,7 +121,6 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:categories,id',
                 // 'images' => 'required',
             ]);
-
             $product->update($request->all());
             return response()->json($product);
         } catch (\Exception $e) {

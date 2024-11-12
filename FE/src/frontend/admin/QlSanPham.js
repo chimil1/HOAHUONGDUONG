@@ -81,7 +81,6 @@ function QlSanPham() {
                             <th>Mô tả</th>
                             <th>Trạng thái</th>
                             <th>Danh mục</th>
-                            <th>tác vụ</th>
                           </tr>
                         </thead>
                         <tbody>

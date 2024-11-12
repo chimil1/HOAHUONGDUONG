@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchAddProduct } from "../actions/unitActions";
 import { useForm } from "react-hook-form";
+import {fetchAddProduct} from "../actions/unitActions"
 import Swal from "sweetalert2";
 
 import Footer from "./layout/Footer";
@@ -92,55 +92,35 @@ function AddProduct() {
                         <small className="text-danger">Giá là bắt buộc</small>
                       )}
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="description" className="form-label">
-                        Mô tả
-                      </label>
-                      <textarea
+                    <div class="form-group">
+                      <label for="discountPrice">Mô tả</label>
+                      <input
+                        type="text"
+                        class="form-control"
                         id="description"
+                        name="description"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Trạng thái</label>
+                      <select
                         className="form-control"
-                        rows="4"
-                        {...register("description")}
-                      ></textarea>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="status" className="form-label">
-                        Trạng thái
-                      </label>
-                      <select
-                        id="status"
-                        className="form-select"
-                        {...register("status", { required: true })}
                       >
-                        <option value="">Chọn trạng thái</option>
-                        <option value="0">Đang hoạt động</option>
-                        <option value="1">Không hoạt động</option>
+                        <option value="Có sẵn">Có sẵn</option>
+                        <option value="Hết hàng">Hết hàng</option>
+                        <option value="Đã ngừng cung cấp">Đã ngừng cung cấp</option>
                       </select>
-                      {errors.status && (
-                        <small className="text-danger">
-                          Trạng thái là bắt buộc
-                        </small>
-                      )}
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="category_id" className="form-label">
-                        Danh mục
-                      </label>
+                    <div className="form-group">
+                      <label>Chọn danh mục</label>
                       <select
-                        id="category_id"
-                        className="form-select"
-                        {...register("category_id", { required: true })}
+                        className="form-control"
+
+
                       >
-                        <option value="">Chọn danh mục</option>
-                        <option value="1">Áo thun</option>
-                        <option value="2">Áo khoác</option>
-                        <option value="3">Quần jean</option>
+                        <option value="Quần">Quần</option>
+                        <option value="Áo">Áo</option>
                       </select>
-                      {errors.category_id && (
-                        <small className="text-danger">
-                          Danh mục là bắt buộc
-                        </small>
-                      )}
                     </div>
                     {/* Hình ảnh (Nếu có) */}
                     {/* <div className="mb-3">

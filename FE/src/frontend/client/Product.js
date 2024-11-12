@@ -4,7 +4,7 @@ import Footer from "./layout/Footer";
 import { Link } from "react-router-dom";
 import '../Css/Product.css';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, fetchCategory } from "../actions/unitActions";
+import { fetchProducts, fetchCategory, fetchCategoryType } from "../actions/unitActions";
 
 function Product() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,6 +12,7 @@ function Product() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortOrder, setSortOrder] = useState(null);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const itemsPerPage = 8;
 
   const dispatch = useDispatch();
@@ -70,9 +71,42 @@ function Product() {
   const handleSortChange = (e) => {
     setSortOrder(e.target.value);
     setCurrentPage(1);
+  }
+  const categoryState = useSelector((state) => state.unit);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
   };
 
+  useEffect(() => {
+    dispatch(fetchCategory());
+    dispatch(fetchCategoryType());
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  if (productState.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (productState.error) {
+    return <p>Error: {productState.error}</p>;
+  }
+
+  if (!Array.isArray(productState.units)) {
+    return <p>Error: Data format is incorrect, expected an array.</p>;
+  }
+  if (categoryTypeState.loading) {
+    return <p>Loading...</p>;
+  }
+  if (categoryTypeState.error) {
+    return <p>Error: {categoryTypeState.error}</p>;
+  }
+  if (!Array.isArray(categoryTypeState.units)) {
+    return <p>Error: Data format is incorrect, expected an array.</p>;
+  }
+
   return (
+<<<<<<< HEAD
     <div>
       <Header />
       <div className="bg0 m-t-23 p-b-140">
@@ -236,6 +270,7 @@ function Product() {
             </div>
           </div>
         </div>
+
       </div>
       <Footer />
     </div>

@@ -46,4 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
             'password' => 'hashed',
         ];
     }
+    public function shippingAddresses()
+    {
+        return $this->hasMany(ShippingAddress::class, 'user_id');
+    }
 }

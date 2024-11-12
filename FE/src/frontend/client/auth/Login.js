@@ -37,14 +37,25 @@ function Login() {
         login,
         password,
       });
-      localStorage.setItem("token", response.data.token);
-      setError("");
-      navigate("/home");
+
+      const user = response.data.user;
+
+      if (user.role === 2) {
+        setError("Tài khoản này đã bị khóa.");
+      } else {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(user));
+        setError("");
+        navigate("/home");
+      }
     } catch (error) {
-      setError("Tên đăng nhập hoặc mật khẩu không đúng!");
+      if (error.response && error.response.status === 403) {
+        setError("Tài khoản này đã bị khóa.");
+      } else {
+        setError("Tên đăng nhập hoặc mật khẩu không đúng!");
+      }
     }
   };
-
   const handleGoogleLogin = async () => {
     try {
       const authInstance = gapi.auth2.getAuthInstance();
@@ -52,13 +63,14 @@ function Login() {
         const user = await authInstance.signIn();
         const idToken = user.getAuthResponse().id_token;
 
+        // Gửi idToken đến server để xác thực
         const response = await axios.post("http://127.0.0.1:8000/api/auth/callback", {
           id_token: idToken,
         });
 
         if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-          navigate("/home");
+          localStorage.setItem("token", response.data.token);  // Lưu token vào localStorage
+          navigate("/home");  // Chuyển hướng đến trang home
         } else {
           setError("Đăng nhập không thành công.");
         }

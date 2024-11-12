@@ -1,18 +1,28 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { useState, useEffect } from "react";
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    const userId = localStorage.getItem("user");
+    if (token) {
+      setIsLoggedIn(true);
+      setUserId(userId);
+    } else {
+      setIsLoggedIn(false);
+      setUserId(null);
+    }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setIsLoggedIn(false);
+    setUserId(null);
   };
 
   return (
@@ -70,7 +80,7 @@ function Header() {
                             <i className="fas fa-user"></i>
                           </button>
                           <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                            <Link className="dropdown-item" to="/profile">
+                            <Link className="dropdown-item" to={`/profile/${userId}`}>
                               Tài khoản
                             </Link>
                             <Link className="dropdown-item" to="/profile">

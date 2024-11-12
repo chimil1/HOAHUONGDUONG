@@ -1,174 +1,234 @@
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUser, updateUser } from "../actions/unitActions";
+import { useForm } from "react-hook-form";
+
+import Swal from "sweetalert2";
 
 function Profile() {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const userState = useSelector((state) => state.unit);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("user");
+    if (token) {
+      setIsLoggedIn(true);
+      setUserId(userId);
+    } else {
+      setIsLoggedIn(false);
+      setUserId(null);
+    }
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
+
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchUser(id));
+  }, [dispatch, id]);
+
+  if (userState.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (userState.error) {
+    return <p>Error: {userState.error}</p>;
+  }
+
+  const user = userState.user;
+
+  if (!user) {
+    return <p>No user data available.</p>;
+  }
+
+  const submit = (data, event) => {
+    event.preventDefault();
+    if (newPassword !== confirmPassword) {
+      Swal.fire({
+        text: "Mật khẩu mới và xác nhận mật khẩu không khớp!",
+        icon: "error",
+      });
+      return;
+    }
+
+    const jsonData = {
+      password: data.newPassword,
+      oldPw: data.oldPassword,
+    };
+
+    try {
+      dispatch(updateUser(id, jsonData));
+      Swal.fire({
+        text: "Đổi mật khẩu thành công!",
+        icon: "success",
+      });
+    } catch (error) {
+      Swal.fire({
+        text: "Có lỗi xảy ra khi đổi mật khẩu!",
+        icon: "error",
+      });
+    }
+  };
+
   return (
-    <div>
-      <Header/>
-      <section className="pt-5 " style={{ backgroundColor: "#eee" }}>
-        <div className="container py-5">
-          <div className="row">
-            <div className="col-lg-4">
-              <div className="card mb-4">
-                <div className="card-body text-center">
-                  <img
-                    src="../../asset/images/avatar.jpg"
-                    alt="avatar"
-                    className="rounded-circle img-fluid"
-                    style={{ width: "150px" }}
-                  />
-                  <h5 className="my-3">Phạm Việt Hùng</h5>
-                  <p className="text-success mb-1">pviethung@gmail.com</p>
-                  <p className="text-success mb-4"></p>
+      <div>
+        <Header />
+        <section className="pt-5" style={{ backgroundColor: "#eee" }}>
+          <div className="container py-5">
+            <div className="row">
+              <div className="col-lg-4">
+                <div className="card mb-4">
+                  <div className="card-body text-center">
+                    <img
+                        src="../../asset/images/avatar.jpg"
+                        alt="avatar"
+                        className="rounded-circle img-fluid"
+                        style={{ width: "150px" }}
+                    />
+                    <div>
+                      {userState.user && (
+                          <div>
+                            <h5 className="my-3">{userState.user.name}</h5>
+                            <p className="text-success mb-1">{userState.user.email}</p>
+                          </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="card mb-4 mb-lg-0">
-                <div className="card-body p-0">
-                  <ul className="list-group list-group-flush rounded-3">
-                    <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                      <i
-                        className="fab fa-github fa-lg"
-                        style={{ color: "#333333" }}
-                      ></i>
-                      <p className="mb-0">mdbootstrap</p>
-                    </li>
-                    <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                      <i
-                        className="fab fa-facebook-f fa-lg"
-                        style={{ color: "#3b5998" }}
-                      ></i>
-                      <p className="mb-0">mdbootstrap</p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-8">
-              <div className="card mb-4">
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <p className="mb-0 text-muted">Full Name:</p>
+              <div className="col-lg-8">
+                <div className="card mb-4">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0 text-muted">Họ Và Tên</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-success mb-0">{user.name}</p>
+                      </div>
                     </div>
-                    <div className="col-sm-9">
-                      <p className="text-success mb-0"></p>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0 text-muted">Email:</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-success mb-0">{user.email}</p>
+                      </div>
                     </div>
-                  </div>
-                  <hr />
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <p className="mb-0 text-muted">Email:</p>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0 text-muted">Phone:</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-success mb-0">{user.phone}</p>
+                      </div>
                     </div>
-                    <div className="col-sm-9">
-                      <p className="text-success mb-0"></p>
-                    </div>
-                  </div>
-                  <hr />
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <p className="mb-0 text-muted">Phone:</p>
-                    </div>
-                    <div className="col-sm-9">
-                      <p className="text-success mb-0"></p>
-                    </div>
-                  </div>
-                  <hr />
-
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <p className="mb-0 text-muted">Address:</p>
-                    </div>
-                    <div className="col-sm-9">
-                      <p className="text-success mb-0"></p>
-                    </div>
-                  </div>
-                  <div className="mt-5">
-                    <form action="" method="post">
-                      <Link to="">
-                        {" "}
-                        <button
-                          type="button"
-                          className="btn btn-outline-dark me-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#examppass"
+                    <hr />
+                    <div className="mt-5">
+                      <form action="" method="post">
+                        <Link to="">
+                          <button
+                              type="button"
+                              className="btn btn-outline-dark me-2"
+                              data-bs-toggle="modal"
+                              data-bs-target="#examppass"
+                          >
+                            Đổi mật khẩu
+                          </button>
+                        </Link>
+                        <Link
+                            name=""
+                            className="btn btn-outline-dark me-2"
+                            to={`/listaddress/${userId}`}
                         >
-                          Đổi mật khẩu
-                        </button>
-                      </Link>
-                      <Link name="" className="btn btn-outline-dark me-2" to="/addshipping">Thêm địa chỉ</Link>
-
-                      <Link name="" className="btn btn-outline-dark" to="/shipping">Sửa địa chỉ</Link>
-                    </form>
+                          Địa Chỉ Giao Hàng
+                        </Link>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      {/* Modal */}
-      <div
-        class="modal fade"
-        id="examppass"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div class="modal-content chane">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Đổi Mật Khẩu
-              </h5>
-              <button
-                type="submit"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label for="" class="form-label">
-                  Mật khẩu cũ
-                </label>
-                <input type="password" class="form-control p0" />
+        </section>
+
+        {/* Modal đổi mật khẩu */}
+        <form onSubmit={(e) => handleSubmit((data) => submit(data, e))(e)}>
+          <div
+              className="modal fade"
+              id="examppass"
+              tabIndex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+          >
+            <div className="modal-dialog modal-lg modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Đổi Mật Khẩu
+                  </h5>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                  <div className="mb-3">
+                    <label className="form-label">Mật khẩu cũ</label>
+                    <input
+                        {...register("oldPassword", { required: "Mật khẩu cũ là bắt buộc" })}
+                        type="password"
+                        className="form-control"
+                    />
+                    {errors.oldPassword && <p className="text-danger">{errors.oldPassword.message}</p>}
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Mật khẩu mới</label>
+                    <input
+                        {...register("newPassword", { required: "Mật khẩu mới là bắt buộc" })}
+                        type="password"
+                        className="form-control"
+                    />
+                    {errors.newPassword && <p className="text-danger">{errors.newPassword.message}</p>}
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Nhập lại mật khẩu mới</label>
+                    <input
+                        {...register("confirmPassword", { required: "Xác nhận mật khẩu là bắt buộc" })}
+                        type="password"
+                        className="form-control"
+                    />
+                    {errors.confirmPassword && <p className="text-danger">{errors.confirmPassword.message}</p>}
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                    Đóng
+                  </button>
+                  <button type="submit" className="btn btn-success">
+                    Đồng ý
+                  </button>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="" class="form-label">
-                  Mật khẩu mới
-                </label>
-                <input type="password" class="form-control p1" />
-              </div>
-              <div class="mb-3">
-                <label for="" class="form-label">
-                  Mật khẩu mới
-                </label>
-                <input type="password" class="form-control p2" />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="submit"
-                name=""
-                class="btn btn-success chanepassword"
-              >
-                Đồng ý
-              </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
-      <Footer/>
-    </div>
   );
 }
 
