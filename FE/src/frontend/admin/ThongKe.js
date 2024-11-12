@@ -2,34 +2,67 @@ import React, { useState, useEffect } from "react";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
+
+// Đăng ký các thành phần cần thiết của Chart.js
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 function ThongKe() {
+  // Dữ liệu thật từ API
   const [data, setData] = useState({
-    totalEarnings: 0,
-    productPercent: 0,
-    servicePercent: 0,
+    totalEarningsToday: 0,
+    productCount: 0,
+    DayEarnings: [], // Doanh thu hàng ngày thật
   });
 
   useEffect(() => {
-    // Gọi API để lấy dữ liệu thống kê
-    fetch("http://localhost:3000/api/statistics") // URL API của bạn
+    // Gọi API để lấy dữ liệu thống kê thực tế
+    fetch("http://localhost:8000/api/statistics") // Đường dẫn API thực tế của bạn
       .then((response) => response.json())
       .then((data) => {
         setData({
-          totalEarnings: data.totalEarnings,
-          productPercent: data.productPercent,
-          servicePercent: data.servicePercent,
+          totalEarningsToday: data.totalEarningsToday,
+          productCount: data.productCount,
+          DayEarnings: data.DayEarnings, // Doanh thu hàng ngày
         });
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+  // Dữ liệu cho biểu đồ
+  const chartData = {
+    labels: ["Ngày 1", "Ngày 2", "Ngày 3", "Ngày 4", "Ngày 5", "Ngày 6", "Ngày 7"], // Bạn có thể điều chỉnh nhãn theo nhu cầu
+    datasets: [
+      {
+        label: "Doanh thu hàng ngày",
+        data: data.DayEarnings,
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Biểu đồ doanh thu hàng ngày",
+      },
+    },
+  };
+
   return (
     <div>
       <div className="page-wrapper">
-        <Menu></Menu>
+        <Menu />
         <div className="page-container">
-          <Header></Header>
+          <Header />
           <div className="main-content">
             <div className="section__content section__content--p30">
               <div className="container-fluid">
@@ -42,16 +75,14 @@ function ThongKe() {
                             <i className="zmdi zmdi-account-o"></i>
                           </div>
                           <div className="text">
-
-                            <h2>${data.totalEarnings}</h2>
-                            <span>Tổng thu nhập</span>
+                            <h2>${data.totalEarningsToday}</h2>
+                            <span>Tổng thu nhập hôm nay</span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Product Percent */}
                   <div className="col-sm-6 col-lg-3">
                     <div className="overview-item overview-item--c2">
                       <div className="overview__inner">
@@ -60,42 +91,8 @@ function ThongKe() {
                             <i className="zmdi zmdi-shopping-cart"></i>
                           </div>
                           <div className="text">
-                            <h2>{data.productPercent}</h2>
-                            <span>Sản phẩm</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Service Percent */}
-                  <div className="col-sm-6 col-lg-3">
-                    <div className="overview-item overview-item--c3">
-                      <div className="overview__inner">
-                        <div className="overview-box clearfix">
-                          <div className="icon">
-                            <i className="zmdi zmdi-calendar-note"></i>
-                          </div>
-                          <div className="text">
-                            <h2>{data.servicePercent}%</h2>
-                            <span>Dịch vụ</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Total Orders */}
-                  <div className="col-sm-6 col-lg-3">
-                    <div className="overview-item overview-item--c4">
-                      <div className="overview__inner">
-                        <div className="overview-box clearfix">
-                          <div className="icon">
-                            <i className="zmdi zmdi-money"></i>
-                          </div>
-                          <div className="text">
-                            <h2>{data.productPercent}</h2> {/* Bạn có thể thay bằng dữ liệu đơn hàng */}
-                            <span>Đơn hàng</span>
+                            <h2>{data.productCount}</h2>
+                            <span>Sản phẩm bán được</span>
                           </div>
                         </div>
                       </div>
@@ -103,7 +100,22 @@ function ThongKe() {
                   </div>
                 </div>
 
-                <Footer></Footer>
+                {/* Biểu đồ doanh thu hàng ngày */}
+                <div className="row">
+                  <div className="col-sm-12">
+                    <div className="overview-item">
+                      <div className="overview__inner">
+                        <div className="overview-box clearfix">
+                          <div className="text">
+                            <Bar data={chartData} options={chartOptions} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Footer />
               </div>
             </div>
           </div>

@@ -1,42 +1,99 @@
+import { useEffect, useState } from "react";
+import { fetchProductDetails } from "../actions/unitActions";
+import { useDispatch, useSelector } from "react-redux";
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import { Link } from "react-router-dom";
-import React, { useState,useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 
 function Productdetail() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
   const [rating, setRating] = useState(0); // Trạng thái rating
   const [reviewText, setReviewText] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [reviewCount, setReviewCount] = useState(0);
-    useEffect(() => {
-      async function fetchProductData() {
-        try {
-          const response = await fetch(`/api/product/${}`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch product data');
-          }
-          const productData = await response.json();
-    
-          // Kiểm tra nếu productData và review_count tồn tại
-          if (productData && typeof productData.review_count === 'number') {
-            setReviewCount(productData.review_count); // Cập nhật số lượng đánh giá
-          } else {
-            setReviewCount(0); // Mặc định nếu không có review_count
-          }
-        } catch (error) {
-          console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
-          setReviewCount(0); // Đặt giá trị mặc định nếu có lỗi xảy ra
-        }
-      }
-    
-      fetchProductData();
-    }, [product_id]); 
-
-  // Xử lý click vào sao để cập nhật rating
-  const handleRating = (rate) => {
-    setRating(rate);
+  const productState = useSelector((state) => state.unit);
+  const initialImage =
+    Array.isArray(productState.units.images) &&
+    productState.units.images.length > 0
+      ? productState.units.images[0].product_img
+      : "";
+  const [currentImage, setCurrentImage] = useState(initialImage);
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
   };
+
+  useEffect(() => {
+    dispatch(fetchProductDetails(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (
+      Array.isArray(productState.units.images) &&
+      productState.units.images.length > 0
+    ) {
+      setCurrentImage(productState.units.images[0].product_img);
+    }
+  }, [productState]);
+
+  useEffect(() => {
+    async function fetchProductData() {
+      try {
+        const response = await fetch(`/api/product/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch product data");
+        }
+        const productData = await response.json();
+
+        // Kiểm tra nếu productData và review_count tồn tại
+        if (productData && typeof productData.review_count === "number") {
+          setReviewCount(productData.review_count); // Cập nhật số lượng đánh giá
+        } else {
+          setReviewCount(0); // Mặc định nếu không có review_count
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu sản phẩm:", error);
+        setReviewCount(0); // Đặt giá trị mặc định nếu có lỗi
+      }
+    }
+
+    fetchProductData();
+  }, [id]);
+
+  const product = productState.units;
+  const [quantity, setQuantity] = useState(1);
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleThumbnailClick = (img) => {
+    setCurrentImage(img);
+  };
+
+  if (!product) {
+    return <p>Không có dữ liệu sản phẩm.</p>;
+  }
+
+  if (productState.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (productState.error) {
+    return <p>Lỗi: {productState.error}</p>;
+  }
+
+  if (!product || !productState.units || !productState.units.images) {
+    return <p>Không có dữ liệu sản phẩm.</p>;
+  }
 
   // Xử lý submit form và gửi dữ liệu lên API
   const handleSubmit = async (e) => {
@@ -44,14 +101,13 @@ function Productdetail() {
 
     // Dữ liệu cần gửi lên API
     const reviewData = {
-      product_id: 1, // ID sản phẩm cần được thay thế bằng dynamic product_id
+      product_id: id, // ID sản phẩm động
       review: reviewText,
       rating: rating,
       name: name,
       email: email,
     };
 
-    // Gửi POST request lên API
     try {
       const response = await fetch("/api/review", {
         method: "POST",
@@ -72,7 +128,9 @@ function Productdetail() {
       alert("Đã có lỗi xảy ra, vui lòng thử lại.");
     }
   };
-
+  const handleRating = (ratingValue) => {
+    setRating(ratingValue);
+  };
   return (
     <div>
       <Header></Header>
@@ -95,11 +153,11 @@ function Productdetail() {
             ></i>
           </Link>
 
-          <span className="stext-109 cl4">Lightweight Jacket</span>
+          <span className="stext-109 cl4">{product.product_name}</span>
         </div>
       </div>
 
-      <section className="sec-product-detail bg0 p-t-65 p-b-60">
+      <section className="sec-product-detail bg-light p-5">
         <div className="container">
           <div className="row">
             <div className="col-md-6 col-lg-7 p-b-30">
@@ -108,77 +166,42 @@ function Productdetail() {
                   <div className="wrap-slick3-arrows flex-sb-m flex-w"></div>
                   <div className="slick3 gallery-lb">
                     <div className="gallery-container">
-                      {/* <!-- Hình ảnh lớn --> */}
-                      <div
-                        className="item-slick3 large-image"
-                        data-thumb="../../asset/images/product-detail-01.jpg"
-                      >
-                        <div className="wrap-pic-w pos-relative">
-                          <img
-                            src="../../asset/images/product-detail-01.jpg"
-                            alt="IMG-PRODUCT"
-                          />
-                          <a
-                            className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                            href="../../asset/images/product-detail-01.jpg"
-                          >
-                            <i className="fa fa-expand"></i>
-                          </a>
-                        </div>
+                      {/* Hiển thị hình ảnh lớn */}
+                      <div className="large-image">
+                        {currentImage ? (
+                          <div className="wrap-pic-w pos-relative">
+                            <img src={currentImage} alt="Hình sản phẩm" />
+                          </div>
+                        ) : (
+                          <p>Không có hình ảnh nào cho sản phẩm này.</p>
+                        )}
                       </div>
-                      {/* <!-- Hình ảnh nhỏ --> */}
+
+                      {/* Hình ảnh nhỏ */}
                       <div className="small-images">
-                        <div
-                          className="item-slick3"
-                          data-thumb="../../asset/images/product-detail-02.jpg"
-                        >
-                          <div className="wrap-pic-w pos-relative">
-                            <img
-                              src="../../asset/images/product-detail-02.jpg"
-                              alt="IMG-PRODUCT"
-                            />
-                            <a
-                              className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                              href="../../asset/images/product-detail-02.jpg"
-                            >
-                              <i className="fa fa-expand"></i>
-                            </a>
-                          </div>
-                        </div>
-                        <div
-                          className="item-slick3"
-                          data-thumb="../../asset/images/product-detail-03.jpg"
-                        >
-                          <div className="wrap-pic-w pos-relative">
-                            <img
-                              src="../../asset/images/product-detail-03.jpg"
-                              alt="IMG-PRODUCT"
-                            />
-                            <a
-                              className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                              href="../../asset/images/product-detail-03.jpg"
-                            >
-                              <i className="fa fa-expand"></i>
-                            </a>
-                          </div>
-                        </div>
-                        <div
-                          className="item-slick3"
-                          data-thumb="../../asset/images/product-detail-01.jpg"
-                        >
-                          <div className="wrap-pic-w pos-relative">
-                            <img
-                              src="../../asset/images/product-detail-01.jpg"
-                              alt="IMG-PRODUCT"
-                            />
-                            <a
-                              className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                              href="../../asset/images/product-detail-01.jpg"
-                            >
-                              <i className="fa fa-expand"></i>
-                            </a>
-                          </div>
-                        </div>
+                        {Array.isArray(productState.units.images) &&
+                        productState.units.images.length > 0 ? (
+                          productState.units.images
+                            .slice(0, 4)
+                            .map((item, index) => (
+                              <div
+                                key={index}
+                                className="item-slick3 pos-relative"
+                                onClick={() =>
+                                  handleThumbnailClick(item.product_img)
+                                }
+                              >
+                                <div className="wrap-pic-w pos-relative">
+                                  <img
+                                    src={item.product_img}
+                                    alt={`Hình sản phẩm ${index + 1}`}
+                                  />
+                                </div>
+                              </div>
+                            ))
+                        ) : (
+                          <p>Không có hình ảnh nào cho sản phẩm này.</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -186,15 +209,20 @@ function Productdetail() {
               </div>
             </div>
 
-            <div className="col-md-6 col-lg-5 p-b-30">
+            <div className="col-md-6 col-lg-5 p-b-10">
               <div className="p-r-50 p-t-5 p-lr-0-lg">
                 <h4 className="mtext-105 cl2 js-name-detail p-b-14">
-                  Lightweight Jacket
+                  {product.product_name}
                 </h4>
-
-                <span className="mtext-106 cl2 p-b-5">58.790đ</span>
-                <div className="mtext-106 cl js-name-detail p-b-2 ">Mô tả</div>
-                <p className="stext-102 cl3 p-t-10">gfdsfsfshdfsgfysvdfhs</p>
+                <span className="mtext-106 cl2 p-b-5">
+                  Giá bán: {formatPrice(product.price)}
+                </span>
+                <div className="mt-3">
+                  <h5 className="mtext-100">Mô tả</h5>
+                  <div className="mt-2">
+                    <p className="stext-102">{product.description}</p>
+                  </div>
+                </div>
 
                 <div className="p-t-33">
                   <div className="flex-w flex-r-m p-b-10">
@@ -237,7 +265,10 @@ function Productdetail() {
                     <div className="size-203 flex-c-m respon6">Số lượng</div>
                     <div className="size-204 flex-w flex-m respon6-next">
                       <div className="wrap-num-product flex-w m-r-20 m-tb-10">
-                        <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                        <div
+                          className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+                          onClick={handleDecrease}
+                        >
                           <i className="fs-16 zmdi zmdi-minus"></i>
                         </div>
 
@@ -245,10 +276,14 @@ function Productdetail() {
                           className="mtext-104 cl3 txt-center num-product"
                           type="number"
                           name="num-product"
-                          value="1"
+                          value={quantity}
+                          readOnly
                         />
 
-                        <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                        <div
+                          className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+                          onClick={handleIncrease}
+                        >
                           <i className="fs-16 zmdi zmdi-plus"></i>
                         </div>
                       </div>
@@ -264,42 +299,6 @@ function Productdetail() {
                     Mua hàng
                   </button>
                 </div>
-
-                <div className="flex-w flex-m p-l-100 p-t-40 respon7">
-                  <div className="flex-m bor9 p-r-10 m-r-11">
-                    <Link
-                      to="#"
-                      className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
-                      data-tooltip="Add to Wishlist"
-                    >
-                      <i className="zmdi zmdi-favorite"></i>
-                    </Link>
-                  </div>
-
-                  <Link
-                    to="#"
-                    className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                    data-tooltip="Facebook"
-                  >
-                    <i className="fa fa-facebook"></i>
-                  </Link>
-
-                  <Link
-                    to="#"
-                    className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                    data-tooltip="Twitter"
-                  >
-                    <i className="fa fa-twitter"></i>
-                  </Link>
-
-                  <Link
-                    to="#"
-                    className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                    data-tooltip="Google Plus"
-                  >
-                    <i className="fa fa-google-plus"></i>
-                  </Link>
-                </div>
               </div>
             </div>
           </div>
@@ -308,14 +307,12 @@ function Productdetail() {
             <div className="tab01">
               <ul className="nav nav-tabs" role="tablist">
                 <li className="nav-item p-b-10">
-                  <a
-                    className="nav-link active"
-                    data-toggle="tab"
-                    href="#description"
-                    role="tab"
-                  >
-                    Mô tả
-                  </a>
+                  <p className="nav-link active" role="tab">
+                    MÔ TẢ SẢN PHẨM
+                  </p>
+                  <div className="mt-3">
+                    <p className="stext-102">{product.description}</p>
+                  </div>
                 </li>
 
                 <li className="nav-item p-b-10">
@@ -441,22 +438,44 @@ function Productdetail() {
                               <span className="stext-102 cl3 m-r-16">
                                 Your Rating
                               </span>
+
                               <span className="wrap-rating fs-18 cl11 pointer">
-                                {/* Các sao được render ra */}
-                                {[1, 2, 3, 4, 5].map((rate) => (
-                                  <i
-                                    key={rate}
-                                    className={`item-rating pointer zmdi zmdi-star-outline ${
-                                      rating >= rate ? "zmdi-star" : ""
-                                    }`}
-                                    onClick={() => handleRating(rate)}
-                                  ></i>
-                                ))}
+                                <i
+                                  className={`item-rating pointer zmdi zmdi-star-outline ${
+                                    rating >= 1 ? "zmdi-star" : ""
+                                  }`}
+                                  onClick={() => handleRating(1)}
+                                ></i>
+                                <i
+                                  className={`item-rating pointer zmdi zmdi-star-outline ${
+                                    rating >= 2 ? "zmdi-star" : ""
+                                  }`}
+                                  onClick={() => handleRating(2)}
+                                ></i>
+                                <i
+                                  className={`item-rating pointer zmdi zmdi-star-outline ${
+                                    rating >= 3 ? "zmdi-star" : ""
+                                  }`}
+                                  onClick={() => handleRating(3)}
+                                ></i>
+                                <i
+                                  className={`item-rating pointer zmdi zmdi-star-outline ${
+                                    rating >= 4 ? "zmdi-star" : ""
+                                  }`}
+                                  onClick={() => handleRating(4)}
+                                ></i>
+                                <i
+                                  className={`item-rating pointer zmdi zmdi-star-outline ${
+                                    rating >= 5 ? "zmdi-star" : ""
+                                  }`}
+                                  onClick={() => handleRating(5)}
+                                ></i>
                                 <input
                                   className="dis-none"
                                   type="number"
                                   name="rating"
                                   value={rating}
+                                  readOnly
                                 />
                               </span>
                             </div>
@@ -527,12 +546,6 @@ function Productdetail() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
-          <span className="stext-107 cl6 p-lr-25">SKU: JAK-01</span>
-
-          <span className="stext-107 cl6 p-lr-25">Categories: Jacket, Men</span>
         </div>
       </section>
 
