@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 export const FETCH_UNITS_REQUEST = "FETCH_UNITS_REQUEST";
 export const FETCH_UNITS_SUCCESS = "FETCH_UNITS_SUCCESS";
 export const FETCH_UNITS_FAILURE = "FETCH_UNITS_FAILURE";
@@ -32,7 +31,7 @@ export const fetchUser = (id) => {
         axios
             .get(`${url}/user/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Gửi token trong header
+                    Authorization: `Bearer ${token}`,
                 },
             })
             .then((response) => {

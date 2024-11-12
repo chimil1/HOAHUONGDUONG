@@ -17,10 +17,9 @@ function QlDanhMuc() {
   }, [dispatch]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Số mục mỗi trang
+  const productPerPage = 5;
 
   const handleDelete = (id) => {
-    // Lấy sản phẩm liên quan đến danh mục
     dispatch(fetchRelatedProducts(id)).then((relatedProducts) => {
       if (relatedProducts.length > 0) {
         Swal.fire({
@@ -70,14 +69,22 @@ function QlDanhMuc() {
     );
   }
 
-  // Tính toán phân trang
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = categoryState.units.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(categoryState.units.length / itemsPerPage);
+  const indexOfLastOrder = currentPage * productPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - productPerPage;
+  
+  const currentItems = [...categoryState.units]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(indexOfFirstOrder, indexOfLastOrder);
+  
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const totalPages = Math.ceil(categoryState.units.length / productPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -155,17 +162,25 @@ function QlDanhMuc() {
                           ))}
                         </tbody>
                       </table>
-                      <nav>
-                        <ul className="pagination justify-content-center">
-                          {Array.from({ length: totalPages }, (_, index) => (
-                            <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                              <button className="page-link" onClick={() => handlePageChange(index + 1)}>
-                                {index + 1}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </nav>
+                      <div className="pagination-center d-flex justify-content-between align-items-center mt-3" style={{ width: "300px", margin: "0 auto" }}>
+                        <button
+                          onClick={handlePrevPage}
+                          disabled={currentPage === 1}
+                          className="btn btn-outline-dark mr-2"
+                        >
+                          Trang trước
+                        </button>
+                        <span>
+                          Trang {currentPage} / {totalPages}
+                        </span>
+                        <button
+                          onClick={handleNextPage}
+                          disabled={currentPage === totalPages}
+                          className="btn btn-outline-dark mr-2c"
+                        >
+                          Trang sau
+                        </button>
+                      </div>
                     </div>
                     <div className="card-footer">
                       <Footer />

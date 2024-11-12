@@ -1,7 +1,7 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrders, approveOrder } from "../actions/unitActions";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,13 +11,16 @@ function QlDonHang() {
   const navigate = useNavigate();
   const unitState = useSelector((state) => state.unit);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 5;
+
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
-
+  
   const handleApproveOrder = (id) => {
     dispatch(approveOrder(id));
-    navigate("/qldonhang"); 
+    navigate("/qldonhang");
   };
 
   if (unitState.loading) {
@@ -31,6 +34,23 @@ function QlDonHang() {
   if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
     return <p>Lỗi: Định dạng dữ liệu không chính xác hoặc không có đơn hàng nào.</p>;
   }
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  
+  const currentOrders = [...unitState.units]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(indexOfFirstOrder, indexOfLastOrder);
+  
+
+  const totalPages = Math.ceil(unitState.units.length / ordersPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div className="page-wrapper">
@@ -63,7 +83,7 @@ function QlDonHang() {
                           </tr>
                         </thead>
                         <tbody>
-                          {unitState.units.map((item) => (
+                          {currentOrders.map((item) => (
                             <tr key={item.id} className="tr-shadow">
                               <td>
                                 <img src="https://via.placeholder.com/50" alt="Hình ảnh" />
@@ -72,11 +92,11 @@ function QlDonHang() {
                               <td>{item.shipping_address || "Không có thông tin"}</td>
                               <td>{item.shipping_phone || "Không có thông tin"}</td>
                               <td>
-                              {item.status === 0 ? (
-                                <span className="badge badge-success">Đã xác nhận</span>
-                              ) : (
-                                <span className="badge badge-warning">Chờ xác nhận</span>
-                              )}
+                                {item.status === 0 ? (
+                                  <span className="badge badge-success">Đã xác nhận</span>
+                                ) : (
+                                  <span className="badge badge-warning">Chờ xác nhận</span>
+                                )}
                               </td>
                               <td>
                                 {item.payment_type === 0 ? (
@@ -109,9 +129,28 @@ function QlDonHang() {
                           ))}
                         </tbody>
                       </table>
+                      <div className="pagination-center d-flex justify-content-between align-items-center mt-3" style={{ width: "300px", margin: "0 auto" }}>
+                        <button
+                          onClick={handlePrevPage}
+                          disabled={currentPage === 1}
+                          className="btn btn-outline-dark mr-2"
+                        >
+                          Trang trước
+                        </button>
+                        <span>
+                          Trang {currentPage} / {totalPages}
+                        </span>
+                        <button
+                          onClick={handleNextPage}
+                          disabled={currentPage === totalPages}
+                          className="btn btn-outline-dark mr-2c"
+                        >
+                          Trang sau
+                        </button>
+                      </div>
                     </div>
                     <div className="card-footer">
-                      <Footer />
+                      <Footer />     
                     </div>
                   </div>
                 </div>

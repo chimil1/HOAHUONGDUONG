@@ -17,15 +17,10 @@ function Product() {
 
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
-  const categoryTypeState = useSelector((state) => state.unit);
+  // const categoryTypeState = useSelector((state) => state.unit);
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
   };
-
-  useEffect(() => {
-    dispatch(fetchCategory());
-    dispatch(fetchProducts());
-  }, [dispatch]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -33,12 +28,19 @@ function Product() {
   };
 
   // Lọc sản phẩm theo các điều kiện tìm kiếm và bộ lọc
-  let filteredProducts = productState.units.filter((product) => {
-    const price = product.price;
-    const min = minPrice ? parseFloat(minPrice) : -Infinity;
-    const max = maxPrice ? parseFloat(maxPrice) : Infinity;
-    return price >= min && price <= max && product.product_name.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  let filteredProducts = Array.isArray(productState.units)
+  ? productState.units.filter((product) => {
+      const price = product.price;
+      const min = minPrice ? parseFloat(minPrice) : -Infinity;
+      const max = maxPrice ? parseFloat(maxPrice) : Infinity;
+      return (
+        price >= min &&
+        price <= max &&
+        product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    })
+  : [];
+
 
   if (sortOrder === "asc") {
     filteredProducts.sort((a, b) => a.price - b.price);
@@ -52,7 +54,7 @@ function Product() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCatetype = categoryTypeState.units.slice(indexOfFirstItem, indexOfLastItem);
+  // const currentCatetype = categoryTypeState.units.slice(indexOfFirstItem, indexOfLastItem);
   const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -95,18 +97,17 @@ function Product() {
   if (!Array.isArray(productState.units)) {
     return <p>Error: Data format is incorrect, expected an array.</p>;
   }
-  if (categoryTypeState.loading) {
-    return <p>Loading...</p>;
-  }
-  if (categoryTypeState.error) {
-    return <p>Error: {categoryTypeState.error}</p>;
-  }
-  if (!Array.isArray(categoryTypeState.units)) {
-    return <p>Error: Data format is incorrect, expected an array.</p>;
-  }
+  // if (categoryTypeState.loading) {
+  //   return <p>Loading...</p>;
+  // }
+  // if (categoryTypeState.error) {
+  //   return <p>Error: {categoryTypeState.error}</p>;
+  // }
+  // if (!Array.isArray(categoryTypeState.units)) {
+  //   return <p>Error: Data format is incorrect, expected an array.</p>;
+  // }
 
   return (
-<<<<<<< HEAD
     <div>
       <Header />
       <div className="bg0 m-t-23 p-b-140">
@@ -176,9 +177,9 @@ function Product() {
                       data-reference="parent" id="dropdownMenuOffset">Quần
                     </button>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                      {currentCatetype.map((cate) => (
+                      {/* {currentCatetype.map((cate) => (
                         <Link className="dropdown-item" href="#">{cate.name}</Link>
-                      ))}
+                      ))} */}
                     </div>
                   </div>
                   <div className="btn-group">

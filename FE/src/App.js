@@ -41,7 +41,7 @@ import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import Shipping from "./frontend/client/Shipping";
-import AddShipping from "./frontend/client/AddShipping";
+import AddShipping from "./frontend/client/addshipping";
 import Search from "./frontend/client/Search";
 import ListAddress from "./frontend/client/ShippingList";
 
@@ -60,9 +60,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/shipping" element={<Shipping />} />
-          <Route path="/addshipping" element={<AddShipping />} />
+          <Route path="/addshipping/:id" element={<AddShipping />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -72,7 +72,7 @@ function App() {
           <Route path="/listaddress/:id" element={<ListAddress />} />
 
           {/* Các Route cho admin */}
-          <Route path="/admin" element={<ThongKe />} />
+          <Route path="/admin" element={<LoginForm />} />
           <Route path="/thongke" element={<ThongKe />} />
           <Route path="/cndanhmuc" element={<CNDanhMuc />} />
           <Route path="/cndonhang" element={<CNDonHang />} />
@@ -104,7 +104,7 @@ function App() {
           <Route path="/reviewdetail" element={<ReviewDetail />} />
           <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/admin/login" element={<LoginForm />} />
+          {/* <Route path="/admin/login" element={<LoginForm />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

@@ -20,6 +20,8 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
+Route::post('loginadmin', [UserController::class, 'loginAdmin']);
+
 Route::post('shipping-addresses/{user_id}', [ShippingAddressController::class, 'store']);
 
 
