@@ -11,7 +11,6 @@ import EditCategory from "./frontend/admin/EditCategory";
 import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
-import QlNhanVien from "./frontend/admin/QlNhanVien";
 import QlSanPham from "./frontend/admin/QlSanPham";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import OrderDetail from "./frontend/admin/orderDetail";
@@ -88,7 +87,6 @@ function App() {
           <Route path="/qldonhang" element={<QlDonHang />} />
           <Route path="/qldonhang/:id" element={<QlDonHang />} />
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
-          <Route path="/qlnhanvien" element={<QlNhanVien />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/productdetail" element={<ProductDetails />} />
           <Route path="/productdetail/:id" element={<ProductDetails />} />

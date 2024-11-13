@@ -18,10 +18,11 @@ function Menu() {
               </Link>
             </li>
             <li className="has-sub">
-            <Link className="js-arrow" to="/coupon">
-            <i className="fa fa-ticket"></i>Mã giảm giá
-            </Link>
-          </li>
+              <Link className="js-arrow" to="/qldonhang">
+                <i className="fas fa-shopping-basket"></i>Đơn hàng
+                <span className="inbox-num">1</span>
+              </Link>
+            </li>
             <li className="has-sub">
               <Link className="js-arrow" to="/review">
                 <i className="fas fa-comment-alt"></i>Đánh giá

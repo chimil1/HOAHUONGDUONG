@@ -31,6 +31,8 @@ function EditCategory() {
       setValue("name", categoryState.selectedUnit.name);
       setValue("description", categoryState.selectedUnit.description);
       setValue("status", categoryState.selectedUnit.status);
+      // Assuming image data might come as URL
+      setValue("img", categoryState.selectedUnit.img);
     }
   }, [categoryState.selectedUnit, setValue]);
 
@@ -109,6 +111,15 @@ function EditCategory() {
                             Mô tả sản phẩm không được bỏ trống!
                           </span>
                         )}
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="file-input">Hình ảnh</label>
+                        <input
+                          {...register("img")}
+                          type="file"
+                          className="form-control"
+                          id="file-input"
+                        />
                       </div>
                       <div className="form-group">
                         <label htmlFor="status">Trạng thái</label>

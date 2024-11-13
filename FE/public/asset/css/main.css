@@ -1467,43 +1467,24 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 .gallery-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 2px solid #f4eeee;
-  border-radius: 10px;
-  background-color: #ffffff;
-  padding: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .large-image {
-  margin-bottom: 20px;
-}
-
-.col-md-6.col-lg-5 {
-  margin-top: 10px;
+  width: 70%; /* Hình ảnh lớn chiếm 70% chiều rộng */
 }
 
 .small-images {
   display: flex;
-  gap: 20px; 
-  justify-content: center;
-}
-
-.item-slick3:hover {
-  transform: scale(1.05); /* Phóng to hình ảnh khi hover */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Thêm bóng đổ khi hover */
-}
-
-.item-slick3 {
-  cursor: pointer;
-  width: 100px; 
-  height: auto;
-  border: 2px solid #ffffff;
-  border-radius: 10px; 
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25%; /* Hình ảnh nhỏ chiếm 25% chiều rộng */
+  margin-left: 20px; /* Tạo khoảng cách giữa hình lớn và hình nhỏ */
 }
 
 .small-images .item-slick3 {
-  margin-bottom: 10px;
+  margin-bottom: 10px; /* Khoảng cách giữa các hình nhỏ */
 }
 
 .item-slick3 img {
@@ -1513,12 +1494,6 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 .wrap-pic-w {
   position: relative;
-}
-
-.wrap-pic-w img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
 }
 
 .how-pos1 {
@@ -2319,10 +2294,6 @@ input.num-product::-webkit-inner-spin-button {
 
 /*//////////////////////////////////////////////////////////////////
 [ M-Text 16 - 25 ]*/
-.mtext-100 {
-  color: black;
-  font-size: 18x;
-}
 .mtext-101 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 18px;
@@ -2355,10 +2326,9 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 .mtext-106 {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 20px;
+  font-family: Poppins-SemiBold;
+  font-size: 18px;
   line-height: 1.388888;
-  color: red;
 }
 
 .mtext-107 {
@@ -3181,6 +3151,17 @@ input.num-product::-webkit-inner-spin-button {
   color: #000000;
 }
 
+/*---------------------------------------------*/
+.hov-btn3:hover {
+  border-color: #000000;
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+.hov-btn3:hover i {
+  color: #fff;
+}
 
 /*---------------------------------------------*/
 .hov-tag1:hover {
@@ -3406,20 +3387,4 @@ input.num-product::-webkit-inner-spin-button {
     padding: 20px;
   }
 
-}
-
-.block2-pic {
-  position: relative;
-}
-
-.cart-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.block2-pic:hover .cart-button {
-  opacity: 1;
 }

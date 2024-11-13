@@ -9,7 +9,6 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
-    "firebase": "^11.0.1",
     "force": "^0.0.3",
     "gapi-script": "^1.2.0",
     "jwt-decode": "^4.0.0",

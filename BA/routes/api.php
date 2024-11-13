@@ -13,6 +13,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CategoriController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ShippingAddressController;
+use App\Http\Controllers\StatisticalController;
 
 
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
@@ -42,6 +43,9 @@ Route::put('/order/approve/{id}', [OrderController::class, 'approveOrder']);
 Route::apiResource('review', ReviewController::class);
 Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
+Route::apiResource('review', ReviewController::class);
+Route::get('/product/{id}', [ProductController::class, 'show']);
+Route::get('/statistical', [StatisticalController::class, 'getStatistics']);
 
 Route::get('product/related/{category_id}', [ProductController::class, 'getRelatedProducts']);
 

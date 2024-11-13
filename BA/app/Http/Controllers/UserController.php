@@ -53,12 +53,12 @@ class UserController extends Controller
             'login' => 'required',
             'password' => 'required'
         ]);
-    
+
         try {
             $user = User::where('email', $request->login)
                 ->orWhere('phone', $request->login)
                 ->first();
-    
+
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json(['message' => 'Tên đăng nhập hoặc mật khẩu không chính xác'], 401);
             }
@@ -66,25 +66,25 @@ class UserController extends Controller
             if ($user->role == 2) {
                 return response()->json(['message' => 'Tài khoản này đã bị khóa'], 402);
             }
-            
+
             if ($user->role !== 0) {
                 return response()->json(['message' => 'Bạn không có quyền truy cập'], 403);
             }
-    
+
             $token = $user->createToken('auth_token')->plainTextToken;
-    
+
             return response()->json([
                 'user' => $user->id,
                 'token' => $token,
                 'message' => 'Đăng nhập thành công'
             ]);
-    
+
         } catch (\Exception $e) {
             // Xử lý lỗi và trả về thông báo lỗi
             return response()->json(['message' => 'Đã xảy ra lỗi trong quá trình đăng nhập', 'error' => $e->getMessage()], 500);
         }
     }
-    
+
 
     public function login(Request $request)
     {

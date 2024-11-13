@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Coupon;
 // use App\Http\Requests\CouponRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+
 class CouponController extends Controller
 {
     /**
@@ -94,16 +94,4 @@ class CouponController extends Controller
         $coupon->delete();
         return response()->json(null, 204);
     }
-
-    public function checkCode($code_name)
-    {
-        $existingCoupon = Coupon::where('code_name', $code_name)->first();
-        if ($existingCoupon) {
-            // Trả về mã 409 (Conflict) nếu mã giảm giá đã tồn tại
-            return response()->json(['message' => 'Mã giảm giá đã tồn tại'], Response::HTTP_CONFLICT);
-        }
-        // Trả về mã 200 (OK) nếu mã giảm giá hợp lệ
-        return response()->json(['message' => 'Mã giảm giá hợp lệ'], Response::HTTP_OK);
-    }
-    
 }
