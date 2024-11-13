@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThongKe from "./frontend/admin/ThongKe";
 import CNDanhMuc from "./frontend/admin/CNDanhMuc";
 import CNDonHang from "./frontend/admin/CNDonHang";
-import CNNhanVien from "./frontend/admin/CNNhanVien";
 import CNSanPham from "./frontend/admin/CNSanPham";
 import CNTaiKhoan from "./frontend/admin/CNTaiKhoan";
 import QlDanhMuc from "./frontend/admin/QlDanhMuc";
@@ -12,6 +11,7 @@ import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
+import EditProduct from "./frontend/admin/EditProduct";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
@@ -31,6 +31,7 @@ import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
 import Contact from "./frontend/client/Contact";
+import LoginForm from "./frontend/admin/LoginForm";
 import Productdetail from "./frontend/client/Product-detail";
 import Blog from "./frontend/client/Blog";
 import ShoppingCart from "./frontend/client/ShoppingCart";
@@ -56,7 +57,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
-          
+
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/addshipping/:id" element={<AddShipping />} />
           <Route path="/login" element={<Login />} />
@@ -72,7 +73,6 @@ function App() {
           <Route path="/thongke" element={<ThongKe />} />
           <Route path="/cndanhmuc" element={<CNDanhMuc />} />
           <Route path="/cndonhang" element={<CNDonHang />} />
-          <Route path="/cnnhanvien" element={<CNNhanVien />} />
           <Route path="/cnsanpham" element={<CNSanPham />} />
           <Route path="/cntaikhoan" element={<CNTaiKhoan />} />
           <Route path="/review" element={<Review />} />
@@ -99,7 +99,8 @@ function App() {
           <Route path="/reviewdetail" element={<ReviewDetail />} />
           <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
           <Route path="/home" element={<Home />} />
-          {/* <Route path="/admin/login" element={<LoginForm />} /> */}
+            <Route path="/editProduct/:id" element={<EditProduct />} />
+            {/* <Route path="/admin/login" element={<LoginForm />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
