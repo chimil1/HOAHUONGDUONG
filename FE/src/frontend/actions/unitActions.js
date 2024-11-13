@@ -270,3 +270,19 @@ export const fetchReviewDetails = (id) => {
       });
   };
 };
+
+export const fetchStatiscal = () => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    axios
+      .get(`http://localhost:8000/api/statistical`)
+      .then((response) => {
+        const units = response.data;
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};

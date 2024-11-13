@@ -32,13 +32,13 @@ import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register"
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
-import Coupons from "./frontend/admin/Coupons";
-import Addcoupon from "./frontend/admin/Addcoupon";
-import EditCoupon from "./frontend/admin/EditCoupon";
-import Shipping from "./frontend/client/Shipping";
-import AddShipping from "./frontend/client/AddShipping";
-import ListAddress from "./frontend/client/listAddess";
-import Search from "./frontend/client/Search";
+// import Coupons from "./frontend/admin/Coupons";
+// import Addcoupon from "./frontend/admin/Addcoupon";
+// import EditCoupon from "./frontend/admin/EditCoupon";
+// import Shipping from "./frontend/client/Shipping";
+// import AddShipping from "./frontend/client/AddShipping";
+// import ListAddress from "./frontend/client/listAddess";
+// import Search from "./frontend/client/Search";
 import ReviewDetail from "./frontend/admin/ReviewDetails";
 
 function App() {
@@ -55,15 +55,15 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
-          <Route path="/search" element={<Search />} />
+          {/* <Route path="/search" element={<Search />} /> */}
           <Route path='/profile' element={<Profile />}/>
-          <Route path='/shipping' element={<Shipping />}/>
-          <Route path='/addshipping'  element={<AddShipping />}/>
+          {/* <Route path='/shipping' element={<Shipping />}/> */}
+          {/* <Route path='/addshipping'  element={<AddShipping />}/> */}
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
           <Route path='/forgot-password'  element={<ForgotPassword />}/>
           <Route path='/reset-password'  element={<ConfirmPassword />}/>
-          <Route path='/listaddress'  element={<ListAddress/>}/>
+          {/* <Route path='/listaddress'  element={<ListAddress/>}/> */}
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
@@ -76,7 +76,7 @@ function App() {
           <Route path="/qldanhmuc" element={<QlDanhMuc />} />
           <Route path="/addcategory" element={<AddCategory />} />
           <Route path="/editcategory/:id" element={<EditCategory />} />
-          <Route path="/editcoupon/:id" element={<EditCoupon />} />
+          {/* <Route path="/editcoupon/:id" element={<EditCoupon />} /> */}
           <Route path="/qldanhsach" element={<QlDanhSach />} />
           <Route path="/qldonhang" element={<QlDonHang />} />
           <Route path="/qldonhang/:id" element={<QlDonHang />} />
@@ -88,8 +88,8 @@ function App() {
           <Route path="/orderdetails/:id" element={<OrderDetail />} />
           <Route path="/orderdetails" element={<OrderDetail />} />
           <Route path="/addproduct" element={<AddProduct />} />
-          <Route path="/coupon" element={<Coupons />} />
-          <Route path="/Addcoupon" element={<Addcoupon />} />
+          {/* <Route path="/coupon" element={<Coupons />} /> */}
+          {/* <Route path="/Addcoupon" element={<Addcoupon />} /> */}
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/reviewdetail" element={<ReviewDetail />} />
           <Route path="/reviewdetail/:id" element={<ReviewDetail />} />

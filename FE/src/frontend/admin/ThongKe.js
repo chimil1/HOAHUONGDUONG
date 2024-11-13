@@ -1,44 +1,106 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
+import { fetchStatiscal } from "../actions/unitActions";
+import { useSelector, useDispatch } from "react-redux";
 
 // Đăng ký các thành phần cần thiết của Chart.js
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 function ThongKe() {
-  // Dữ liệu thật từ API
-  const [data, setData] = useState({
-    totalEarningsToday: 0,
-    productCount: 0,
-    DayEarnings: [], // Doanh thu hàng ngày thật
-  });
+  const dispatch = useDispatch();
+  const StatisticalState = useSelector((state) => state.unit);
 
   useEffect(() => {
-    // Gọi API để lấy dữ liệu thống kê thực tế
-    fetch("http://localhost:8000/api/statistics") // Đường dẫn API thực tế của bạn
-      .then((response) => response.json())
-      .then((data) => {
-        setData({
-          totalEarningsToday: data.totalEarningsToday,
-          productCount: data.productCount,
-          DayEarnings: data.DayEarnings, // Doanh thu hàng ngày
-        });
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+    dispatch(fetchStatiscal());
+  }, [dispatch]);
+
+  const { units } = StatisticalState; // Destructure units directly
+
+  // Đảm bảo dữ liệu có sẵn trước khi sử dụng
+  const totalEarningsToday = units?.totalEarningsToday || [];
+  const productCount = units?.productCount || 0;
+
+  const selectednow = new Date().toISOString().split("T")[0]; // Ngày hiện tại
+
+  // Lọc dữ liệu cho ngày hôm nay
+  const filteredEarningsToday = totalEarningsToday.filter(
+    (item) => item.date === selectednow
+  );
+
+  // Tính tổng doanh thu cho ngày hôm nay
+  const totalAmountForSelectedDay = filteredEarningsToday.reduce(
+    (sum, item) => sum + item.total_amount,
+    0
+  );
+
+  // Tính doanh thu cho các ngày trước (ngoại trừ hôm nay)
+  // const dailyAmounts = totalEarningsToday.filter(
+  //   (item) => item.date !== selectednow
+  // );
+  
+  // const totalAmountForSelectedDays = dailyAmounts.reduce(
+  //   (acc, current) => {
+  //     const amount = current.total_amount || 0; // Nếu không có total_amount thì sử dụng 0
+  //     return acc + amount;
+  //   },
+  //   0
+  // );
 
   // Dữ liệu cho biểu đồ
+  const generateDateRange = (startDate, endDate) => {
+    const dates = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      dates.push(currentDate.toISOString().split("T")[0]); // Format as YYYY-MM-DD
+      currentDate.setDate(currentDate.getDate() + 1); // Increment by 1 day
+    }
+    return dates;
+  };
+
+  // Chọn ngày bắt đầu và kết thúc (ví dụ: tháng này)
+  const startOfMonth = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    1
+  );
+  const endOfMonth = new Date();
+
+  // Lấy tất cả các ngày trong tháng
+  const allDatesInMonth = generateDateRange(startOfMonth, endOfMonth);
+
+  // Tạo dữ liệu cho biểu đồ, đảm bảo tất cả các ngày trong tháng đều có mặt
   const chartData = {
-    labels: ["Ngày 1", "Ngày 2", "Ngày 3", "Ngày 4", "Ngày 5", "Ngày 6", "Ngày 7"], // Bạn có thể điều chỉnh nhãn theo nhu cầu
+    labels: allDatesInMonth,
     datasets: [
       {
         label: "Doanh thu hàng ngày",
-        data: data.DayEarnings,
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
+        data: allDatesInMonth.map((date) => {
+          const earnings = totalEarningsToday.find(
+            (item) => item.date === date
+          );
+          return earnings ? earnings.total_amount : 0; // Nếu không có dữ liệu thì trả về 0
+        }),
+        backgroundColor: "rgba(75, 192, 192, 0.5)", // Thêm màu nền cho thanh
+        borderColor: "rgba(75, 192, 192, 1)", // Màu viền của thanh
         borderWidth: 1,
       },
     ],
@@ -46,13 +108,23 @@ function ThongKe() {
 
   const chartOptions = {
     responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            return value.toLocaleString(); // Format số liệu cho trục y (hiển thị có dấu phẩy ngăn cách hàng nghìn)
+          },
+        },
+      },
+    },
     plugins: {
       legend: {
         position: "top",
       },
       title: {
         display: true,
-        text: "Biểu đồ doanh thu hàng ngày",
+        text: "Biểu đồ doanh thu hàng ngày", // Tiêu đề biểu đồ
       },
     },
   };
@@ -75,7 +147,9 @@ function ThongKe() {
                             <i className="zmdi zmdi-account-o"></i>
                           </div>
                           <div className="text">
-                            <h2>${data.totalEarningsToday}</h2>
+                            <h2>
+                              {totalAmountForSelectedDay.toLocaleString()}
+                            </h2>
                             <span>Tổng thu nhập hôm nay</span>
                           </div>
                         </div>
@@ -91,13 +165,32 @@ function ThongKe() {
                             <i className="zmdi zmdi-shopping-cart"></i>
                           </div>
                           <div className="text">
-                            <h2>{data.productCount}</h2>
+                            <h2>{productCount}</h2>
                             <span>Sản phẩm bán được</span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* Hiển thị tổng doanh thu cho các ngày trước */}
+                  {/* <div className="col-sm-6 col-lg-3">
+                    <div className="overview-item overview-item--c1">
+                      <div className="overview__inner">
+                        <div className="overview-box clearfix">
+                          <div className="icon">
+                            <i className="zmdi zmdi-account-o"></i>
+                          </div>
+                          <div className="text">
+                            <h2>
+                              {totalAmountForSelectedDays.toLocaleString()}
+                            </h2>
+                            <span>Tổng thu nhập các ngày đã chọn</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> */}
                 </div>
 
                 {/* Biểu đồ doanh thu hàng ngày */}

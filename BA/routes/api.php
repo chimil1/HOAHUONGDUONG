@@ -13,14 +13,14 @@ use App\Http\Controllers\CategoriController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\StatisticalController;
 
-Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
-Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.reset');
+// Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
+// Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.reset');
 
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 
-Route::get('/auth/redirect', [GoogleController::class, 'redirectToProvider']);
-Route::post('/auth/callback', [GoogleController::class, 'handleProviderCallback']);
+// Route::get('/auth/redirect', [GoogleController::class, 'redirectToProvider']);
+// Route::post('/auth/callback', [GoogleController::class, 'handleProviderCallback']);
 
 Route::get('/products/search', [ProductController::class, 'search']);
 
@@ -34,6 +34,6 @@ Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
 Route::apiResource('review', ReviewController::class);
 Route::get('/product/{id}', [ProductController::class, 'show']);
-Route::post('/statistical/store', [StatisticalController::class, 'storeStatistics']);
+Route::get('/statistical', [StatisticalController::class, 'getStatistics']);
 
 Route::get('checkCode/{code_name}', [CouponController::class, 'checkCode']);
