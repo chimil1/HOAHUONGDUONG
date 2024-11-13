@@ -17,14 +17,15 @@ function Product() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
   const categoryTypeState = useSelector((state) => state.unit);
-  const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
-  };
 
+  const formatPrice = (amount) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+  };
   useEffect(() => {
     dispatch(fetchCategory());
     dispatch(fetchProducts());
   }, [dispatch]);
+
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -39,6 +40,11 @@ function Product() {
     return price >= min && price <= max && product.product_name.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+  
+
   if (sortOrder === "asc") {
     filteredProducts.sort((a, b) => a.price - b.price);
   } else if (sortOrder === "desc") {
@@ -47,6 +53,14 @@ function Product() {
     filteredProducts.sort((a, b) => a.product_name.localeCompare(b.product_name));
   } else if (sortOrder === "z-a") {
     filteredProducts.sort((a, b) => b.product_name.localeCompare(a.product_name));
+  }
+  
+  if (productState.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (productState.error) {
+    return <p>Error: {productState.error}</p>;
   }
 
   const indexOfLastItem = currentPage * itemsPerPage;

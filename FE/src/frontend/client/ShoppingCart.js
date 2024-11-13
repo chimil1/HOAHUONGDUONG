@@ -1,7 +1,59 @@
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-
+import { CartItem, removeFromCart } from "../actions/unitActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
 function ShoppingCart() {
+  const dispatch = useDispatch();
+  const cartitems = useSelector((state) => state.unit);
+  //format giá sản phẩm
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  };
+
+  useEffect(() => {
+    dispatch(CartItem());
+  }, [dispatch]);
+  useEffect(() => {
+    if (!cartitems.units || cartitems.units.length === 0) {
+      dispatch(CartItem()); // Gọi lại sản phẩm nếu giỏ hàng trống
+    }
+  }, [dispatch, cartitems.units]);
+  
+  // Hàm xóa sản phẩm khỏi giỏ hàng
+  const handleRemoveItem = (id) => {
+    dispatch(removeFromCart(id));
+    Swal.fire({
+      icon: "success",
+      title: "Xóa sản phẩm thành công!",
+      showConfirmButton: false,
+      timer: 500
+    });
+  };
+  const units = Array.isArray(cartitems.units) ? cartitems.units : [];
+  const cartTotal =units.reduce(
+    (total, item) =>
+      total +
+      (item.product && item.product.price
+        ? item.product.price * item.quantity
+        : 0),
+    0
+  );
+
+
+  console.log("CartItem:", cartitems.units);
+
+  if (cartitems.loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (cartitems.error) {
+    return <p>Error: {cartitems.error}</p>;
+  }
   return (
     <div>
       <Header></Header>
@@ -23,96 +75,73 @@ function ShoppingCart() {
               <div class="m-l-25 m-r--38 m-lr-0-xl">
                 <div class="wrap-table-shopping-cart">
                   <table class="table-shopping-cart">
-                    <tr class="table_head">
-                      <th class="column-1">Sản phẩm</th>
-                      <th class="column-2"></th>
-                      <th class="column-3">Giá</th>
-                      <th class="column-4">Số lượng</th>
-                      <th class="column-5">Tổng cộng</th>
-                    </tr>
+                    <thead>
+                      <tr class="table_head">
+                        <th class="column-1">Sản phẩm</th>
+                        <th class="column-2"></th>
+                        <th class="column-3">Giá</th>
+                        <th class="column-4">Số lượng</th>
+                        <th class="column-5">Tổng cộng</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {units.length === 0 ? (
+                        <p>Giỏ hàng trống.</p>
+                      ) : ( units.map((item) =>
+                        item.product ? (
+                          <tr class="table_row" key={item.product.id}>
+                            <td class="column-1">
+                              <button
+                                class="how-itemcart1"
+                                onClick={() => handleRemoveItem(item.id)}
+                              >
+                                <img
+                                  src="../../asset/images/item-cart-04.jpg"
+                                  alt="IMG"
+                                />
+                              </button>
+                            </td>
+                            <td class="column-2">
+                              {item.product.product_name}
+                            </td>
+                            <td class="column-3">
+                              {formatCurrency(item.product.price)}
+                            </td>
+                            <td class="column-4">
+                              <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                  <i class="fs-16 zmdi zmdi-minus"></i>
+                                </div>
 
-                    <tr class="table_row">
-                      <td class="column-1">
-                        <div class="how-itemcart1">
-                          <img
-                            src="../../asset/images/item-cart-04.jpg"
-                            alt="IMG"
-                          />
-                        </div>
-                      </td>
-                      <td class="column-2">Fresh Strawberries</td>
-                      <td class="column-3">$ 36.00</td>
-                      <td class="column-4">
-                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                          <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                            <i class="fs-16 zmdi zmdi-minus"></i>
-                          </div>
+                                <input
+                                  class="mtext-104 cl3 txt-center num-product"
+                                  type="number"
+                                  name="num-product1"
+                                  value={item.quantity}
+                                />
 
-                          <input
-                            class="mtext-104 cl3 txt-center num-product"
-                            type="number"
-                            name="num-product1"
-                            value="1"
-                          />
-
-                          <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                            <i class="fs-16 zmdi zmdi-plus"></i>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="column-5">$ 36.00</td>
-                    </tr>
-
-                    <tr class="table_row">
-                      <td class="column-1">
-                        <div class="how-itemcart1">
-                          <img
-                            src="../../asset/images/item-cart-05.jpg"
-                            alt="IMG"
-                          />
-                        </div>
-                      </td>
-                      <td class="column-2">Lightweight Jacket</td>
-                      <td class="column-3">$ 16.00</td>
-                      <td class="column-4">
-                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                          <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                            <i class="fs-16 zmdi zmdi-minus"></i>
-                          </div>
-
-                          <input
-                            class="mtext-104 cl3 txt-center num-product"
-                            type="number"
-                            name="num-product2"
-                            value="1"
-                          />
-
-                          <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                            <i class="fs-16 zmdi zmdi-plus"></i>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="column-5">$ 16.00</td>
-                    </tr>
+                                <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                  <i class="fs-16 zmdi zmdi-plus"></i>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="column-5">
+                              {" "}
+                              {formatCurrency(
+                                item.product.price * item.quantity
+                              )}
+                            </td>
+                          </tr>
+                        ) : (
+                          <tr key={item.id}>
+                            <td colSpan="5">
+                              Sản phẩm không hợp lệ hoặc đã bị xóa.
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
                   </table>
-                </div>
-
-                <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                  <div class="flex-w flex-m m-r-20 m-tb-5">
-                    <input
-                      class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5"
-                      type="text"
-                      name="coupon"
-                      placeholder="Mã giảm giá"
-                    />
-                    <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
-                      {" "}
-                      Áp dụng
-                    </div>
-                  </div>
-                  <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                    Cập nhật giỏ hàng
-                  </div>
                 </div>
               </div>
             </div>
@@ -127,7 +156,9 @@ function ShoppingCart() {
                   </div>
 
                   <div class="size-209">
-                    <span class="mtext-110 cl2">$79.65</span>
+                    <span class="mtext-110 cl2">
+                      {formatCurrency(cartTotal)}
+                    </span>
                   </div>
                 </div>
 
@@ -137,7 +168,9 @@ function ShoppingCart() {
                   </div>
 
                   <div class="size-209 p-t-1">
-                    <span class="mtext-110 cl2">$79.65</span>
+                    <span class="mtext-110 cl2">
+                      {formatCurrency(cartTotal)}
+                    </span>
                   </div>
                 </div>
 

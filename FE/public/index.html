@@ -76,7 +76,19 @@
 </head>
 
 <body className="animsition">
+
   <div id="root"></div>
+
+  
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  <df-messenger
+    intent="WELCOME"
+    chat-title="shop"
+    agent-id="e1c33ada-2cc7-4beb-91ec-dc7209ddf0eb"
+    language-code="vi"
+  ></df-messenger>
+
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.js"></script>
   <!-- Jquery JS-->
   <script src="./assets/vendor/jquery-3.2.1.min.js"></script>

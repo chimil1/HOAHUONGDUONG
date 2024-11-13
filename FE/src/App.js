@@ -39,7 +39,7 @@ import Shipping from "./frontend/client/Shipping";
 import AddShipping from "./frontend/client/AddShipping";
 import ListAddress from "./frontend/client/listAddess";
 import Search from "./frontend/client/Search";
-
+import Cart from "./frontend/client/ShoppingCart";
 function App() {
   return (
     <div className="App">
@@ -63,7 +63,7 @@ function App() {
           <Route path='/forgot-password'  element={<ForgotPassword />}/>
           <Route path='/reset-password'  element={<ConfirmPassword />}/>
           <Route path='/listaddress'  element={<ListAddress/>}/>
-
+          <Route path='/cart'  element={<Cart/>}/>
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
           <Route path="/thongke" element={<ThongKe />} />

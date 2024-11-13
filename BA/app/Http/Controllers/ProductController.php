@@ -6,9 +6,21 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Product_image;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\JsonResponse;
 class ProductController extends Controller
+
 {
+    public function getRandomProducts(): JsonResponse
+    {
+        // Lấy 5 sản phẩm ngẫu nhiên với điều kiện status = 1
+        $products = Product::where('status', 1)
+            ->inRandomOrder()
+            ->take(5)
+            ->get();
+
+        return response()->json($products);
+    }
+   
     /**
      * Display a listing of the resource.
      */
