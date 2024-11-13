@@ -71,12 +71,10 @@ class ProductController extends Controller
     {
         try {
             $product->load(relations: [
-                'images',
                 'options.optionValues',
                 'productSkus.skuValues.option',
                 'productSkus.skuValues.optionValue'
             ]);
-
             return response()->json($product);
         } catch (\Exception $e) {
             return response()->json(['error' => 'L��i khi lấy chi tiết sản phẩm: ' . $e->getMessage()], 500);
@@ -87,9 +85,8 @@ class ProductController extends Controller
     {
         try {
             $relatedProducts = Product::where('category_id', $category_id)
-            ->with('images:product_id,product_img')
             ->get();
-    
+
             // Check if any products were found
             if ($relatedProducts->isEmpty()) {
                 return response()->json([
@@ -98,15 +95,16 @@ class ProductController extends Controller
                 ], 404);
             }
                 return response()->json($relatedProducts);
-    
+
         } catch (\Exception $e) {
             return response()->json([
+                'error' => $e->getMessage(),
                 'success' => false,
                 'message' => 'An error occurred while fetching related products. Please try again later.'
             ], 500);
         }
     }
-    
+
 
     /**
      * Update the specified resource in storage.

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("user");
@@ -23,6 +23,7 @@ function Header() {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUserId(null);
+    navigate("/login");
   };
 
   return (

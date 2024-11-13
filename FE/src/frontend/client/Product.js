@@ -18,8 +18,8 @@ function Product() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
   // const categoryTypeState = useSelector((state) => state.unit);
-  const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
+  const formatCurrency = (price) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
   const handleSearch = (e) => {
@@ -237,7 +237,7 @@ function Product() {
                             <Link to={`${product.id}`} className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                               {product.product_name}
                             </Link>
-                            <span className="stext-105 cl3 text-danger">{formatPrice(product.price)}</span>
+                            <span className="stext-105 cl3 text-danger">{formatCurrency(product.price)}</span>
                           </div>
                         </div>
                       </div>

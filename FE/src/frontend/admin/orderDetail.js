@@ -15,7 +15,9 @@ function OrderDetail() {
   useEffect(() => {
     dispatch(fetchOrderDetails(id));
   }, [dispatch, id]);
-
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+  };
   const order = unitState.units;
 
   if (!order) {
@@ -94,7 +96,7 @@ function OrderDetail() {
                                   {item.product_name || "Không có thông tin"}
                                 </td>
                                 <td>{item.quantity}</td>
-                                <td>{item.price}</td>
+                                <td>{formatCurrency(item.price)}</td>
                                 <td>{item.color}</td>
                                 <td>{item.size}</td>
                               </tr>

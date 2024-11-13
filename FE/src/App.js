@@ -41,7 +41,7 @@ import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import Shipping from "./frontend/client/Shipping";
-import AddShipping from "./frontend/client/addshipping";
+import AddShipping from "./frontend/client/AddShipping";
 import Search from "./frontend/client/Search";
 import ListAddress from "./frontend/client/ShippingList";
 
@@ -54,7 +54,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/product" element={<Product />} />
-          <Route path="/product/:id" element={<Productdetail />} />
+          <Route path="/product/:id" element={<Productdetail/>} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

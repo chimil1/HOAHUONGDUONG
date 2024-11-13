@@ -45,6 +45,5 @@ Route::apiResource('product', ProductController::class);
 
 Route::get('product/related/{category_id}', [ProductController::class, 'getRelatedProducts']);
 
-
 Route::get('checkCode/{code_name}', [CouponController::class, 'checkCode']);
 Route::apiResource('shipping', ShippingAddressController::class);

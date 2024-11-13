@@ -11,7 +11,9 @@ import Swal from "sweetalert2";
 function QlDanhMuc() {
   const dispatch = useDispatch();
   const categoryState = useSelector((state) => state.unit);
+  const relatedProducts = useSelector((state) => state.unit);
 
+const isrelatedProducts = useSelector((state) => state.relatedProducts);
   useEffect(() => {
     dispatch(fetchCategory());
   }, [dispatch]);
@@ -20,39 +22,62 @@ function QlDanhMuc() {
   const productPerPage = 5;
 
   const handleDelete = (id) => {
-    dispatch(fetchRelatedProducts(id)).then((relatedProducts) => {
-      if (relatedProducts.length > 0) {
-        Swal.fire({
-          text: "Danh mục này có sản phẩm liên quan. Không thể xóa!",
-          icon: "error",
-        }).then(() => {
-          dispatch(fetchCategory());
-        });
-      } else {
-        Swal.fire({
-          text: "Bạn có muốn xóa danh mục này?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Tiếp tục",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            dispatch(fetchCategoryDelete(id));
+    dispatch(fetchRelatedProducts(id))
+        .then(() => {
+          console.log(relatedProducts);
+          if (relatedProducts?.units?.length > 0) {
             Swal.fire({
-              text: "Xóa danh mục thành công!",
-              icon: "success",
+              text: "Danh mục này có sản phẩm liên quan. Không thể xóa!",
+              icon: "error",
+            }).then(() => {
+              dispatch(fetchCategory());
+            });
+          } else {
+            Swal.fire({
+              text: "Bạn có muốn xóa danh mục này?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Tiếp tục",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(fetchCategoryDelete(id));
+                Swal.fire({
+                  text: "Xóa danh mục thành công!",
+                  icon: "success",
+                });
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            // Nếu lỗi là 404, tiếp tục xóa danh mục
+            Swal.fire({
+              text: "Bạn có muốn xóa danh mục này?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Tiếp tục",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(fetchCategoryDelete(id));
+                Swal.fire({
+                  text: "Xóa danh mục thành công!",
+                  icon: "success",
+                });
+              }
+            });
+          } else {
+            // Xử lý các lỗi khác
+            Swal.fire({
+              text: "Đã xảy ra lỗi khi lấy sản phẩm liên quan.",
+              icon: "error",
             });
           }
         });
-      }
-    }).catch((error) => {
-      // Xử lý lỗi nếu có
-      Swal.fire({
-        text: "Đã xảy ra lỗi khi lấy sản phẩm liên quan.",
-        icon: "error",
-      });
-    });
   };
 
   if (categoryState.loading) {

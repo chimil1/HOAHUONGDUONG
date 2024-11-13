@@ -19,10 +19,7 @@ function ListAddress() {
 
     useEffect(() => {
         dispatch(fetchShippingAddresses(id));
-
     }, [dispatch, id]);
-
-
     if (addressesState.loading) return <p>Loading...</p>;
     if (addressesState.error) return <p>Error: {addressesState.error}</p>;
     const addresses = Array.isArray(addressesState.units) ? addressesState.units : [];
@@ -37,13 +34,11 @@ function ListAddress() {
             setCurrentPage(currentPage - 1);
         }
     };
-
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
         }
     };
-
     const handleDelete = (id) => {
         if (window.confirm("Bạn có chắc chắn muốn xóa địa chỉ này?")) {
             dispatch(fetchShippingDelete(id));
@@ -55,7 +50,6 @@ function ListAddress() {
             });
         }
     };
-
     return (
         <div>
             <Header />
@@ -79,13 +73,12 @@ function ListAddress() {
                                             <p className="text-muted mb-1">Địa chỉ: {item.shipping_address}</p>
                                             <p className="text-muted mb-1">Số điện thoại: {item.shipping_phone}</p>
                                             <div className="d-flex justify-content-end">
-                                                <a
-                                                    href="#"
+                                                <button
                                                     className="text-danger"
                                                     onClick={() => handleDelete(item.id)}
                                                 >
                                                     Xóa
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
