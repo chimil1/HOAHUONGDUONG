@@ -39,9 +39,7 @@ import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
-import Shipping from "./frontend/client/Shipping";
 import AddShipping from "./frontend/client/AddShipping";
-import Search from "./frontend/client/Search";
 import ListAddress from "./frontend/client/ShippingList";
 
 function App() {
@@ -58,9 +56,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
-          <Route path="/search" element={<Search />} />
+          
           <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/shipping" element={<Shipping />} />
           <Route path="/addshipping/:id" element={<AddShipping />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

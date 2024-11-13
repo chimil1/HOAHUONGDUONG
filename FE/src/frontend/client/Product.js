@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import { Link } from "react-router-dom";
-import '../Css/Product.css';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, fetchCategory, fetchCategoryType } from "../actions/unitActions";
 
@@ -224,10 +223,10 @@ function Product() {
                     <div key={product.id} className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
                       <div className="block2">
                         <div className="block2-pic hov-img0">
-                          <img src={product.img} alt="" />
+                          <img src={product.img}/>
                           <Link
-                            to={`${product.id}`}
-                            className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                              to={`${product.id}`}
+                              className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                           >
                             Xem
                           </Link>

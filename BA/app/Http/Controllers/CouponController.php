@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Coupon;
 // use App\Http\Requests\CouponRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\Response;
 class CouponController extends Controller
 {
     /**
@@ -61,29 +61,29 @@ class CouponController extends Controller
     public function update(Request $request, Coupon $coupon)
     {
         try{
-        $coupon->update([
-            'name_coupon' => $request->name_coupon,
-            'code_name' => $request->code_name,
-            'discount_type' => $request->discount_type,
-            'discount_value' => $request->discount_value,
-            'minium_order_value' => $request->minium_order_value,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-        ]);
+            $coupon->update([
+                'name_coupon' => $request->name_coupon,
+                'code_name' => $request->code_name,
+                'discount_type' => $request->discount_type,
+                'discount_value' => $request->discount_value,
+                'minium_order_value' => $request->minium_order_value,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+            ]);
 
-        // $coupon->update($validatedData);
-        return response()->json([
-            'success' => true,
-            'message' => 'Cập nhật dữ liệu thành công.',
-            'data' => $coupon,
-        ], 200);
-    }catch (\Exception $exception){
-        return response()->json([
-            'error' => $exception,
-            'success' => false,
-            'message' => 'Cập nhật dữ liệu không thành công.',
-        ], 500);
-    }
+            // $coupon->update($validatedData);
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật dữ liệu thành công.',
+                'data' => $coupon,
+            ], 200);
+        }catch (\Exception $exception){
+            return response()->json([
+                'error' => $exception,
+                'success' => false,
+                'message' => 'Cập nhật dữ liệu không thành công.',
+            ], 500);
+        }
     }
 
     /**
@@ -94,4 +94,15 @@ class CouponController extends Controller
         $coupon->delete();
         return response()->json(null, 204);
     }
+
+    public function checkCode($code_name)
+    {
+        $existingCoupon = Coupon::where('code_name', $code_name)->first();
+        if ($existingCoupon) {// Trả về mã 409 (Conflict) nếu mã giảm giá đã tồn tại
+            return response()->json(['message' => 'Mã giảm giá đã tồn tại'], Response::HTTP_CONFLICT);
+        }
+        // Trả về mã 200 (OK) nếu mã giảm giá hợp lệ
+        return response()->json(['message' => 'Mã giảm giá hợp lệ'], Response::HTTP_OK);
+    }
+
 }

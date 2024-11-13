@@ -13,15 +13,12 @@ function AddCategory() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const categoryState = useSelector((state) => state.unit);
-
-  // React Hook Form setup
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // Loading or error states
   if (categoryState.loading) {
     return <p>Loading...</p>;
   }
@@ -30,116 +27,101 @@ function AddCategory() {
     return <p>Error: {categoryState.error}</p>;
   }
 
-  // Form submit handler
   const submit = (data) => {
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("status", data.status);
 
-    // Check if an image was uploaded
-    if (data.img?.length > 0) {
-      const file = data.img[0];
-      formData.append("img", file);
-    }
+    dispatch(fetchAddCategory(data));
 
-    // Dispatch action to add category
-    dispatch(fetchAddCategory(formData));
-
-    // Show success message
+    console.log(data);
     Swal.fire({
-      text: "Thêm danh mục thành công!",
+      text: "Thêm sản phẩm thành công!",
       icon: "success",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/qldanhmuc"); // Redirect to category list
+        navigate("/qldanhmuc");
       }
     });
   };
 
   return (
-    <div className="page-wrapper">
-      <Menu />
-      <div className="page-container">
-        <Header />
-        <div className="main-content">
-          <div className="section__content section__content--p30">
-            <div className="container-fluid">
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="title-5 m-b-35">Thêm danh mục mới</h3>
-                </div>
-                <div className="card-body">
-                  <form onSubmit={handleSubmit(submit)}>
-                    {/* Category Name */}
-                    <div className="form-group">
-                      <label htmlFor="name">Tên danh mục</label>
-                      <input
-                        {...register("name", { required: "Tên danh mục không được bỏ trống!" })}
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        placeholder="Nhập tên danh mục"
-                      />
-                      {errors.name && <span className="text-danger">{errors.name.message}</span>}
-                    </div>
-
-                    {/* Description */}
-                    <div className="form-group">
-                      <label htmlFor="description">Mô tả</label>
-                      <input
-                        {...register("description")}
-                        type="text"
-                        className="form-control"
-                        id="description"
-                        placeholder="Nhập mô tả"
-                      />
-                    </div>
-
-                    {/* Image Upload */}
-                    <div className="form-group">
-                      <label htmlFor="file-input">Hình ảnh</label>
-                      <input
-                        {...register("img")}
-                        type="file"
-                        className="form-control"
-                        id="file-input"
-                        name="img"
-                      />
-                    </div>
-
-                    {/* Status */}
-                    <div className="form-group">
-                      <label htmlFor="status">Trạng thái</label>
-                      <select
-                        {...register("status", { required: "Trạng thái danh mục không được bỏ trống!" })}
-                        className="form-control"
-                        id="status"
-                      >
-                        <option value="">Chọn trạng thái</option>
-                        <option value="0">Đang Hoạt Động</option>
-                        <option value="1">Ngừng Hoạt Động</option>
-                      </select>
-                      {errors.status && <span className="text-danger">{errors.status.message}</span>}
-                    </div>
-
-                    {/* Submit Button */}
-                    <button type="submit" className="btn btn-dark">
-                      <i className="zmdi zmdi-plus"></i> Thêm danh mục
-                    </button>
-                  </form>
-                </div>
-
-                {/* Footer */}
-                <div className="card-footer">
-                  <Footer />
+      <div className="page-wrapper">
+        <Menu />
+        <div className="page-container">
+          <Header />
+          <div className="main-content">
+            <div className="section__content section__content--p30">
+              <div className="container-fluid">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="title-5 m-b-35">Thêm danh mục mới</h3>
+                  </div>
+                  <div className="card-body">
+                    <form onSubmit={handleSubmit(submit)}>
+                      <div className="form-group">
+                        <label htmlFor="name">Tên danh mục</label>
+                        <input
+                            {...register("name", { required: true })}
+                            type="text"
+                            className="form-control"
+                            id="name"
+                            name="name"
+                            placeholder="Nhập tên danh mục"
+                        />
+                        {errors.name && (
+                            <span className="text-danger">
+                          Tên danh mục không được bỏ trống!
+                        </span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="description">Mô tả</label>
+                        <textarea
+                            {...register("description", { required: true })}
+                            id="description"
+                            rows="9"
+                            placeholder="Nhập mô tả..."
+                            className="form-control"
+                        ></textarea>{errors.description && (
+                          <span className="text-danger">
+                            Mô tả sản phẩm không được bỏ trống!
+                          </span>
+                      )}
+                      </div>
+                      <div className="form-group">
+                        <label>Trạng thái</label>
+                        <select
+                            {...register("status", { required: true })}
+                            className="form-control"
+                            id="status"
+                            name="status"
+                        >
+                          <option value="">Chọn trạng thái</option>
+                          <option value="0">Đang Hoạt Động</option>
+                          <option value="1">Ngừng Hoạt Động</option>
+                        </select>
+                        {errors.status && (
+                            <span className="text-danger">
+                          Trạng thái danh mục không được bỏ trống!
+                        </span>
+                        )}
+                      </div>
+                      <button type="submit" className="btn btn-dark">
+                        <i className="zmdi zmdi-plus"></i> Thêm danh mục
+                      </button>
+                    </form>
+                  </div>
+                  <div className="card-footer">
+                    <Footer />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

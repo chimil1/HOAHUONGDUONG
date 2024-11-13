@@ -22,6 +22,8 @@ function Productdetail() {
   const formatPrice = (price) => {
     return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ" : "Liên hệ";
   };
+
+
   useEffect(() => {
     dispatch(fetchProductDetails(id));
   }, [dispatch, id]);

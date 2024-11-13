@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
-import  { useState } from 'react'; 
+import { Alert, Button, Form } from "react-bootstrap";
 
 function Contact() {
-    const [data, setData] = useState (
-        {
-            name: '',
-            email: ''
-        }
-    );
-    const handChange = (e)  => {
+    const [data, setData] = useState({
+        name: '',
+        email: ''
+    });
+    const [isSubmitted, setIsSubmitted] = useState(false); // Trạng thái theo dõi khi form đã submit
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState('');
+
+    const handChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         fetch('http://localhost:4500/send-email', {
@@ -23,15 +26,17 @@ function Contact() {
             body: JSON.stringify(data)
         }).then(response => {
             if (response.status === 200) {
-                alert('Email sent successfully');
+                setIsSubmitted(true);
+                setMessage("Bạn Đã Gửi thành công");
             } else {
-                alert('An error occurred while sending email');
+                setError("Vui lòng nhập email của bạn");
             }
         });
     }
+
     return (
         <div>
-        <Header></Header>
+            <Header />
             {/* Title page */}
             <section className="bg-img1 txt-center p-lr-15 p-tb-92" style={{ backgroundImage: "url('../../asset/images/bg-01.jpg')" }}>
                 <h2 className="ltext-105 cl0 txt-center">
@@ -46,11 +51,12 @@ function Contact() {
                         <div className="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
                             <form onSubmit={handleSubmit}>
                                 <h4 className="mtext-105 cl2 txt-center p-b-30">
-                                Gửi tin nhắn cho chúng tôi
+                                    Gửi tin nhắn cho chúng tôi
                                 </h4>
-
+                                {message && <div className="alert alert-success">{message}</div>}
+                                {error && <Alert variant="danger">{error}</Alert>}
                                 <div className="bor8 m-b-20 how-pos4-parent">
-                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email" placeholder="Địa chỉ Email của bạn" value={data.email} onChange={handChange}/>
+                                    <input className="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email" placeholder="Địa chỉ Email của bạn" value={data.email} onChange={handChange} />
                                     <img className="how-pos4 pointer-none" src="../../asset/images/icons/icon-email.png" alt="ICON" />
                                 </div>
 
@@ -58,8 +64,12 @@ function Contact() {
                                     <textarea className="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" type="text" name="name" placeholder="Chúng tôi có thể giúp gì?" value={data.name} onChange={handChange}></textarea>
                                 </div>
 
-                                <button className="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" type="submit">
-                                    Gửi
+                                <button
+                                    className={`flex-c-m stext-101 cl0 size-121 ${isSubmitted ? 'bg4' : 'bg3'} btn btn-outline-dark`}
+                                    type="submit"
+                                    disabled={isSubmitted} // Vô hiệu hóa nút sau khi đã submit
+                                >
+                                    {isSubmitted ? 'Đã gửi' : 'Gửi'}
                                 </button>
                             </form>
                         </div>
@@ -104,7 +114,7 @@ function Contact() {
 
                                 <div className="size-212 p-t-2">
                                     <span className="mtext-110 cl2">
-                                    Hỗ trợ bán hàng
+                                        Hỗ trợ bán hàng
                                     </span>
 
                                     <p className="stext-115 cl1 size-213 p-t-18">
@@ -116,7 +126,7 @@ function Contact() {
                     </div>
                 </div>
             </section>
-            <Footer></Footer>
+            <Footer />
         </div>
     );
 }

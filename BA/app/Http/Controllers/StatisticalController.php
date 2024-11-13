@@ -27,12 +27,10 @@ public function getStatistics()
         $today = Carbon::today();
         $oneWeekAgo = $today->copy()->subDays(6);
         $currentYear = Carbon::now()->year;
-
-        // Lấy dữ liệu tổng giá trị mỗi ngày trong tuần
         $statistics = Order::selectRaw('DATE(created_at) as date, SUM(amount) as total_amount')
             ->whereBetween('created_at', [$oneWeekAgo, $today])
-            ->groupBy('date')  // Nhóm theo ngày đã tạo đơn hàng
-            ->orderBy('date', 'asc')  // Sắp xếp theo thứ tự ngày tăng dần
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
             ->get();
 
         // Đếm số lượng sản phẩm bán được

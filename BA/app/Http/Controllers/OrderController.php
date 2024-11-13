@@ -52,9 +52,31 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function approveOrder($id)
     {
-        //
+        try{
+            // Tìm đơn hàng theo ID
+            $order = Order::find($id);
+
+            // Kiểm tra nếu đơn hàng không tồn tại
+            if (!$order) {
+                return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
+            }
+
+            // Cập nhật trạng thái đơn hàng thành "Đã duyệt"
+            $order->status = 0; // 0: Đã duyệt, 1: Chờ xác nhận (hoặc các trạng thái khác)
+            $order->update();
+
+            return response()->json(['message' => 'Đơn hàng đã được duyệt thành công', 'order' => $order], 200);
+        }catch(\Exception $exception){
+            return response()->json([
+                'error' => $exception,
+                'success' => false,
+                'message' => 'Thêm dữ liệu không thành công.',
+            ], 500);
+
+        }
+
     }
 
     /**

@@ -78,6 +78,7 @@ function Profile() {
         text: "Đổi mật khẩu thành công!",
         icon: "success",
       });
+      navigate("/home");
     } catch (error) {
       Swal.fire({
         text: "Có lỗi xảy ra khi đổi mật khẩu!",

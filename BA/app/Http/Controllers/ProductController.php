@@ -71,7 +71,7 @@ class ProductController extends Controller
     {
         try {
             $product->load(relations: [
-                'options.optionValues',
+                'images:product_id,product_img',                'options.optionValues',
                 'productSkus.skuValues.option',
                 'productSkus.skuValues.optionValue'
             ]);
