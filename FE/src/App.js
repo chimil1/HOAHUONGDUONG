@@ -13,6 +13,7 @@ import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
+import EditProduct from "./frontend/admin/EditProduct";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import OrderDetails from "./frontend/admin/OrderDetails";
 import AddProduct from "./frontend/admin/AddProduct";
@@ -48,8 +49,6 @@ function App() {
           <Route path='/profile' element={<Profile />}/>
           <Route path="/login" element={<Login />} />
           <Route path='/register'  element={<Register />}/>
-          <Route path='/forgotpassword'  element={<ForgotPassword />}/>
-          <Route path='/confirmpassword'  element={<ConfirmPassword />}/>
 
           {/* Các Route cho admin */}
           <Route path="/admin" element={<ThongKe />} />
@@ -69,6 +68,7 @@ function App() {
           <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
           <Route path="/orderdetails" element={<OrderDetails />} />
           <Route path="/addproduct" element={<AddProduct />} />
+          <Route path="/editProduct/:id" element={<EditProduct />} />
           <Route path="/orderdetail/:id" element={<OrderDetail />} />
           <Route path="/orderdetail" element={<OrderDetail />} />
           <Route path="/home" element={<Home />} />

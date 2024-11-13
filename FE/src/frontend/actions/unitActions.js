@@ -31,7 +31,7 @@ export const fetchProducts = () => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .get("http://localhost:8000/api/product")
+      .get(url+"/product")
       .then((response) => {
         const units = response.data;
         dispatch(fetchUnitsSuccess(units));
@@ -47,7 +47,7 @@ export const fetchDelete = (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .delete(`http://localhost:8000/api/product/${id}`)
+      .delete(url+`/product/${id}`)
       .then((response) => {
         const units = response.data;
         dispatch(fetchUnitsSuccess(units));
@@ -64,7 +64,7 @@ export const fetchProductDetails = (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .get(`http://localhost:8000/api/product/${id}`)
+      .get(url+`/product/${id}`)
       .then((response) => {
         const product = response.data;
         dispatch(fetchUnitsSuccess(product));
@@ -76,14 +76,15 @@ export const fetchProductDetails = (id) => {
   };
 };
 
-export const updateProduct = (id, product) => {
+
+export const updateProduct = (id, data) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .put(`http://localhost:8000/api/product/${id}`, product)
+      .put(url+`/product/${id}`, data)
       .then((response) => {
-        const product = response.data;
-        dispatch(fetchUnitsSuccess(product));
+        const unit = response.data;
+        dispatch(fetchUnitsSuccess(unit));
       })
       .catch((error) => {
         const errorMsg = error.message;
@@ -91,11 +92,12 @@ export const updateProduct = (id, product) => {
       });
   };
 };
+
 
 export const fetchAddProduct = (data) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
-    axios.post("http://localhost:8000/api/product", data)
+    axios.post(url+'/product', data)
       .then(response => {
         dispatch(fetchUnitsSuccess(response.data));
       })
@@ -233,5 +235,26 @@ export const fetchOrders = () => {
           const errorMsg = error.message;
           dispatch(fetchUnitsFailure(errorMsg));
         });
+    };
+  };
+
+  export const fetchAddress = () => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        axios
+            .get(`${url}/shipping`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                const unit = response.data;
+                dispatch(fetchUnitsSuccess(unit));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
     };
   };

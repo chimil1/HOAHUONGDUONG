@@ -6,17 +6,26 @@ import Menu from "./layout/Menu";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, fetchDelete } from "../actions/unitActions";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function QlSanPham() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
-
+  const navigate = useNavigate();
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  };
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  const handleEditClick = (id) => {
+    navigate(`/editProduct/${id}`);
+  };
   const handleDelete = (id) => {
     Swal.fire({
       text: "Bạn có muốn xóa sản phẩm này?",
@@ -79,11 +88,11 @@ function QlSanPham() {
                             <th>Tên sản phẩm</th>
                             <th>Giá</th>
                             <th>Mô tả</th>
-                            <th>Trạng thái</th>
+                            {/* <th>Trạng thái</th> */}
                             <th>Danh mục</th>
-                            <th>Mô tả</th>
-                            <th>Trạng thái</th>
-                            <th>Danh mục</th>
+                            {/* <th>Mô tả</th> */}
+                            {/* <th>Trạng thái</th> */}
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -91,10 +100,10 @@ function QlSanPham() {
                             <tr className="tr-shadow" key={product.id}>
                               <td>{product.product_img}</td>
                               <td>{product.product_name}</td>
-                              <td>{product.price}</td>
+                              <td>{formatCurrency(product.price)}</td>
                               <td>{product.description}</td>
-                              <td>{product.status}</td>
-                              <td>{product.category_id}</td>
+                              {/* <td>{product.status}</td> */}
+                              <td>{product.name_category}</td>
                               <td>
                                 <div className="table-data-feature">
                                   <button
@@ -106,7 +115,7 @@ function QlSanPham() {
                                   </button>
                                   <button
                                     className="item"
-                                    // onClick={() => handleEditClick(product)}
+                                    onClick={() => handleEditClick(product.id)}
                                     title="Sửa"
                                   >
                                     <i className="zmdi zmdi-edit"></i>
