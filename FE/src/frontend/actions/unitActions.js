@@ -496,3 +496,65 @@ export const fetchStatiscal = () => {
             });
     };
   };
+//Coupon
+export const fetchCoupons = () => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        axios
+            .get("http://localhost:8000/api/coupon")
+            .then((response) => {
+                const units = response.data;
+                dispatch(fetchUnitsSuccess(units));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
+export const fetchCouponDetails = (id) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        axios
+            .get(`http://localhost:8000/api/coupon/${id}`)
+            .then((response) => {
+                const unit = response.data;
+                dispatch(fetchUnitsSuccess(unit));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
+export const fetchDeleteCoupon = (id) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        axios
+            .delete(`http://localhost:8000/api/coupon/${id}`)
+            .then((response) => {
+                const units = response.data;
+                dispatch(fetchUnitsSuccess(units));
+                dispatch(fetchProducts());
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
+export const updateCoupon = (id, data) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        axios
+            .put(`http://localhost:8000/api/coupon/${id}`, data)
+            .then((response) => {
+                const unit = response.data;
+                dispatch(fetchUnitsSuccess(unit));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};

@@ -40,17 +40,12 @@ function Menu() {
             </li>
             <li className="has-sub">
               <Link className="js-arrow" to="/QlKhachhang">
-                <i className="fas fa-users"></i>Quản lý Khách Hàng
+                <i className="fas fa-users"></i>Quản lý Tài Khoản
               </Link>
             </li>
             <li className="has-sub">
               <Link className="js-arrow" to="/qlsanpham">
                 <i className="fas fa-table"></i>Quản lý Sản Phẩm
-              </Link>
-            </li>
-            <li className="has-sub">
-              <Link className="js-arrow" to="/QlTaiKhoan">
-                <i className="fas fa-map-marker-alt"></i>Quản lý Tài Khoản
               </Link>
             </li>
 

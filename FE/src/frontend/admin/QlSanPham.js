@@ -97,41 +97,48 @@ function QlSanPham() {
                         </thead>
                         <tbody>
                           {productState.units.map((product) => (
-                            <tr className="tr-shadow" key={product.id}>
-                              <td>{product.product_img}</td>
-                              <td>{product.product_name}</td>
-                              <td>{formatCurrency(product.price)}</td>
-                              <td>{product.description}</td>
-                              {/* <td>{product.status}</td> */}
-                              <td>{product.name_category}</td>
-                              <td>
-                                <div className="table-data-feature">
-                                  <button
-                                    className="item"
-                                    // onClick={() => handleDetailClick(product)}
-                                    title="Chi tiết"
-                                  >
-                                    <i className="zmdi zmdi-mail-send"></i>
-                                  </button>
-                                  <button
-                                    className="item"
-                                    onClick={() => handleEditClick(product.id)}
-                                    title="Sửa"
-                                  >
-                                    <i className="zmdi zmdi-edit"></i>
-                                  </button>
-                                  <button
-                                    onClick={() => handleDelete(product.id)}
-                                    className="item"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Delete"
-                                  >
-                                    <i className="zmdi zmdi-delete"></i>
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
+                              <tr className="tr-shadow" key={product.id}>
+                                <td>
+                                  {product.img ? (
+                                      <img src={product.img}
+                                           style={{width: '50px', height: '90px', objectFit: 'cover'}}/>
+                                  ) : (
+                                      'Không có thông tin'
+                                  )}
+                                </td>
+                                <td>{product.product_name}</td>
+                                <td>{formatCurrency(product.price)}</td>
+                                <td>{product.description}</td>
+                                {/* <td>{product.status}</td> */}
+                                <td>{product.name_category}</td>
+                                <td>
+                                  <div className="table-data-feature">
+                                    <button
+                                        className="item"
+                                        // onClick={() => handleDetailClick(product)}
+                                        title="Chi tiết"
+                                    >
+                                      <i className="zmdi zmdi-mail-send"></i>
+                                    </button>
+                                    <button
+                                        className="item"
+                                        onClick={() => handleEditClick(product.id)}
+                                        title="Sửa"
+                                    >
+                                      <i className="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(product.id)}
+                                        className="item"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Delete"
+                                    >
+                                      <i className="zmdi zmdi-delete"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
                           ))}
                         </tbody>
                       </table>

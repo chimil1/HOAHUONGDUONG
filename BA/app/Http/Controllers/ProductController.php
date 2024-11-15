@@ -183,7 +183,6 @@ class ProductController extends Controller
                 'status' => 'required',
                 'category_id' => 'required|exists:categories,id',
             ]);
-            // Find the product by ID
             $product = Product::findOrFail($id);
 
             // Update the product
@@ -212,4 +211,5 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(['message' => 'Xóa sản phẩm thành công.']);
     }
+
 }

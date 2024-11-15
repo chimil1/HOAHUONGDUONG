@@ -40,7 +40,7 @@ function Contact() {
             {/* Title page */}
             <section className="bg-img1 txt-center p-lr-15 p-tb-92" style={{ backgroundImage: "url('../../asset/images/bg-01.jpg')" }}>
                 <h2 className="ltext-105 cl0 txt-center">
-                    Liên hệ
+                    Góp Ý
                 </h2>
             </section>
 
@@ -118,7 +118,7 @@ function Contact() {
                                     </span>
 
                                     <p className="stext-115 cl1 size-213 p-t-18">
-                                        contact@example.com
+                                        hoahuongduong@gmail.com
                                     </p>
                                 </div>
                             </div>

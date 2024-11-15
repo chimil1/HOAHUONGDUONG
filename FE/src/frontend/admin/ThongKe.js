@@ -52,19 +52,6 @@ function ThongKe() {
     0
   );
 
-  // Tính doanh thu cho các ngày trước (ngoại trừ hôm nay)
-  // const dailyAmounts = totalEarningsToday.filter(
-  //   (item) => item.date !== selectednow
-  // );
-  
-  // const totalAmountForSelectedDays = dailyAmounts.reduce(
-  //   (acc, current) => {
-  //     const amount = current.total_amount || 0; // Nếu không có total_amount thì sử dụng 0
-  //     return acc + amount;
-  //   },
-  //   0
-  // );
-
   // Dữ liệu cho biểu đồ
   const generateDateRange = (startDate, endDate) => {
     const dates = [];
