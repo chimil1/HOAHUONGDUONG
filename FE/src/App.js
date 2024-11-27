@@ -40,6 +40,9 @@ import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import AddShipping from "./frontend/client/AddShipping";
+import ListAddress from "./frontend/client/listAddess";
+import Search from "./frontend/client/Search";
+import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
 
 function App() {
@@ -51,7 +54,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/product" element={<Product />} />
-          <Route path="/product/:id" element={<Productdetail/>} />
+          <Route path="/product/:id" element={<Productdetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -67,6 +70,11 @@ function App() {
           <Route path="/editshipping/:id" element={<Editshipping />} />
           <Route path="/listaddress/:id" element={<ListAddress />} />
 
+          <Route path='/register'  element={<Register />}/>
+          <Route path='/forgot-password'  element={<ForgotPassword />}/>
+          <Route path='/reset-password'  element={<ConfirmPassword />}/>
+          <Route path='/listaddress'  element={<ListAddress/>}/>
+          <Route path='/cart'  element={<Cart/>}/>
           {/* Các Route cho admin */}
           <Route path="/admin" element={<LoginForm />} />
           <Route path="/thongke" element={<ThongKe />} />

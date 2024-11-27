@@ -173,7 +173,26 @@ export const fetchProducts = () => {
   };
 };
 
-export const fetchDelete = (id) => {
+
+export const fetchProductRandom = () => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    axios
+      .get("http://localhost:8000/api/products/random")
+      .then((response) => {
+        const units = response.data;
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};
+
+
+
+export const fetchProductDelete = (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
@@ -251,20 +270,19 @@ export const fetchAddProduct = (data) => {
   };
 };
 
+// Thunk Action to Fetch Related Products
 export const fetchRelatedProducts = (category_id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     return axios
       .get(`http://localhost:8000/api/product/related/${category_id}`)
       .then((response) => {
-        const relatedProducts = response.data;
-        dispatch(fetchUnitsSuccess(relatedProducts));
-        return relatedProducts;
-     })
+        const products = Array.isArray(response.data) ? response.data : [];
+        dispatch(fetchUnitsSuccess(products));
+      })
       .catch((error) => {
         const errorMsg = error.message;
         dispatch(fetchUnitsFailure(errorMsg));
-        throw error;
       });
   };
 };
@@ -378,7 +396,7 @@ export const fetchCategoryType = () => {
         });
     };
   };
-  
+
   // export const updateCategory = (id, data) => {
   //   return (dispatch) => {
   //     dispatch(fetchUnitsRequest());
@@ -557,4 +575,82 @@ export const updateCoupon = (id, data) => {
                 dispatch(fetchUnitsFailure(errorMsg));
             });
     };
+};
+
+export const addToCart = (data) => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    const token = localStorage.getItem("token");
+    axios
+      .post(`http://localhost:8000/api/cartItem`, data,{
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      })
+      .then((response) => {
+        const units = response.data;
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};
+export const CartItem= () => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    const token = localStorage.getItem("token");
+    axios
+      .get(`http://localhost:8000/api/cartItem`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      })
+      .then((response) => {
+        const units = response.data;
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};
+
+
+// export const removeFromCart = async (productId) => {
+//   const token = localStorage.getItem("token");
+//   try {
+//       const response = await axios.delete(`http://localhost:8000/api/cartItem/${productId}`, {
+//           headers: {
+//               Authorization: `Bearer ${token}`, // thêm token nếu cần
+//           },
+//       });
+//       console.log(response.data.message);
+//       // Cập nhật lại giỏ hàng sau khi xóa thành công
+//   } catch (error) {
+//       console.error('Error removing product from cart:', error.response.data.message);
+//   }
+// };
+
+export const removeFromCart= (id) => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`http://localhost:8000/api/cartItem/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      })
+      .then((response) => {
+        const units = response.data;
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
 };

@@ -46,6 +46,7 @@ class UserController extends Controller
     }
     public function login(Request $request)
     {
+        try{
         $request->validate([
             'login' => 'required',
             'password' => 'required'
@@ -70,6 +71,9 @@ class UserController extends Controller
             'token' => $token,
             'message' => 'Đăng nhập thành công'
         ]);
+    }catch(\Exception $e){
+        return response()->json($e->getMessage());
+    }
     }
     public function loginAdmin(Request $request)
     {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CategoriController;
 use App\Http\Controllers\PasswordResetController;
+use App\Models\CartItem;
 use App\Http\Controllers\ShippingAddressController;
 use App\Http\Controllers\StatisticalController;
 
@@ -49,5 +51,12 @@ Route::get('/products-with-discount', [ProductController::class, 'getProductsWit
 
 Route::get('product/related/{category_id}', [ProductController::class, 'getRelatedProducts']);
 
+Route::middleware('auth:sanctum')->apiResource('cartItem', CartItemController::class);
+
 Route::get('checkCode/{code_name}', [CouponController::class, 'checkCode']);
+
+Route::get('/products/random', [ProductController::class, 'getRandomProducts']);
+
+
+
 Route::apiResource('shipping', ShippingAddressController::class);
