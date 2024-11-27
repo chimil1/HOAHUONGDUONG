@@ -44,4 +44,8 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function coupon()
+    {
+        return $this->hasOne(Coupon::class, 'product_id');
+    }
 }

@@ -5,16 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d4bd7b51-9e31-4163-86e4-1ea519e55dc6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_12_2024_7_19_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_12_2024_7_19_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/CouponController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/CouponController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ShippingAddressController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ShippingAddressController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Models/Coupon.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Models/Coupon.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BA/app/Models/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Models/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlSanPham.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlSanPham.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/ThongKe.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/ThongKe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/layout/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/layout/Menu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Contact.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Contact.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/auth/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/auth/Register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlKhachHang.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlKhachHang.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -267,7 +269,7 @@
       <workItem from="1731413920275" duration="9720000" />
       <workItem from="1731481542606" duration="17060000" />
       <workItem from="1731530746751" duration="3603000" />
-      <workItem from="1731547648277" duration="3901000" />
+      <workItem from="1731547648277" duration="13072000" />
     </task>
     <servers />
   </component>

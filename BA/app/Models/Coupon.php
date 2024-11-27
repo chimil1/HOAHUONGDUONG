@@ -15,7 +15,12 @@ class Coupon extends Model
         'discount_type',
         'discount_value',
         'minium_order_value',
+        'product_id',
         'start_date',
         'end_date'
     ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

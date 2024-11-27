@@ -48,17 +48,10 @@ class OrderController extends Controller
 
         return response()->json($order);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function approveOrder($id)
     {
         try{
-            // Tìm đơn hàng theo ID
             $order = Order::find($id);
-
-            // Kiểm tra nếu đơn hàng không tồn tại
             if (!$order) {
                 return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
             }

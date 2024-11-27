@@ -104,7 +104,6 @@ class UserController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            // Xử lý lỗi và trả về thông báo lỗi
             return response()->json(['message' => 'Đã xảy ra lỗi trong quá trình đăng nhập', 'error' => $e->getMessage()], 500);
         }
     }

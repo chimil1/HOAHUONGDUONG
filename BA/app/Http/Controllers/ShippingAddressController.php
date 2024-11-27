@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class ShippingAddressController extends Controller
 {
-
     public function index()
     {
         $shippingAddress = ShippingAddress::all();

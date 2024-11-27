@@ -66,7 +66,7 @@ function QlKhachHang() {
                               <tr>
                                 <th>Tên Khách Hàng</th>
                                 <th>Email</th>
-                                <th>Mật khẩu</th>
+                                <th>Số Điện Thoại</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành động</th>
                               </tr>
@@ -76,7 +76,7 @@ function QlKhachHang() {
                                   <tr key={item.id} className="tr-shadow">
                                     <td>{item.name || "Không có thông tin"}</td>
                                     <td>{item.email || "Không có thông tin"}</td>
-                                    <td>************</td>
+                                    <td>{item.phone || "Không có thông tin"}</td>
                                     <td>
                                       {item.role === 2 ? (
                                           <span className="badge badge-danger">Đã khóa</span>
@@ -92,6 +92,13 @@ function QlKhachHang() {
                                         {item.role === 2 ? "Mở khóa" : "Khóa"}
                                       </button>
                                     </td>
+                                    <td>
+                                      <button
+                                          className="item"
+                                      >
+                                        Chi Tiết
+                                      </button>
+                                    </td>
                                   </tr>
                               ))}
                               </tbody>
@@ -101,7 +108,7 @@ function QlKhachHang() {
                         )}
                       </div>
                       <div className="card-footer">
-                        <Footer />
+                        <Footer/>
                       </div>
                     </div>
                   </div>

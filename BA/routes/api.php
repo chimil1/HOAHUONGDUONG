@@ -45,6 +45,7 @@ Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
 Route::apiResource('review', ReviewController::class);
 Route::get('/statistical', [StatisticalController::class, 'getStatistics']);
+Route::get('/products-with-discount', [ProductController::class, 'getProductsWithDiscount']);
 
 Route::get('product/related/{category_id}', [ProductController::class, 'getRelatedProducts']);
 
