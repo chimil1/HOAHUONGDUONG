@@ -5,11 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
-import { fetchAddCategory } from "../actions/unitActions";
-import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
@@ -87,34 +82,12 @@ function AddCategory() {
                         </span>
                       )}
                     </div>
-                  <form onSubmit={handleSubmit(submit)}>
                     <div className="form-group">
-                      <label htmlFor="name">Tên danh mục</label>
-                      <input
-                        {...register("name", { required: true })}
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        name="name"
-                        placeholder="Nhập tên danh mục"
-                      />
-                      {errors.name && (
-                        <span className="text-danger">
-                          Tên danh mục không được bỏ trống!
-                        </span>
-                      )}
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="description">Mô tả</label>
                       <label htmlFor="description">Mô tả</label>
                       <input
                         {...register("description")}
-                        {...register("description")}
                         type="text"
                         className="form-control"
-                        id="description"
-                        name="description"
-                        placeholder="Nhập mô tả"
                         id="description"
                         name="description"
                         placeholder="Nhập mô tả"
@@ -122,14 +95,10 @@ function AddCategory() {
                     </div>
                     <div className="form-group">
                       <label htmlFor="file-input">Hình ảnh</label>
-                      <label htmlFor="file-input">Hình ảnh</label>
                       <input
-                        {...register("img")}
                         {...register("img")}
                         type="file"
                         className="form-control"
-                        id="file-input"
-                        name="img"
                         id="file-input"
                         name="img"
                       />
@@ -138,25 +107,14 @@ function AddCategory() {
                       <label>Trạng thái</label>
                       <select
                         {...register("status", { required: true })}
-                        {...register("status", { required: true })}
                         className="form-control"
-                        id="status"
-                        name="status"
                         id="status"
                         name="status"
                       >
                         <option value="">Chọn trạng thái</option>
                         <option value="0">Đang Hoạt Động</option>
                         <option value="1">Ngừng Hoạt Động</option>
-                        <option value="">Chọn trạng thái</option>
-                        <option value="0">Đang Hoạt Động</option>
-                        <option value="1">Ngừng Hoạt Động</option>
                       </select>
-                      {errors.status && (
-                        <span className="text-danger">
-                          Trạng thái danh mục không được bỏ trống!
-                        </span>
-                      )}
                       {errors.status && (
                         <span className="text-danger">
                           Trạng thái danh mục không được bỏ trống!
