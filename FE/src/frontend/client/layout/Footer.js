@@ -13,13 +13,13 @@ function Footer() {
               <ul>
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Nữ
+                   Thời trang cho nữ
                   </Link>
                 </li>
 
                 <li className="p-b-10">
                   <Link to="#" className="stext-107 cl7 hov-cl1 trans-04">
-                    Name
+                    Thời trang cho nam
                   </Link>
                 </li>
 

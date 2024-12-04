@@ -110,7 +110,7 @@ function Product() {
   return (
     <div>
       <Header />
-      <div className="bg0 m-t-23 p-b-140">
+      <div className="bg0 m-t-90 p-b-140">
         <div className="container">
           <div className="row">
             {/* Bộ lọc và tìm kiếm sản phẩm bên trái */}
@@ -225,12 +225,14 @@ function Product() {
                       <div className="block2">
                         <div className="block2-pic hov-img0">
                           <img src={product.img} alt="" />
-                          <Link
-                            to={`${product.id}`}
-                            className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                          >
-                            Xem
-                          </Link>
+                          <button
+                          type="button"
+                          className="btn btn-dark text-white mt-2 position-absolute cart-button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                      >
+                        <i className="fas fa-cart-plus"></i>
+                      </button>
                         </div>
                         <div className="block2-txt flex-w flex-t p-t-14">
                           <div className="block2-txt-child1 flex-col-l">

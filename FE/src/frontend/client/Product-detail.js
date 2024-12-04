@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   fetchProductDetails,
   fetchRelatedProducts,
+  fetchReviews,
 } from "../actions/unitActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +14,9 @@ function Productdetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
-  // const relatedProducts = useSelector((state) => state.unit);
+  const relatedProductsState = useSelector(
+    (state) => state.relatedProducts || []
+  );
 
   const initialImage =
     Array.isArray(productState.units.images) &&
@@ -30,6 +33,12 @@ function Productdetail() {
   }, [dispatch, id]);
 
   useEffect(() => {
+    if (productState.units && productState.units.category_id) {
+      dispatch(fetchRelatedProducts(productState.units.category_id));
+    }
+  }, [dispatch, productState.units]);
+
+  useEffect(() => {
     if (
       Array.isArray(productState.units.images) &&
       productState.units.images.length > 0
@@ -40,15 +49,6 @@ function Productdetail() {
 
   const product = productState.units;
   const [quantity, setQuantity] = useState(1);
-
-  // useEffect(() => {
-  //   if (product.category_id) {
-  //     dispatch(fetchRelatedProducts(product.category_id));
-  //   }
-  // }, [dispatch, product.category_id]);
-
-  // const relatedProduct = relatedProducts.units;
-  // console.log(relatedProduct);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -109,53 +109,49 @@ function Productdetail() {
       <section className="sec-product-detail bg-light p-5">
         <div className="container">
           <div className="row">
-            <div className="col-md-6 col-lg-7 p-b-30">
-              <div className="p-l-25 p-r-30 p-lr-0-lg">
-                <div className="wrap-slick3 flex-sb flex-w">
-                  <div className="wrap-slick3-arrows flex-sb-m flex-w"></div>
-                  <div className="slick3 gallery-lb">
-                    <div className="gallery-container">
-                      {/* Hiển thị hình ảnh lớn */}
-                      <div className="large-image">
-                        {currentImage ? (
-                          <div className="wrap-pic-w pos-relative">
-                            <img src={currentImage} alt="Hình sản phẩm" />
-                          </div>
-                        ) : (
-                          <p>Không có hình ảnh nào cho sản phẩm này.</p>
-                        )}
-                      </div>
-                      {/* Hình ảnh nhỏ */}
-                      <div className="small-images">
-                        {Array.isArray(productState.units.images) &&
-                        productState.units.images.length > 0 ? (
-                          productState.units.images
-                            .slice(0, 4)
-                            .map((item, index) => (
-                              <div
-                                key={index}
-                                className="item-slick3 pos-relative"
-                                onClick={() =>
-                                  handleThumbnailClick(item.product_img)
-                                }
-                              >
-                                <div className="wrap-pic-w pos-relative">
-                                  <img
-                                    src={item.product_img}
-                                    alt={`Hình sản phẩm ${index + 1}`}
-                                  />
-                                </div>
-                              </div>
-                            ))
-                        ) : (
-                          <p>Không có hình ảnh nào cho sản phẩm này.</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <aside className="col-lg-6">
+              <div className="border rounded-4 mb-3 d-flex justify-content-center">
+                {currentImage ? (
+                  <Link className="rounded-4">
+                    <img
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100vh",
+                        margin: "auto",
+                      }}
+                      className="rounded-4 fit"
+                      src={currentImage}
+                    />
+                  </Link>
+                ) : (
+                  <p>Không có hình ảnh nào cho sản phẩm này.</p>
+                )}
               </div>
-            </div>
+              <div className="d-flex justify-content-center mb-3">
+                {Array.isArray(productState.units.images) &&
+                productState.units.images.length > 0 ? (
+                  productState.units.images.slice(0, 5).map((item, index) => (
+                    <Link
+                      className="border mx-1 rounded-2 item-thumb"
+                      data-type="image"
+                      key={index}
+                      onClick={() => handleThumbnailClick(item.product_img)}
+                      href={item.product_img}
+                    >
+                      <img
+                        width="60"
+                        height="60"
+                        className="rounded-2"
+                        src={item.product_img}
+                        alt={`Product Thumbnail ${index + 1}`}
+                      />
+                    </Link>
+                  ))
+                ) : (
+                  <p>Không có hình ảnh nào cho sản phẩm này.</p>
+                )}
+              </div>
+            </aside>
 
             <div className="col-md-6 col-lg-5 p-b-10">
               <div className="p-r-50 p-t-5 p-lr-0-lg">
@@ -168,7 +164,9 @@ function Productdetail() {
                 <div className="mt-3">
                   <h5 className="mtext-100">Mô tả</h5>
                   <div className="mt-2">
-                    <p className="stext-102">{product.description}</p>
+                    <p className="stext-102 text-justify">
+                      {product.description}
+                    </p>
                   </div>
                 </div>
 
@@ -239,198 +237,78 @@ function Productdetail() {
             </div>
           </div>
 
-          <div className="bor10 m-t-50 p-t-43 p-b-40">
-            <div className="tab01">
-              <ul className="nav nav-tabs" role="tablist">
-                <li className="nav-item p-b-10">
-                  <p className="nav-link active" role="tab">
-                    MÔ TẢ SẢN PHẨM
-                  </p>
-                  <div className="mt-3">
-                    <p className="stext-102">{product.description}</p>
-                  </div>
-                </li>
+          <div className="container mt-5">
+            <div className="card">
+              <div className="card-header">
+                <ul className="nav nav-tabs card-header-tabs" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active text-dark fw"
+                      id="description-tab"
+                      data-bs-toggle="tab"
+                      href="#description"
+                      role="tab"
+                      aria-controls="description"
+                      aria-selected="true"
+                    >
+                      Mô tả sản phẩm
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link text-dark fw-bold"
+                      id="reviews-tab"
+                      data-bs-toggle="tab"
+                      href="#reviews"
+                      role="tab"
+                      aria-controls="reviews"
+                      aria-selected="false"
+                    >
+                      Đánh giá
+                    </a>
+                  </li>
+                </ul>
+              </div>
 
-                <li className="nav-item p-b-10">
-                  <a
-                    className="nav-link"
-                    data-toggle="tab"
-                    href="#reviews"
-                    role="tab"
+              <div className="card-body">
+                <div className="tab-content">
+                  {/* Tab Mô tả sản phẩm */}
+                  <div
+                    className="tab-pane fade show active"
+                    id="description"
+                    role="tabpanel"
+                    aria-labelledby="description-tab"
                   >
-                    Đánh giá (1)
-                  </a>
-                </li>
-              </ul>
-
-              <div className="tab-content p-t-43">
-                <div
-                  className="tab-pane fade show active"
-                  id="description"
-                  role="tabpanel"
-                >
-                  <div className="how-pos2 p-lr-15-md">
-                    <p className="stext-102 cl6"></p>
+                    <p className="text-start">{product.description}</p>
                   </div>
-                </div>
 
-                <div className="tab-pane fade" id="information" role="tabpanel">
-                  <div className="row">
-                    <div className="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
-                      <ul className="p-lr-28 p-lr-15-sm">
-                        <li className="flex-w flex-t p-b-7">
-                          <span className="stext-102 cl3 size-205">Weight</span>
+                  {/* Tab Đánh giá */}
+                  <div
+                    className="tab-pane fade"
+                    id="reviews"
+                    role="tabpanel"
+                    aria-labelledby="reviews-tab"
+                  >
 
-                          <span className="stext-102 cl6 size-206">
-                            0.79 kg
-                          </span>
-                        </li>
 
-                        <li className="flex-w flex-t p-b-7">
-                          <span className="stext-102 cl3 size-205">
-                            Dimensions
-                          </span>
-
-                          <span className="stext-102 cl6 size-206">
-                            110 x 33 x 100 cm
-                          </span>
-                        </li>
-
-                        <li className="flex-w flex-t p-b-7">
-                          <span className="stext-102 cl3 size-205">
-                            Materials
-                          </span>
-
-                          <span className="stext-102 cl6 size-206">
-                            60% cotton
-                          </span>
-                        </li>
-
-                        <li className="flex-w flex-t p-b-7">
-                          <span className="stext-102 cl3 size-205">Color</span>
-
-                          <span className="stext-102 cl6 size-206">
-                            Black, Blue, Grey, Green, Red, White
-                          </span>
-                        </li>
-
-                        <li className="flex-w flex-t p-b-7">
-                          <span className="stext-102 cl3 size-205">Size</span>
-
-                          <span className="stext-102 cl6 size-206">
-                            XL, L, M, S
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="tab-pane fade" id="reviews" role="tabpanel">
-                  <div className="row">
-                    <div className="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
-                      <div className="p-b-30 m-lr-15-sm">
-                        <div className="flex-w flex-t p-b-68">
-                          <div className="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-                            <img
-                              src="../../asset/images/avatar-01.jpg"
-                              alt="AVATAR"
-                            />
-                          </div>
-
-                          <div className="size-207">
-                            <div className="flex-w flex-sb-m p-b-17">
-                              <span className="mtext-107 cl2 p-r-20">
-                                Phạm Việt Hùng
-                              </span>
-
-                              <span className="fs-18 cl11">
-                                <i className="zmdi zmdi-star"></i>
-                                <i className="zmdi zmdi-star"></i>
-                                <i className="zmdi zmdi-star"></i>
-                                <i className="zmdi zmdi-star"></i>
-                                <i className="zmdi zmdi-star-half"></i>
-                              </span>
-                            </div>
-
-                            <p className="stext-102 cl6">
-                              Quod autem in homine praestantissimum atque
-                              optimum est, id deseruit. Apud ceteros autem
-                              philosophos
-                            </p>
-                          </div>
-                        </div>
-
-                        <form className="w-full">
-                          <h5 className="mtext-108 cl2 p-b-7">Add a review</h5>
-
-                          <p className="stext-102 cl6">
-                            Your email address will not be published. Required
-                            fields are marked *
-                          </p>
-
-                          <div className="flex-w flex-m p-t-50 p-b-23">
-                            <span className="stext-102 cl3 m-r-16">
-                              Your Rating
-                            </span>
-
-                            <span className="wrap-rating fs-18 cl11 pointer">
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <i className="item-rating pointer zmdi zmdi-star-outline"></i>
-                              <input
-                                className="dis-none"
-                                type="number"
-                                name="rating"
-                              />
-                            </span>
-                          </div>
-
-                          <div className="row p-b-25">
-                            <div className="col-12 p-b-5">
-                              <label className="stext-102 cl3" for="review">
-                                Your review
-                              </label>
-                              <textarea
-                                className="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10"
-                                id="review"
-                                name="review"
-                              ></textarea>
-                            </div>
-
-                            <div className="col-sm-6 p-b-5">
-                              <label className="stext-102 cl3" for="name">
-                                Name
-                              </label>
-                              <input
-                                className="size-111 bor8 stext-102 cl2 p-lr-20"
-                                id="name"
-                                type="text"
-                                name="name"
-                              />
-                            </div>
-
-                            <div className="col-sm-6 p-b-5">
-                              <label className="stext-102 cl3" for="email">
-                                Email
-                              </label>
-                              <input
-                                className="size-111 bor8 stext-102 cl2 p-lr-20"
-                                id="email"
-                                type="text"
-                                name="email"
-                              />
-                            </div>
-                          </div>
-
-                          <button className="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
-                            Submit
-                          </button>
-                        </form>
+                    <form>
+                      <div className="mb-3">
+                        <label htmlFor="review" className="form-label">
+                          Nhập đánh giá
+                        </label>
+                        <textarea
+                          className="form-control"
+                          id="review"
+                          rows="4"
+                          placeholder="Đánh giá của bạn..."
+                        ></textarea>
                       </div>
-                    </div>
+                      <div className="d-flex justify-content-end">
+                        <button type="submit" className="btn btn-dark">
+                          Submit 
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -446,29 +324,37 @@ function Productdetail() {
           </div>
           <div className="wrap-slick2">
             <div className="row isotope-grid">
-              {/* {Array.isArray(relatedProduct) && relatedProduct.length > 0 ? (
-                relatedProduct.map((relatedProduct) => (
+              {relatedProductsState.loading ? (
+                <p>Đang tải sản phẩm...</p>
+              ) : relatedProductsState.relatedProducts &&
+                relatedProductsState.relatedProducts.length > 0 ? (
+                relatedProductsState.relatedProducts.map((relatedProduct) => (
                   <div
                     className="col-sm-6 col-md-4 col-lg-3 p-b-35"
-                    key={relatedProduct.category_id}
+                    key={relatedProduct.id} // Sửa lại key thành id của sản phẩm
                   >
                     <div className="block2">
-                      <div className="block2-pic hov-img0">
+                      <div className="block2-pic hov-img0 position-relative">
                         <img
-                          // src={relatedProduct.img || "../../asset/images/default-image.png"}
-                          alt="IMG-PRODUCT"
+                          src={
+                            relatedProduct.img
+                          }
+                          alt={relatedProduct.product_name || "Product Image"}
+                          className="img-fluid"
                         />
-                        <Link
-                          to="#"
-                          className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                        <button
+                          type="button"
+                          className="btn btn-dark text-white mt-2 position-absolute cart-button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
                         >
-                          Quick View
-                        </Link>
+                          <i className="fas fa-cart-plus"></i>
+                        </button>
                       </div>
                       <div className="block2-txt flex-w flex-t p-t-14">
                         <div className="block2-txt-child1 flex-col-l">
                           <Link
-                            to={`/product/${relatedProduct.category_id}`}
+                            to={`/product/${relatedProduct.id}`}
                             className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                           >
                             {relatedProduct.product_name || "Tên sản phẩm"}
@@ -484,12 +370,13 @@ function Productdetail() {
                   </div>
                 ))
               ) : (
-                <p>Không có sản phẩm liên quan.</p>
-              )} */}
+                <p className="text-center">Không có sản phẩm liên quan.</p>
+              )}
             </div>
           </div>
         </div>
       </section>
+
       <Footer></Footer>
     </div>
   );

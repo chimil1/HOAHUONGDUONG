@@ -240,18 +240,14 @@ export const fetchAddProduct = (product) => {
 
 export const fetchRelatedProducts = (category_id) => {
   return (dispatch) => {
-    dispatch(fetchUnitsRequest());
-    return axios 
+    dispatch({ type: "FETCH_RELATED_PRODUCTS_REQUEST" });
+    return axios
       .get(`http://localhost:8000/api/product/related/${category_id}`)
       .then((response) => {
-        const relatedProducts = response.data;
-        dispatch(fetchUnitsSuccess(relatedProducts));
-        return relatedProducts; 
-     })
+        dispatch({ type: "FETCH_RELATED_PRODUCTS_SUCCESS", payload: response.data });
+      })
       .catch((error) => {
-        const errorMsg = error.message;
-        dispatch(fetchUnitsFailure(errorMsg));
-        throw error;
+        dispatch({ type: "FETCH_RELATED_PRODUCTS_FAILURE", payload: error.message });
       });
   };
 };

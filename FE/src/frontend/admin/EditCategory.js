@@ -41,7 +41,7 @@ function EditCategory() {
   if (categoryState.error) {
     return <p>Error: {categoryState.error}</p>;
   }
-  
+
   const submit = (data) => {
     const jsonData = {
       name: data.name,
@@ -49,11 +49,9 @@ function EditCategory() {
       status: data.status,
       img: data.img,
     };
-  
 
- 
     try {
-      dispatch(updateCategory(id, jsonData));   // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
+      dispatch(updateCategory(id, jsonData)); // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
       Swal.fire({
         text: "Cập nhật danh mục thành công!",
         icon: "success",
@@ -65,7 +63,7 @@ function EditCategory() {
         icon: "error",
       });
     }
- };
+  };
 
   return (
     <div className="page-wrapper">
@@ -81,41 +79,30 @@ function EditCategory() {
                 </div>
                 <div className="card-body">
                   <form onSubmit={handleSubmit(submit)}>
-                    <div className="form-group">
-                      <label htmlFor="name">Tên danh mục</label>
-                      <input
-                        {...register("name", { required: true })}
-                        type="text"
-                        id="name"
-                        placeholder="Nhập tên sản phẩm..."
-                        className="form-control"/>
+                    <div className="row">
+                      <div className="form-group col-md-6 mb-3">
+                        <label htmlFor="name">Tên danh mục</label>
+                        <input
+                          {...register("name", { required: true })}
+                          type="text"
+                          id="name"
+                          placeholder="Nhập tên sản phẩm..."
+                          className="form-control"
+                        />
                         {errors.name && (
                           <span className="text-danger">
                             Tên sản phẩm không được bỏ trống!
                           </span>
                         )}
                       </div>
-                      <div className="form-group">
-                        <label htmlFor="description">Mô tả</label>
-                        <textarea
-                          {...register("description", { required: true })}
-                          id="description"
-                          rows="9"
-                          placeholder="Nhập mô tả..."
-                          className="form-control"
-                        ></textarea>
-                        {errors.description && (
-                          <span className="text-danger">
-                            Mô tả sản phẩm không được bỏ trống!
-                          </span>
-                        )}
-                      </div>
-                      <div className="form-group">
+                      <div className="form-group col-md-6 mb-3 position-relative">
                         <label htmlFor="status">Trạng thái</label>
                         <select
                           {...register("status", { required: true })}
                           id="status"
-                          className="form-control"
+                          className={`form-control custom-select ${
+                            errors.status ? "is-invalid" : ""
+                          }`}
                         >
                           <option value="">Chọn trạng thái</option>
                           <option value="0">Đang Hoạt Động</option>
@@ -127,21 +114,39 @@ function EditCategory() {
                           </span>
                         )}
                       </div>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="description">Mô tả</label>
+                      <textarea
+                        {...register("description", { required: true })}
+                        id="description"
+                        rows="9"
+                        placeholder="Nhập mô tả..."
+                        className="form-control"
+                      ></textarea>
+                      {errors.description && (
+                        <span className="text-danger">
+                          Mô tả sản phẩm không được bỏ trống!
+                        </span>
+                      )}
+                    </div>
+                    <div className="d-flex justify-content-end">
                       <button type="submit" className="btn btn-dark">
                         <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
                       </button>
-                    </form>
-                  </div>
-                  <div className="card-footer">
-                    <Footer />
-                  </div>
+                    </div>
+                  </form>
+                </div>
+                <div className="card-footer">
+                  <Footer />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-  
-  export default EditCategory;
+    </div>
+  );
+}
+
+export default EditCategory;

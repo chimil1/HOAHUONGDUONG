@@ -4,13 +4,18 @@ import Menu from "./layout/Menu";
 
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCategory, fetchCategoryDelete, fetchRelatedProducts } from "../actions/unitActions";
+import {
+  fetchCategory,
+  fetchCategoryDelete,
+  fetchRelatedProducts,
+} from "../actions/unitActions";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function QlDanhMuc() {
   const dispatch = useDispatch();
   const categoryState = useSelector((state) => state.unit);
+  const relatedProductsState = useSelector((state) => state.relatedProducts);
 
   useEffect(() => {
     dispatch(fetchCategory());
@@ -20,40 +25,46 @@ function QlDanhMuc() {
   const productPerPage = 5;
 
   const handleDelete = (id) => {
-    dispatch(fetchRelatedProducts(id)).then((relatedProducts) => {
-      if (relatedProducts.length > 0) {
+    dispatch(fetchRelatedProducts(id))
+      .then(() => {
+        const { relatedProducts } = relatedProductsState;
+  
+        if (relatedProducts.length > 0) {
+          Swal.fire({
+            text: "Danh mục này có sản phẩm liên quan. Không thể xóa!",
+            icon: "error",
+          }).then(() => {
+            dispatch(fetchCategory());
+          });
+        } else {
+          Swal.fire({
+            text: "Bạn có muốn xóa danh mục này?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Tiếp tục",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              dispatch(fetchCategoryDelete(id));
+              Swal.fire({
+                text: "Xóa danh mục thành công!",
+                icon: "success",
+              }).then(() => {
+                dispatch(fetchCategory());
+              });
+            }
+          });
+        }
+      })
+      .catch(() => {
         Swal.fire({
-          text: "Danh mục này có sản phẩm liên quan. Không thể xóa!",
+          text: "Đã xảy ra lỗi khi kiểm tra sản phẩm liên quan.",
           icon: "error",
-        }).then(() => {
-          dispatch(fetchCategory());
         });
-      } else {
-        Swal.fire({
-          text: "Bạn có muốn xóa danh mục này?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Tiếp tục",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            dispatch(fetchCategoryDelete(id));
-            Swal.fire({
-              text: "Xóa danh mục thành công!",
-              icon: "success",
-            });
-          }
-        });
-      }
-    }).catch((error) => {
-      // Xử lý lỗi nếu có
-      Swal.fire({
-        text: "Đã xảy ra lỗi khi lấy sản phẩm liên quan.",
-        icon: "error",
       });
-    });
   };
+  
 
   if (categoryState.loading) {
     return <p>Đang tải...</p>;
@@ -64,18 +75,15 @@ function QlDanhMuc() {
   }
 
   if (!Array.isArray(categoryState.units) || categoryState.units.length === 0) {
-    return (
-      <p>Lỗi: Định dạng dữ liệu không chính xác hoặc không có danh mục nào.</p>
-    );
+    return <p>Không có danh mục nào.</p>;
   }
 
   const indexOfLastOrder = currentPage * productPerPage;
   const indexOfFirstOrder = indexOfLastOrder - productPerPage;
-  
+
   const currentItems = [...categoryState.units]
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     .slice(indexOfFirstOrder, indexOfLastOrder);
-  
 
   const totalPages = Math.ceil(categoryState.units.length / productPerPage);
 
@@ -115,8 +123,7 @@ function QlDanhMuc() {
                           <tr>
                             <th>Tên danh mục</th>
                             <th>Mô tả</th>
-                            <th>Tr ạng thái</th>
-                            <th>Thao tác</th>
+                            <th>Trạng thái</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -137,22 +144,17 @@ function QlDanhMuc() {
                               </td>
                               <td className="d-flex justify-content-center">
                                 <div className="table-data-feature">
-                                  <button
+                                  <Link
+                                    to={`/editcategory/${item.id}`}
                                     className="item"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
                                     title="Sửa"
                                   >
-                                    <Link to={`/editcategory/${item.id}`}>
-                                      <i className="zmdi zmdi-edit"></i>
-                                    </Link>
-                                  </button>
+                                    <i className="zmdi zmdi-edit"></i>
+                                  </Link>
                                   <button
                                     onClick={() => handleDelete(item.id)}
                                     className="item"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Delete"
+                                    title="Xóa"
                                   >
                                     <i className="zmdi zmdi-delete"></i>
                                   </button>
@@ -162,7 +164,10 @@ function QlDanhMuc() {
                           ))}
                         </tbody>
                       </table>
-                      <div className="pagination-center d-flex justify-content-between align-items-center mt-3" style={{ width: "300px", margin: "0 auto" }}>
+                      <div
+                        className="pagination-center d-flex justify-content-between align-items-center mt-3"
+                        style={{ width: "300px", margin: "0 auto" }}
+                      >
                         <button
                           onClick={handlePrevPage}
                           disabled={currentPage === 1}
@@ -176,15 +181,13 @@ function QlDanhMuc() {
                         <button
                           onClick={handleNextPage}
                           disabled={currentPage === totalPages}
-                          className="btn btn-outline-dark mr-2c"
+                          className="btn btn-outline-dark"
                         >
                           Trang sau
                         </button>
                       </div>
                     </div>
-                    <div className="card-footer">
-                      <Footer />
-                    </div>
+                    <Footer />
                   </div>
                 </div>
               </div>

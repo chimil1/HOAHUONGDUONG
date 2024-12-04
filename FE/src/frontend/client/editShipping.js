@@ -59,7 +59,7 @@ function EditShipping() {
     return (
         <div>
             <Header />
-            <section className="pt-5" style={{ backgroundColor: "#eee" }}>
+            <section className="pt-5 m-t-80" style={{ backgroundColor: "#eee" }}>
                 <div className="container py-5">
                     <div className="row">
                         <div className="col-lg-4">

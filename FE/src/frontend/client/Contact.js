@@ -33,7 +33,7 @@ function Contact() {
         <div>
         <Header></Header>
             {/* Title page */}
-            <section className="bg-img1 txt-center p-lr-15 p-tb-92" style={{ backgroundImage: "url('../../asset/images/bg-01.jpg')" }}>
+            <section className="bg-img1 txt-center p-lr-15 p-tb-92 m-t-80" style={{ backgroundImage: "url('../../asset/images/bg-01.jpg')" }}>
                 <h2 className="ltext-105 cl0 txt-center">
                     Góp ý
                 </h2>

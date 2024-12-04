@@ -8,7 +8,7 @@ function Blog() {
       <Header></Header>
       {/* Title page */}
       <section
-        className="bg-img1 txt-center p-lr-15 p-tb-92"
+        className="bg-img1 txt-center p-lr-15 p-tb-92 m-t-80"
         style={{ backgroundImage: "url('../../asset/images/bg-02.jpg')" }}
       >
         <h2 className="ltext-105 cl0 txt-center">Bài viết</h2>
