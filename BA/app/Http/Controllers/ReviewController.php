@@ -13,28 +13,18 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        try {
-            $products = Product::has('reviews')->withCount('reviews')
-                ->with('images:product_id,product_img')
-                ->get();
-
-            $products = $products->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->product_name,
-                    'img' => $product->images->first()->product_img,
-                    'review_count' => $product->reviews_count,
-                ];
-            });
-
-            return response()->json($products);
-        } catch (\Exception $e) {
-
-            // Trả về phản hồi lỗi cho client
-            return response()->json(['error' => 'An error occurred while retrieving products.'], 500);
-        }
+        $products = Product::has('reviews')->withCount('reviews')
+            ->with('images:product_id,product_img')
+            ->get();
+        $products = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'review_count' => $product->reviews_count,
+            ];
+        });
+        return response()->json($products);
     }
-
 
     /**
      * Show the form for creating a new resource.

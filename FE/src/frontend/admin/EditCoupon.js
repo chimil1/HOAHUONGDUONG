@@ -1,3 +1,4 @@
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
@@ -5,12 +6,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Swal from 'sweetalert2';
-import { fetchCouponDetails ,updateCoupon} from "../actions/unitActions";
-import axios from 'axios';
+import Swal from "sweetalert2";
+import { fetchCouponDetails, updateCoupon } from "../actions/unitActions";
+import axios from "axios";
 
 function EditCoupon() {
-
     let { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ function EditCoupon() {
         formState: { errors },
         setValue,
         getValues,
-        setError
+        setError,
     } = useForm();
 
     useEffect(() => {
@@ -30,10 +30,16 @@ function EditCoupon() {
 
     useEffect(() => {
         if (unitState.selectedUnit) {
-            const { name_coupon, code_name, discount_type, discount_value, minium_order_value, start_date, end_date } = unitState.selectedUnit;
+            const {
+                name_coupon,
+                code_name,
+                discount_value,
+                minium_order_value,
+                start_date,
+                end_date,
+            } = unitState.selectedUnit;
             setValue("name_coupon", name_coupon);
             setValue("code_name", code_name);
-            setValue("discount_type", discount_type);
             setValue("discount_value", discount_value);
             setValue("minium_order_value", minium_order_value);
             setValue("start_date", start_date);
@@ -41,37 +47,22 @@ function EditCoupon() {
         }
     }, [unitState.selectedUnit, setValue]);
 
-    const checkCouponCode = async (code) => {
-        try {
-            const response = await axios.get(`http://localhost:8000/api/checkCode/${code}`);
-            return response.data.message !== "Mã giảm giá đã tồn tại";
-        } catch (error) {
-            console.error("Error checking code:", error);
-            return false;
-        }
-    };
-
     const submit = async (data) => {
-        const isCodeValid = await checkCouponCode(data.code_name);
-        if (!isCodeValid) {
-            Swal.fire({
-                text: "Mã giảm giá đã tồn tại!",
-                icon: "error",
-            });
-            setError("code_name", { type: "manual", message: "Mã giảm giá đã tồn tại" });
-            return;
-        }
-
         const jsonData = {
             name_coupon: data.name_coupon,
             code_name: data.code_name,
-            discount_type: data.discount_type,
             discount_value: data.discount_value,
             minium_order_value: data.minium_order_value,
             start_date: data.start_date,
             end_date: data.end_date,
         };
-
+        if (new Date(data.start_date) >= new Date(data.end_date)) {
+            setError("end_date", {
+                type: "manual",
+                message: "Ngày kết thúc phải sau ngày bắt đầu",
+            });
+            return;
+        }
         try {
             await dispatch(updateCoupon(id, jsonData));
             Swal.fire({
@@ -110,9 +101,15 @@ function EditCoupon() {
                                                 className="form-control"
                                                 id="name_coupon"
                                                 placeholder="Nhập mã giảm giá"
-                                                {...register("name_coupon", { required: "Vui lòng nhập tên mã giảm giá" })}
+                                                {...register("name_coupon", {
+                                                    required: "Vui lòng nhập tên mã giảm giá",
+                                                })}
                                             />
-                                            {errors.name_coupon && <p className="text-danger">{errors.name_coupon.message}</p>}
+                                            {errors.name_coupon && (
+                                                <p className="text-danger">
+                                                    {errors.name_coupon.message}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="form-group">
@@ -122,27 +119,18 @@ function EditCoupon() {
                                                 className="form-control"
                                                 id="code_name"
                                                 placeholder="Nhập code"
-                                                {...register("code_name", { required: "Vui lòng nhập code" })}
+                                                {...register("code_name", {
+                                                    required: "Vui lòng nhập code",
+                                                })}
                                             />
-                                            {errors.code_name && <p className="text-danger">{errors.code_name.message}</p>}
+                                            {errors.code_name && (
+                                                <p className="text-danger">
+                                                    {errors.code_name.message}
+                                                </p>
+                                            )}
                                         </div>
-
                                         <div className="form-group">
-                                            <label>Loại giảm giá</label>
-                                            <select
-                                                className="form-control"
-                                                id="discount_type"
-                                                {...register("discount_type", { required: "Vui lòng chọn loại giảm giá" })}
-                                            >
-                                                <option value="">Chọn giảm giá</option>
-                                                <option value="0">VNĐ</option>
-                                                <option value="1">%</option>
-                                            </select>
-                                            {errors.discount_type && <p className="text-danger">{errors.discount_type.message}</p>}
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label htmlFor="discount_value">Giá trị giảm giá</label>
+                                            <label htmlFor="discount_value">Giá trị giảm giá(%)</label>
                                             <input
                                                 type="number"
                                                 className="form-control"
@@ -150,12 +138,22 @@ function EditCoupon() {
                                                 placeholder="Nhập giá trị giảm giá"
                                                 {...register("discount_value", {
                                                     required: "Vui lòng nhập giá trị giảm giá",
-                                                    min: { value: 1, message: "Giá trị giảm giá phải lớn hơn 0" }
+                                                    min: {
+                                                        value: 1,
+                                                        message: "Giá trị giảm giá phải lớn hơn 0",
+                                                    },
+                                                    max: {
+                                                        value: 100,
+                                                        message: "Giá trị giảm giá không được lớn hơn 100",
+                                                    }, // Thêm kiểm tra giá trị tối đa
                                                 })}
                                             />
-                                            {errors.discount_value && <p className="text-danger">{errors.discount_value.message}</p>}
+                                            {errors.discount_value && (
+                                                <p className="text-danger">
+                                                    {errors.discount_value.message}
+                                                </p>
+                                            )}
                                         </div>
-
                                         <div className="form-group">
                                             <label htmlFor="minium_order_value">Giá tối thiểu</label>
                                             <input
@@ -165,10 +163,17 @@ function EditCoupon() {
                                                 placeholder="Nhập giá tối thiểu"
                                                 {...register("minium_order_value", {
                                                     required: "Vui lòng nhập giá tối thiểu",
-                                                    min: { value: 0, message: "Giá tối thiểu phải lớn hơn hoặc bằng 0" }
+                                                    min: {
+                                                        value: 0,
+                                                        message: "Giá tối thiểu phải lớn hơn hoặc bằng 0",
+                                                    }, // Không cho phép giá trị âm
                                                 })}
                                             />
-                                            {errors.minium_order_value && <p className="text-danger">{errors.minium_order_value.message}</p>}
+                                            {errors.minium_order_value && (
+                                                <p className="text-danger">
+                                                    {errors.minium_order_value.message}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="form-group">
@@ -177,9 +182,15 @@ function EditCoupon() {
                                                 type="datetime-local"
                                                 className="form-control"
                                                 id="start_date"
-                                                {...register("start_date", { required: "Vui lòng chọn ngày bắt đầu" })}
+                                                {...register("start_date", {
+                                                    required: "Vui lòng chọn ngày bắt đầu",
+                                                })}
                                             />
-                                            {errors.start_date && <p className="text-danger">{errors.start_date.message}</p>}
+                                            {errors.start_date && (
+                                                <p className="text-danger">
+                                                    {errors.start_date.message}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="form-group">
@@ -188,9 +199,13 @@ function EditCoupon() {
                                                 type="datetime-local"
                                                 className="form-control"
                                                 id="end_date"
-                                                {...register("end_date", { required: "Vui lòng chọn ngày kết thúc" })}
+                                                {...register("end_date", {
+                                                    required: "Vui lòng chọn ngày kết thúc",
+                                                })}
                                             />
-                                            {errors.end_date && <p className="text-danger">{errors.end_date.message}</p>}
+                                            {errors.end_date && (
+                                                <p className="text-danger">{errors.end_date.message}</p>
+                                            )}
                                         </div>
 
                                         <button type="submit" className="btn btn-dark">

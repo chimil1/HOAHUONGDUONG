@@ -105,6 +105,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 [ Bootstrap ]*/
 .container {max-width: 100%;}
 
+
 @media (max-width: 1600px) {
   .container {max-width: 1200px;}
 }
@@ -115,6 +116,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*//////////////////////////////////////////////////////////////////
 [ LOADDING ]*/
+
 .animsition-loading-1 {
   position: absolute;
   top: 50%;
@@ -195,7 +197,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 [ Header Desktop ]*/
 
 .container-menu-desktop {
-  height: auto;
+  height: 80px;
+  margin-bottom:5px ;
   width: 100%;
   position: relative;
   -webkit-transition: all 0.3s;

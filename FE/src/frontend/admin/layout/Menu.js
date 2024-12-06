@@ -48,13 +48,6 @@ function Menu() {
                 <i className="fas fa-table"></i>Quản lý Sản Phẩm
               </Link>
             </li>
-
-            {/* Thêm nút chuyển trang qua client */}
-            <li className="has-sub">
-              <Link className="js-arrow" to="/Home">
-                <i className="fas fa-home"></i>Trang chủ Client
-              </Link>
-            </li>
           </ul>
         </nav>
       </div>

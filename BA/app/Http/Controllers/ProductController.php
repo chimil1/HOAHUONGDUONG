@@ -8,21 +8,9 @@ use App\Models\Product_image;
 use App\Models\SkuValue;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+
 class ProductController extends Controller
-
 {
-    public function getRandomProducts(): JsonResponse
-    {
-        // Lấy 5 sản phẩm ngẫu nhiên với điều kiện status = 1
-        $products = Product::where('status', 1)
-            ->inRandomOrder()
-            ->take(5)
-            ->get();
-
-        return response()->json($products);
-    }
-   
     /**
      * Display a listing of the resource.
      */
@@ -161,7 +149,8 @@ class ProductController extends Controller
     {
         try {
             $relatedProducts = Product::where('category_id', $category_id)
-            ->get();
+                ->with('images:product_id,product_img')
+                ->get();
 
             // Check if any products were found
             if ($relatedProducts->isEmpty()) {
@@ -170,11 +159,10 @@ class ProductController extends Controller
                     'message' => 'No related products found for this category.'
                 ], 404);
             }
-                return response()->json($relatedProducts);
+            return response()->json($relatedProducts);
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => $e->getMessage(),
                 'success' => false,
                 'message' => 'An error occurred while fetching related products. Please try again later.'
             ], 500);

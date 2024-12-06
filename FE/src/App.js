@@ -24,6 +24,7 @@ import EditCoupon from "./frontend/admin/EditCoupon";
 import AddCategory from "./frontend/admin/AddCategory";
 import AddPersonnel from "./frontend/admin/AddPersonnel";
 import Orderdetails from "./frontend/admin/orderDetail";
+import OrderManagement from "./frontend/admin/OrderManagement";
 import Editshipping from "./frontend/client/editShipping";
 
 import Home from "./frontend/client/Home";
@@ -40,10 +41,10 @@ import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import AddShipping from "./frontend/client/AddShipping";
-import ListAddress from "./frontend/client/listAddess";
-import Search from "./frontend/client/Search";
+// import ListAddress from "./frontend/client/listAddess";
 import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
+import PayMent from "./frontend/client/cart";
 
 function App() {
   return (
@@ -99,6 +100,7 @@ function App() {
           <Route path="/orderdetails" element={<OrderDetail />} />
           <Route path="/addpersonnel" element={<AddPersonnel />} />
           <Route path="/orderdetails" element={<Orderdetails />} />
+          <Route path="/details/:id" element={<OrderManagement/>} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />
           <Route path="/Addcoupon" element={<Addcoupon />} />
@@ -107,6 +109,7 @@ function App() {
           <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
           <Route path="/home" element={<Home />} />
             <Route path="/editProduct/:id" element={<EditProduct />} />
+          <Route path="/payment" element={<PayMent />} />
             {/* <Route path="/admin/login" element={<LoginForm />} /> */}
         </Routes>
       </BrowserRouter>

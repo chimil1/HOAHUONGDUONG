@@ -28,14 +28,8 @@ function AddCategory() {
   }
 
   const submit = (data) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("status", data.status);
-
     dispatch(fetchAddCategory(data));
 
-    console.log(data);
     Swal.fire({
       text: "Thêm sản phẩm thành công!",
       icon: "success",
@@ -54,63 +48,75 @@ function AddCategory() {
           <div className="main-content">
             <div className="section__content section__content--p30">
               <div className="container-fluid">
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="title-5 m-b-35">Thêm danh mục mới</h3>
+                <div className="card shadow-sm">
+                  <div className="card-header bg-dark text-white">
+                    <h3 className="text-center">Thêm Danh Mục Mới</h3>
                   </div>
                   <div className="card-body">
-                    <form onSubmit={handleSubmit(submit)}>
-                      <div className="form-group">
-                        <label htmlFor="name">Tên danh mục</label>
-                        <input
-                            {...register("name", { required: true })}
-                            type="text"
-                            className="form-control"
-                            id="name"
-                            name="name"
-                            placeholder="Nhập tên danh mục"
-                        />
-                        {errors.name && (
-                            <span className="text-danger">
-                          Tên danh mục không được bỏ trống!
-                        </span>
-                        )}
+                    <form onSubmit={handleSubmit(submit)} className="p-4">
+                      <div className="row">
+                        <div className="form-group col-md-6 mb-3">
+                          <label htmlFor="name">Tên Danh Mục</label>
+                          <input
+                              {...register("name", {
+                                required: "Tên danh mục không được bỏ trống!",
+                              })}
+                              type="text"
+                              className={`form-control ${
+                                  errors.name ? "is-invalid" : ""
+                              }`}
+                              id="name"
+                              placeholder="Nhập tên danh mục"
+                          />
+                          {errors.name && (
+                              <div className="invalid-feedback">
+                                {errors.name.message}
+                              </div>
+                          )}
+                        </div>
+
+                        <div className="form-group col-md-6 mb-3 position-relative">
+                          <label>Trạng Thái</label>
+                          <select
+                              {...register("status", {
+                                required:
+                                    "Trạng thái danh mục không được bỏ trống!",
+                              })}
+                              className={`form-control custom-select ${
+                                  errors.status ? "is-invalid" : ""
+                              }`}
+                              id="status"
+                              onFocus={(e) => e.target.classList.add("focused")}
+                              onBlur={(e) => e.target.classList.remove("focused")}
+                          >
+                            <option value="">Chọn trạng thái</option>
+                            <option value="0">Đang Hoạt Động</option>
+                            <option value="1">Ngừng Hoạt Động</option>
+                          </select>
+                          {errors.status && (
+                              <div className="invalid-feedback">
+                                {errors.status.message}
+                              </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="form-group">
-                        <label htmlFor="description">Mô tả</label>
+
+                      <div className="form-group mb-3">
+                        <label htmlFor="description">Mô Tả</label>
                         <textarea
-                            {...register("description", { required: true })}
+                            {...register("description")}
                             id="description"
-                            rows="9"
+                            rows="4"
+                            className="form-control"
                             placeholder="Nhập mô tả..."
-                            className="form-control"
-                        ></textarea>{errors.description && (
-                          <span className="text-danger">
-                            Mô tả sản phẩm không được bỏ trống!
-                          </span>
-                      )}
+                        ></textarea>
                       </div>
-                      <div className="form-group">
-                        <label>Trạng thái</label>
-                        <select
-                            {...register("status", { required: true })}
-                            className="form-control"
-                            id="status"
-                            name="status"
-                        >
-                          <option value="">Chọn trạng thái</option>
-                          <option value="0">Đang Hoạt Động</option>
-                          <option value="1">Ngừng Hoạt Động</option>
-                        </select>
-                        {errors.status && (
-                            <span className="text-danger">
-                          Trạng thái danh mục không được bỏ trống!
-                        </span>
-                        )}
+
+                      <div className="d-flex justify-content-end">
+                        <button type="submit" className="btn btn-dark">
+                          <i className="zmdi zmdi-plus"></i> Thêm Danh Mục
+                        </button>
                       </div>
-                      <button type="submit" className="btn btn-dark">
-                        <i className="zmdi zmdi-plus"></i> Thêm danh mục
-                      </button>
                     </form>
                   </div>
                   <div className="card-footer">

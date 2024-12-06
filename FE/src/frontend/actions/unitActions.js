@@ -116,13 +116,36 @@ export const fetchShippingAddresses = (id) => {
             });
     };
 };
+export const fetchAddresses = () => {
+    return (dispatch) => {
+        dispatch({ type: "FETCH_ADDRESS_REQUEST" });
+        const token = localStorage.getItem("token");
+        axios
+            .get(`${url}/shipping`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                dispatch({ type: "FETCH_ADDRESS_SUCCESS", payload: response.data });
+            })
+            .catch((error) => {
+                dispatch({ type: "FETCH_ADDRESS_FAILURE", payload: error.message });
+            });
+    };
+};
+
 // delete
 export const fetchShippingDelete = (id) => {
     return (dispatch) => {
         dispatch(fetchUnitsRequest());
-
+        const token = localStorage.getItem("token");
         axios
-            .delete(url + `/shipping/${id}`)
+            .delete(url + `/shipping/${id}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
             .then((response) => {
                 const successMessage = response.data.message;
                 dispatch(fetchUnitsSuccess(successMessage));
@@ -173,7 +196,22 @@ export const fetchProducts = () => {
   };
 };
 
-
+export const fetchDelete = (id) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        axios
+            .delete(url+`/product/${id}`)
+            .then((response) => {
+                const units = response.data;
+                dispatch(fetchUnitsSuccess(units));
+                dispatch(fetchProducts());
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
 export const fetchProductRandom = () => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
@@ -272,19 +310,17 @@ export const fetchAddProduct = (data) => {
 
 // Thunk Action to Fetch Related Products
 export const fetchRelatedProducts = (category_id) => {
-  return (dispatch) => {
-    dispatch(fetchUnitsRequest());
-    return axios
-      .get(`http://localhost:8000/api/product/related/${category_id}`)
-      .then((response) => {
-        const products = Array.isArray(response.data) ? response.data : [];
-        dispatch(fetchUnitsSuccess(products));
-      })
-      .catch((error) => {
-        const errorMsg = error.message;
-        dispatch(fetchUnitsFailure(errorMsg));
-      });
-  };
+    return (dispatch) => {
+        dispatch({ type: "FETCH_RELATED_PRODUCTS_REQUEST" });
+        return axios
+            .get(`http://localhost:8000/api/product/related/${category_id}`)
+            .then((response) => {
+                dispatch({ type: "FETCH_RELATED_PRODUCTS_SUCCESS", payload: response.data });
+            })
+            .catch((error) => {
+                dispatch({ type: "FETCH_RELATED_PRODUCTS_FAILURE", payload: error.message });
+            });
+    };
 };
 
 //Order
@@ -303,19 +339,46 @@ export const fetchOrders = () => {
         });
     };
   };
-export const approveOrder = (id) => {
+export const updateOrderStatus = (id, newStatus) => {
     return (dispatch) => {
+        dispatch(fetchUnitsRequest)
         return axios
-            .put(`http://localhost:8000/api/order/approve/${id}`)
+            .put(url+`/order/status/${id}`, { status: newStatus }) // Gửi giá trị status
             .then(() => {
                 dispatch(fetchOrders());
             })
             .catch((error) => {
-                console.error("Lỗi khi duyệt đơn hàng:", error);
+                console.error("Lỗi khi cập nhật trạng thái đơn hàng:", error);
             });
     };
-
-}
+};
+// export const approveOrder = (id) => {
+//     return (dispatch) => {
+//         return axios
+//             .put(`http://localhost:8000/api/order/approve/${id}`)
+//             .then(() => {
+//                 dispatch(fetchOrders());
+//             })
+//             .catch((error) => {
+//                 console.error("Lỗi khi duyệt đơn hàng:", error);
+//             });
+//     };
+// }
+export const fetchOrderManagement = (id) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        axios
+            .get(url+`/users/orders/${id}`)
+            .then((response) => {
+                const units = response.data;
+                dispatch(fetchUnitsSuccess(units));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchUnitsFailure(errorMsg));
+            });
+    };
+};
   export const fetchOrderDetails = (id) => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());
@@ -483,7 +546,7 @@ export const fetchStatiscal = () => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .get(`http://localhost:8000/api/statistical`)
+      .get(`http://localhost:8000/api/user-stats`)
       .then((response) => {
         const units = response.data;
         dispatch(fetchUnitsSuccess(units));
@@ -530,6 +593,23 @@ export const fetchCoupons = () => {
             });
     };
 };
+
+// export const fetchDeleteCoupon = (id) => {
+//     return (dispatch) => {
+//         dispatch(fetchUnitsRequest());
+//         axios
+//             .delete(`http://localhost:8000/api/coupon/${id}`)
+//             .then((response) => {
+//                 const units = response.data;
+//                 dispatch(fetchUnitsSuccess(units));
+//                 dispatch(fetchCoupons());
+//             })
+//             .catch((error) => {
+//                 const errorMsg = error.message;
+//                 dispatch(fetchUnitsFailure(errorMsg));
+//             });
+//     };
+// };
 export const fetchCouponDetails = (id) => {
     return (dispatch) => {
         dispatch(fetchUnitsRequest());
@@ -597,28 +677,24 @@ export const addToCart = (data) => {
       });
   };
 };
-export const CartItem= () => {
-  return (dispatch) => {
-    dispatch(fetchUnitsRequest());
-    const token = localStorage.getItem("token");
-    axios
-      .get(`http://localhost:8000/api/cartItem`,{
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-      })
-      .then((response) => {
-        const units = response.data;
-        dispatch(fetchUnitsSuccess(units));
-      })
-      .catch((error) => {
-        const errorMsg = error.message;
-        dispatch(fetchUnitsFailure(errorMsg));
-      });
-  };
+export const CartItem = () => {
+    return (dispatch) => {
+        dispatch({ type: "FETCH_CART_REQUEST" });
+        const token = localStorage.getItem("token");
+        axios
+            .get(`http://localhost:8000/api/cartItem`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                dispatch({ type: "FETCH_CART_SUCCESS", payload: response.data });
+            })
+            .catch((error) => {
+                dispatch({ type: "FETCH_CART_FAILURE", payload: error.message });
+            });
+    };
 };
-
-
 // export const removeFromCart = async (productId) => {
 //   const token = localStorage.getItem("token");
 //   try {
@@ -653,4 +729,42 @@ export const removeFromCart= (id) => {
         dispatch(fetchUnitsFailure(errorMsg));
       });
   };
+};
+
+export const fetchAddOrder = (data) => {
+    return (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        axios
+            .post(`http://localhost:8000/api/addOrder`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                const units = response.data;
+                dispatch(fetchUnitsSuccess(units));
+            })
+            .catch((error) => {
+                const errorMsg = error.response?.data?.message || error.message;
+                console.log(errorMsg);
+
+                dispatch(fetchUnitsFailure(errorMsg));
+                // Swal.fire("Error", "Failed to create order!", "error");
+            });
+    };
+};
+
+export const fetchReviews = (product_id) => {
+    return (dispatch) => {
+        dispatch({ type: "FETCH_REVIEW_REQUEST" });
+        axios
+            .get(`http://localhost:8000/api/review/${product_id}`)
+            .then((response) => {
+                dispatch({ type: "FETCH_REVIEW_SUCCESS", payload: response.data });
+            })
+            .catch((error) => {
+                dispatch({ type: "FETCH_REVIEW_FAILURE", payload: error.message });
+            });
+    };
 };

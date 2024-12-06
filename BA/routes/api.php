@@ -8,12 +8,10 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\ProductController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CategoriController;
 use App\Http\Controllers\PasswordResetController;
-use App\Models\CartItem;
 use App\Http\Controllers\ShippingAddressController;
 use App\Http\Controllers\StatisticalController;
 
@@ -24,7 +22,9 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('loginadmin', [UserController::class, 'loginAdmin']);
-
+Route::get('user-stats', [UserController::class, 'getMonthlyUserStats']);
+Route::get('revenue-by-month', [OrderController::class, 'revenueByMonth']);
+Route::get('revenue-by', [OrderController::class, 'totalAmountStatusTwo']);
 Route::post('shipping-addresses/{user_id}', [ShippingAddressController::class, 'store']);
 
 
@@ -41,22 +41,19 @@ Route::get('/shipping-address/{userId}', [ShippingAddressController::class, 'sho
 Route::apiResource('user', UserController::class);
 Route::apiResource('category', CategoryController::class);
 Route::apiResource('order', OrderController::class);
+Route::middleware('auth:sanctum')->post('addOrder', [OrderController::class,'store']);
+
 Route::put('/order/approve/{id}', [OrderController::class, 'approveOrder']);
+Route::put('/order/status/{id}', [OrderController::class, 'updateOrderStatus']);
+Route::get('/users/orders/{userId}', [OrderController::class, 'getOrdersByUser']);
 Route::apiResource('review', ReviewController::class);
 Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
 Route::apiResource('review', ReviewController::class);
 Route::get('/statistical', [StatisticalController::class, 'getStatistics']);
 Route::get('/products-with-discount', [ProductController::class, 'getProductsWithDiscount']);
-
 Route::get('product/related/{category_id}', [ProductController::class, 'getRelatedProducts']);
-
 Route::middleware('auth:sanctum')->apiResource('cartItem', CartItemController::class);
-
 Route::get('checkCode/{code_name}', [CouponController::class, 'checkCode']);
-
 Route::get('/products/random', [ProductController::class, 'getRandomProducts']);
-
-
-
-Route::apiResource('shipping', ShippingAddressController::class);
+Route::middleware('auth:sanctum')->apiResource('shipping', ShippingAddressController::class);

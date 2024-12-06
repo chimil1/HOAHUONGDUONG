@@ -18,13 +18,7 @@ function Header() {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUserId(null);
-    navigate("/login");
-  };
+
 
   return (
       <div>
@@ -39,58 +33,36 @@ function Header() {
                 <div className="menu-desktop">
                   <ul className="main-menu">
                     <li>
-                      <Link to="/home">Trang chủ</Link>
+                      <Link to="/home">TRANG CHỦ</Link>
                     </li>
                     <li>
-                      <Link to="/product">Sản phẩm</Link>
+                      <Link to="/Product">SẢN PHẨM</Link>
                     </li>
                     <li>
-                      <Link to="/blog">Bài viết</Link>
+                      <Link to="/blog">BÀI VIẾT</Link>
                     </li>
                     <li>
-                      <Link to="/about">Giới thiệu</Link>
+                      <Link to="/about">GIỚI THIỆU</Link>
                     </li>
                     <li>
-                      <Link to="/contact">Góp ý</Link>
+                      <Link to="/contact">GÓP Ý</Link>
                     </li>
                   </ul>
                 </div>
 
                 <div className="wrap-icon-header flex-w flex-r-m">
-                <div className="container-search-header m-3"> 
-                <Link to='/search' className="input-group w-100">
-                <div className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-                  <i className="zmdi zmdi-search"></i>
-                </div>
-                </Link>
+                <div className="container-search-header m-3">
                 </div>
                   {isLoggedIn ? (
                       <>
                         <Link to="/cart" className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
                           <i className="fas fa-shopping-cart"></i>
                         </Link>
-                        <div className="dropdown">
-                          <button
-                              className="btn btn-secondary dropdown-toggle"
-                              type="button"
-                              id="dropdownMenuButton"
-                              data-bs-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                          >
-                            <i className="fas fa-user"></i>
-                          </button>
-                          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                            <Link className="dropdown-item" to={`/profile/${userId}`}>
-                              Tài khoản
-                            </Link>
-                            <Link className="dropdown-item" to="/profile">
-                              Lịch sử giao dịch
-                            </Link>
-                            <button className="dropdown-item" onClick={handleLogout}>
-                              Đăng Xuất
-                            </button>
-                          </div>
+
+                        <div >
+                          <Link className="icon-header-item cl2 hov-cl1 trans-04 p-l-10 p-r-11" to={`/profile/${userId}`}>
+                            <i className="fas fa-user fs-4"></i>
+                          </Link>
                         </div>
                       </>
                   ) : (

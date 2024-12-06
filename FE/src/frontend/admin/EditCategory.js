@@ -50,10 +50,8 @@ function EditCategory() {
       img: data.img,
     };
 
-
-
     try {
-      dispatch(updateCategory(id, jsonData));   // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
+      dispatch(updateCategory(id, jsonData)); // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
       Swal.fire({
         text: "Cập nhật danh mục thành công!",
         icon: "success",
@@ -81,19 +79,41 @@ function EditCategory() {
                   </div>
                   <div className="card-body">
                     <form onSubmit={handleSubmit(submit)}>
-                      <div className="form-group">
-                        <label htmlFor="name">Tên danh mục</label>
-                        <input
-                            {...register("name", { required: true })}
-                            type="text"
-                            id="name"
-                            placeholder="Nhập tên sản phẩm..."
-                            className="form-control"/>
-                        {errors.name && (
-                            <span className="text-danger">
+                      <div className="row">
+                        <div className="form-group col-md-6 mb-3">
+                          <label htmlFor="name">Tên danh mục</label>
+                          <input
+                              {...register("name", { required: true })}
+                              type="text"
+                              id="name"
+                              placeholder="Nhập tên sản phẩm..."
+                              className="form-control"
+                          />
+                          {errors.name && (
+                              <span className="text-danger">
                             Tên sản phẩm không được bỏ trống!
                           </span>
-                        )}
+                          )}
+                        </div>
+                        <div className="form-group col-md-6 mb-3 position-relative">
+                          <label htmlFor="status">Trạng thái</label>
+                          <select
+                              {...register("status", { required: true })}
+                              id="status"
+                              className={`form-control custom-select ${
+                                  errors.status ? "is-invalid" : ""
+                              }`}
+                          >
+                            <option value="">Chọn trạng thái</option>
+                            <option value="0">Đang Hoạt Động</option>
+                            <option value="1">Ngừng Hoạt Động</option>
+                          </select>
+                          {errors.status && (
+                              <span className="text-danger">
+                            Trạng thái sản phẩm không được bỏ trống!
+                          </span>
+                          )}
+                        </div>
                       </div>
                       <div className="form-group">
                         <label htmlFor="description">Mô tả</label>
@@ -106,30 +126,15 @@ function EditCategory() {
                         ></textarea>
                         {errors.description && (
                             <span className="text-danger">
-                            Mô tả sản phẩm không được bỏ trống!
-                          </span>
+                          Mô tả sản phẩm không được bỏ trống!
+                        </span>
                         )}
                       </div>
-                      <div className="form-group">
-                        <label htmlFor="status">Trạng thái</label>
-                        <select
-                            {...register("status", { required: true })}
-                            id="status"
-                            className="form-control"
-                        >
-                          <option value="">Chọn trạng thái</option>
-                          <option value="0">Đang Hoạt Động</option>
-                          <option value="1">Ngừng Hoạt Động</option>
-                        </select>
-                        {errors.status && (
-                            <span className="text-danger">
-                            Trạng thái sản phẩm không được bỏ trống!
-                          </span>
-                        )}
+                      <div className="d-flex justify-content-end">
+                        <button type="submit" className="btn btn-dark">
+                          <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
+                        </button>
                       </div>
-                      <button type="submit" className="btn btn-dark">
-                        <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
-                      </button>
                     </form>
                   </div>
                   <div className="card-footer">

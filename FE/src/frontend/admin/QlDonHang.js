@@ -1,27 +1,23 @@
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchOrders, updateOrderStatus } from "../actions/unitActions";
+import { FaCheck, FaShippingFast, FaThumbsUp } from 'react-icons/fa';
+import { Link } from "react-router-dom";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchOrders, approveOrder } from "../actions/unitActions";
-import { Link, useNavigate } from "react-router-dom";
 
-function QlDonHang() {
+function QLDonHang() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const unitState = useSelector((state) => state.unit);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const ordersPerPage = 5;
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
-
-  const handleApproveOrder = (id) => {
-    dispatch(approveOrder(id));
-    navigate("/qldonhang");
-  };
 
   if (unitState.loading) {
     return <p>Đang tải...</p>;
@@ -32,22 +28,66 @@ function QlDonHang() {
   }
 
   if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
-    return <p>Lỗi: Định dạng dữ liệu không chính xác hoặc không có đơn hàng nào.</p>;
+    return <p>Lỗi: Không có đơn hàng nào.</p>;
   }
+
+  const handleUpdateStatus = (id, newStatus) => {
+    dispatch(updateOrderStatus(id, newStatus));
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 0:
+        return "Chờ xác nhận";
+      case 1:
+        return "Đã xác nhận";
+      case 2:
+        return "Đang vận chuyển";
+      case 3:
+        return "Đã nhận hàng";
+      case 4:
+        return "Đã hủy";
+      default:
+        return "Không rõ";
+    }
+  };
+
+  const formatOrderId = (id) => {
+    return `DH${id.toString().padStart(3, "0")}`;
+  };
+  const filteredOrders = unitState.units.filter((order) => {
+    const formattedOrderId = formatOrderId(order.id).toLowerCase();
+    const search = searchTerm.trim().toLowerCase();
+    return [...search].every((char) => formattedOrderId.includes(char));
+  });
+
+
+
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
 
-  const currentOrders = [...unitState.units]
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-      .slice(indexOfFirstOrder, indexOfLastOrder);
+  // Lấy thời gian hiện tại
+  const currentDate = new Date();
 
+  // Sắp xếp đơn hàng dựa trên thời gian gần với thời gian hiện tại
+  const currentOrders = [...filteredOrders]
+      .sort((a, b) => {
+        const aDate = new Date(a.created_at);
+        const bDate = new Date(b.created_at);
 
-  const totalPages = Math.ceil(unitState.units.length / ordersPerPage);
+        // Sắp xếp đơn hàng gần nhất với thời gian hiện tại lên đầu
+        return Math.abs(currentDate - aDate) - Math.abs(currentDate - bDate);
+      })
+      .slice(indexOfFirstOrder, indexOfLastOrder); // Chọn đơn hàng theo trang
 
+  const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
+
+  // Hàm chuyển trang trước
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+  // Hàm chuyển trang sau
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
@@ -58,97 +98,156 @@ function QlDonHang() {
         <div className="page-container">
           <Header />
           <div className="main-content">
-            <div className="section__content section__content--p30">
+            <div className="section__content section__content--p40">
               <div className="container-fluid">
                 <div className="card">
                   <div className="row">
                     <div className="col-md-12">
                       <div className="card-header">
-                        <div className="overview-wrap">
+                        <div className="d-flex justify-content-between align-items-center">
                           <h2 className="title-5 m-b-35">Đơn hàng</h2>
+                          <div className="col-6">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Tìm kiếm theo mã đơn hàng..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                          </div>
                         </div>
                       </div>
                       <div className="card-body">
-                        <table className="table table-data2">
-                          <thead>
-                          <tr>
-                            <th>Hình ảnh</th>
-                            <th>Tên người nhận</th>
-                            <th>Địa chỉ</th>
-                            <th>SDT</th>
-                            <th>Trạng thái</th>
-                            <th>Trạng thái thanh toán</th>
-                            <th></th>
-                            <th></th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          {currentOrders.map((item) => (
-                              <tr key={item.id} className="tr-shadow">
-                                <td>
-                                  <img src="https://via.placeholder.com/50" alt="Hình ảnh" />
-                                </td>
-                                <td>{item.username || "Không có thông tin"}</td>
-                                <td>{item.shipping_address || "Không có thông tin"}</td>
-                                <td>{item.shipping_phone || "Không có thông tin"}</td>
-                                <td>
-                                  {item.status === 0 ? (
-                                      <span className="badge badge-success">Đã xác nhận</span>
-                                  ) : (
-                                      <span className="badge badge-warning">Chờ xác nhận</span>
-                                  )}
-                                </td>
-                                <td>
-                                  {item.payment_type === 0 ? (
-                                      <span className="badge badge-success">Thanh toán tiền mặt</span>
-                                  ) : (
-                                      <span className="badge badge-warning">Thanh toán tài khoản</span>
-                                  )}
-                                </td>
-                                <td>
-                                  <div className="table-data-feature">
-                                    <Link to={`/orderdetails/${item.id}`}>
-                                      <button className="item" title="Chi tiết">
-                                        <i className="zmdi zmdi-mail-send"></i>
-                                      </button>
-                                    </Link>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="table-data-feature">
-                                    <button
-                                        onClick={() => handleApproveOrder(item.id)}
-                                        className="item"
-                                        title="Duyệt đơn hàng"
-                                    >
-                                      <i className="zmdi zmdi-check"></i>
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                          ))}
-                          </tbody>
-                        </table>
-                        <div className="pagination-center d-flex justify-content-between align-items-center mt-3" style={{ width: "300px", margin: "0 auto" }}>
-                          <button
-                              onClick={handlePrevPage}
-                              disabled={currentPage === 1}
-                              className="btn btn-outline-dark mr-2"
-                          >
-                            Trang trước
-                          </button>
-                          <span>
-                          Trang {currentPage} / {totalPages}
-                        </span>
-                          <button
-                              onClick={handleNextPage}
-                              disabled={currentPage === totalPages}
-                              className="btn btn-outline-dark mr-2c"
-                          >
-                            Trang sau
-                          </button>
+                        <div style={{ overflowX: "auto" }}>
+                          <table className="table">
+                            <thead>
+                            <tr>
+                              <th className="text-center text-nowrap">Mã Đơn hàng</th>
+                              <th className="text-center text-nowrap">Tên người nhận</th>
+                              <th className="text-center text-nowrap">Địa chỉ</th>
+                              <th className="text-center text-nowrap">SDT</th>
+                              <th className="text-center text-nowrap">Trạng thái đơn hàng</th>
+                              <th className="text-center text-nowrap">Trạng thái thanh toán</th>
+                              <th className="text-center text-nowrap">Hành động</th>
+                              <th className="text-center text-nowrap">Chi tiết</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {currentOrders.map((item) => (
+                                <tr key={item.id}>
+                                  <td className="text-center text-nowrap">{formatOrderId(item.id)}</td>
+                                  <td className="text-center text-nowrap">{item.username || "Không có thông tin"}</td>
+                                  <td className="text-center text-nowrap">{item.shipping_address || "Không có thông tin"}</td>
+                                  <td className="text-center text-nowrap">{item.shipping_phone || "Không có thông tin"}</td>
+                                  <td className="text-center text-nowrap">{getStatusText(item.status)}</td>
+                                  <td className="text-center text-nowrap">
+                                    {item.payment_type === 0 ? (
+                                        <span className="badge badge-success">Thanh toán tiền mặt</span>
+                                    ) : (
+                                        <span className="badge badge-warning">Thanh toán tài khoản</span>
+                                    )}
+                                  </td>
+                                  <td className="text-center">
+                                    <div className="d-flex justify-content-center">
+                                      {item.status === 0 ? (
+                                          <>
+                                            <button
+                                                className="btn btn-success btn-sm mr-2"
+                                                onClick={() => handleUpdateStatus(item.id, 1)}
+                                                aria-label="Xác nhận"
+                                            >
+                                              <FaCheck />
+                                            </button>
+                                            {/* Nút Hủy cho trạng thái "Chờ xác nhận" */}
+                                            <button
+                                                className="btn btn-danger btn-sm ml-2"
+                                                onClick={() => handleUpdateStatus(item.id, 4)} // Trạng thái hủy là 4
+                                                aria-label="Hủy đơn hàng"
+                                            >
+                                              Hủy
+                                            </button>
+                                          </>
+                                      ) : item.status === 1 ? (
+                                          <>
+                                            <button
+                                                className="btn btn-info btn-sm mr-2"
+                                                onClick={() => handleUpdateStatus(item.id, 2)}
+                                                aria-label="Vận chuyển"
+                                            >
+                                              <FaShippingFast />
+                                            </button>
+                                            {/* Nút Hủy cho trạng thái "Đã xác nhận" */}
+                                            <button
+                                                className="btn btn-danger btn-sm ml-2"
+                                                onClick={() => handleUpdateStatus(item.id, 4)} // Trạng thái hủy là 4
+                                                aria-label="Hủy đơn hàng"
+                                            >
+                                              Hủy
+                                            </button>
+                                          </>
+                                      ) : item.status === 2 ? (
+                                          <>
+                                            <button
+                                                className="btn btn-primary btn-sm mr-2"
+                                                onClick={() => handleUpdateStatus(item.id, 3)}
+                                                aria-label="Hoàn tất"
+                                            >
+                                              <FaThumbsUp />
+                                            </button>
+                                          </>
+                                      ) : item.status === 3 ? (
+                                          // Đơn hàng đã hoàn tất
+                                          <span className="badge badge-success">Đã nhận hàng</span>
+                                      ) : item.status === 4 ? (
+                                          // Đơn hàng đã bị hủy
+                                          <span className="badge badge-danger">Đã hủy</span>
+                                      ) : null}
+                                    </div>
+                                  </td>
+
+
+                                  <td className="text-center">
+                                    <div className="table-data-feature">
+                                      <Link to={`/orderdetails/${item.id}`}>
+                                        <button className="item">
+                                          <i className="zmdi zmdi-mail-send"></i>
+                                        </button>
+                                      </Link>
+                                    </div>
+                                  </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                          </table>
                         </div>
+
+                        {/* Chỉ hiển thị phần phân trang nếu số lượng đơn hàng lớn hơn ordersPerPage */}
+                        {filteredOrders.length > ordersPerPage && (
+                            <div
+                                className="pagination-center d-flex justify-content-between align-items-center mt-3"
+                                style={{ width: "300px", margin: "0 auto" }}
+                            >
+                              <button
+                                  onClick={handlePrevPage}
+                                  disabled={currentPage === 1}
+                                  className="btn btn-outline-dark mr-2"
+                              >
+                                Trang trước
+                              </button>
+                              <span>
+                            Trang {currentPage} / {totalPages}
+                          </span>
+                              <button
+                                  onClick={handleNextPage}
+                                  disabled={currentPage === totalPages}
+                                  className="btn btn-outline-dark mr-2"
+                              >
+                                Trang sau
+                              </button>
+                            </div>
+                        )}
                       </div>
+
                       <div className="card-footer">
                         <Footer />
                       </div>
@@ -163,4 +262,4 @@ function QlDonHang() {
   );
 }
 
-export default QlDonHang;
+export default QLDonHang;

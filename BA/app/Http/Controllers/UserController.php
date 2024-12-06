@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -46,7 +47,6 @@ class UserController extends Controller
     }
     public function login(Request $request)
     {
-        try{
         $request->validate([
             'login' => 'required',
             'password' => 'required'
@@ -62,18 +62,49 @@ class UserController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Tên đăng nhập hoặc mật khẩu không chính xác'], 401);
         }
+        $user->update(['last_login' => Carbon::now()]);
 
-        // Tạo token nếu tài khoản không bị khóa
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'user' => $user->id,
+            'last_login_at' => $user->last_login,
             'token' => $token,
             'message' => 'Đăng nhập thành công'
         ]);
-    }catch(\Exception $e){
-        return response()->json($e->getMessage());
     }
+    public function getMonthlyUserStats(Request $request)
+    {
+        // Lấy 7 ngày gần nhất
+        $startDate = Carbon::now()->subDays(6); // Lấy ngày cách đây 6 ngày
+        $endDate = Carbon::now();
+
+        // Tạo mảng để lưu kết quả theo từng ngày
+        $loginStats = [];
+
+        // Lặp qua từng ngày trong 7 ngày
+        for ($i = 0; $i <= 6; $i++) {
+            $date = Carbon::now()->subDays($i); // Lấy ngày từ hôm nay và lùi lại
+            $dayName = $date->format('l'); // Tên ngày trong tuần (ví dụ: Monday, Tuesday, ...)
+
+            // Đếm số người đăng nhập trong ngày cụ thể
+            $usersLoggedInThisDay = User::whereDate('last_login', $date->toDateString())
+                ->count();
+
+            // Thêm kết quả vào mảng
+            $loginStats[] = [
+                'day' => $dayName,
+                'date' => $date->toDateString(),
+                'users_logged_in' => $usersLoggedInThisDay
+            ];
+        }
+
+        // Trả về kết quả dưới dạng JSON
+        return response()->json([
+            'start_date' => $startDate->toDateString(),
+            'end_date' => $endDate->toDateString(),
+            'login_stats' => $loginStats
+        ]);
     }
     public function loginAdmin(Request $request)
     {
@@ -111,7 +142,6 @@ class UserController extends Controller
             return response()->json(['message' => 'Đã xảy ra lỗi trong quá trình đăng nhập', 'error' => $e->getMessage()], 500);
         }
     }
-
 
     public function create()
     {

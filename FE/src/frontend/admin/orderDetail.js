@@ -29,6 +29,19 @@ function OrderDetail() {
   if (unitState.error) {
     return <p>Lỗi: {unitState.error}</p>;
   }
+  const calculateTotalAmount = () => {
+    if (Array.isArray(order.order_details)) {
+      return order.order_details.reduce((total, item) => total + (item.price * item.quantity), 0);
+    }
+    return 0; // Trả về 0 nếu không có order_details hợp lệ
+  };
+
+  const totalAmount = calculateTotalAmount();
+
+  // Định dạng giá trị theo VND
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+  };
 
   return (
       <div className="page-wrapper">
@@ -43,74 +56,81 @@ function OrderDetail() {
                     <div className="col-md-12">
                       <div className="card-header">
                         <div className="overview-wrap">
-                          <h2 className="title-5 m-b-35">Hóa Đơn</h2>
+                          <h2 className="title-5 m-b-35">Hóa Đơn Chi Tiết</h2>
                         </div>
                       </div>
                       <div className="card-body">
-                        <table className="table table-data2">
-                          <thead>
-                          <tr>
-                            <th>Tên người nhận</th>
-                            <th>Phương thức thanh toán</th>
-                            {order.payment_type === 1 && <th>Ngân hàng</th>}
-                            {order.payment_type === 1 && <th>STK</th>}
-                            <th>Tổng tiền</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr key={order.id} className="tr-shadow">
-                            <td>{order.username || "Không có thông tin"}</td>
-                            <td>
-                              {order.payment_type === 0
-                                  ? "Thanh toán khi nhận hàng"
-                                  : "Thanh toán chuyển khoản"}
-                            </td>
+                        <div className="order-info">
+                          <h4 className="mb-4"><strong>Thông tin khách hàng</strong></h4>
+                          <table className="table table-bordered">
+                            <tbody>
+                            <tr>
+                              <td>  <strong>Đơn hàng:</strong> {order.id ? `DH${order.id.toString().padStart(5, '0')}` : "Không có thông tin"}</td>
+                              <td><strong>Tên người nhận:</strong> {order.username || "Không có thông tin"}</td>
+                            </tr>
+                            <tr>
+                              <td><strong>Ngày đặt hàng:</strong> { order.created_at || "Không có thông tin"}</td>
+                              <td><strong>Địa chỉ:</strong> {order.shipping_address || "Không có thông tin"}</td>
+
+                            </tr>
+                            <tr>
+                              <td><strong>Số điện thoại:</strong> {order.shipping_phone || "Không có thông tin"}</td>
+                              <td><strong>Phương thức thanh toán:</strong> {order.payment_type === 0 ? "Thanh toán khi nhận hàng" : "Thanh toán chuyển khoản"}</td>
+                              {order.payment_type === 1 && (
+                                  <td><strong>Ngân hàng:</strong> {order.bankname}</td>
+                              )}
+                            </tr>
                             {order.payment_type === 1 && (
-                                <td>{order.bankname}</td>
+                                <tr>
+                                  <td><strong>STK:</strong> {order.account_number}</td>
+                                </tr>
                             )}
-                            {order.payment_type === 1 && (
-                                <td>{order.account_number}</td>
+                            </tbody>
+                          </table>
+
+                          <h4 className="mt-5"><strong>Thông tin sản phẩm</strong></h4>
+                          <table className="table table-striped">
+                            <thead>
+                            <tr>
+                              <th>Sản phẩm</th>
+                              <th>Số lượng</th>
+                              <th>Giá</th>
+                              <th>Tổng giá</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {order.order_details && order.order_details.length > 0 ? (
+                                order.order_details.map((item, index) => (
+                                    <tr key={index}>
+                                      <td>{item.product_name || "Không có thông tin"}</td>
+                                      <td>{item.quantity}</td>
+                                      <td>{formatCurrency(item.price)}</td>
+                                      <td>{formatCurrency(item.price * item.quantity)}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr><td colSpan="4">Không có sản phẩm nào trong đơn hàng.</td></tr>
                             )}
-                            <td>{order.amount}</td>
-                          </tr>
-                          </tbody>
-                        </table>
-                        <table className="table table-data2">
-                          <thead>
-                          <tr><th>Sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Giá</th>
-                            <th>Màu</th>
-                            <th>Kích cỡ</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          {order.order_details &&
-                          order.order_details.length > 0 ? (
-                              order.order_details.map((item, index) => (
-                                  <tr key={index} className="tr-shadow">
-                                    <td>
-                                      {item.product_name || "Không có thông tin"}
-                                    </td>
-                                    <td>{item.quantity}</td>
-                                    <td>{item.price}</td>
-                                    <td>{item.color}</td>
-                                    <td>{item.size}</td>
-                                  </tr>
-                              ))
-                          ) : (
-                              <tr>
-                                <td colSpan="5">
-                                  Không có sản phẩm nào trong đơn hàng
-                                </td>
-                              </tr>
-                          )}
-                          </tbody>
-                        </table>
+                            </tbody>
+                          </table>
+
+                          {/* Phần tổng tiền hóa đơn nằm dưới thông tin sản phẩm */}
+                          <div className="order-summary mt-4">
+                            <div className="row">
+                              <div className="col-md-6 text-right">
+                                <strong>Tổng tiền hóa đơn:</strong>
+                              </div>
+                              <div className="col-md-6">
+                                <strong>{formatCurrency(totalAmount)}</strong>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="card-footer">
-                      <Footer />
+
+                      <div className="card-footer">
+                        <Footer />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -121,4 +141,5 @@ function OrderDetail() {
       </div>
   );
 }
+
 export default OrderDetail;

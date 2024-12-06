@@ -24,17 +24,7 @@ function Productdetail() {
 
   const formatPrice = (amount) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
-  const initialImage =
-      Array.isArray(productState.units?.images) &&
-      productState.units.images.length > 0
-          ? productState.units.images[0].product_img
-          : "";
-  const [currentImage, setCurrentImage] = useState(initialImage);
-  const formatPrice = (price) => {
-    return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ" : "Liên hệ";
   };
-
-
   useEffect(() => {
     // Kiểm tra xem dữ liệu sản phẩm có sẵn trong Redux hay không
     if (!productState.units || !productState.units.id) {
@@ -44,12 +34,19 @@ function Productdetail() {
 
   useEffect(() => {
     if (
-        Array.isArray(productState.units?.images) &&
+        Array.isArray(productState.units.images) &&
         productState.units.images.length > 0
     ) {
       setCurrentImage(productState.units.images[0].product_img);
     }
   }, [productState]);
+
+  const initialImage =
+      Array.isArray(productState.units.images) &&
+      productState.units.images.length > 0
+          ? productState.units.images[0].product_img
+          : "";
+  const [currentImage, setCurrentImage] = useState(initialImage);
 
   const product = productState.units;
 
@@ -98,22 +95,25 @@ function Productdetail() {
   }
 
   return (
-    <div>
-      <Header />
-      <hr />
-      <div className="container">
-        <div className="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-          <Link to="/Home" className="stext-109 cl8 hov-cl1 trans-04">
-            Home
-            <i
-              className="fa fa-angle-right m-l-9 m-r-10"
-              aria-hidden="true"
-            ></i>
-          </Link>
+      <div>
+        <Header />
+        <hr />
+        <div className="container">
+          <div className="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+            <Link to="/Home" className="stext-109 cl8 hov-cl1 trans-04">
+              Home
+              <i
+                  className="fa fa-angle-right m-l-9 m-r-10"
+                  aria-hidden="true"
+              ></i>
+            </Link>
 
             <Link to="/Product" className="stext-109 cl8 hov-cl1 trans-04">
               Men
-              <i className="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true" />
+              <i
+                  className="fa fa-angle-right m-l-9 m-r-10"
+                  aria-hidden="true"
+              ></i>
             </Link>
 
             <span className="stext-109 cl4">{product.product_name}</span>
@@ -126,10 +126,10 @@ function Productdetail() {
               <div className="col-md-6 col-lg-7 p-b-30">
                 <div className="p-l-25 p-r-30 p-lr-0-lg">
                   <div className="wrap-slick3 flex-sb flex-w">
-                    <div className="wrap-slick3-arrows flex-sb-m flex-w" />
+                    <div className="wrap-slick3-arrows flex-sb-m flex-w"></div>
                     <div className="slick3 gallery-lb">
                       <div className="gallery-container">
-                        {/* Hình ảnh lớn */}
+                        {/* Hiển thị hình ảnh lớn */}
                         <div className="large-image">
                           {currentImage ? (
                               <div className="wrap-pic-w pos-relative">
@@ -141,7 +141,7 @@ function Productdetail() {
                         </div>
                         {/* Hình ảnh nhỏ */}
                         <div className="small-images">
-                          {Array.isArray(productState.units?.images) &&
+                          {Array.isArray(productState.units.images) &&
                           productState.units.images.length > 0 ? (
                               productState.units.images
                                   .slice(0, 4)
@@ -171,12 +171,12 @@ function Productdetail() {
                 </div>
               </div>
 
-            <form className="col-md-6 col-lg-5 p-b-10">
-              <div className="p-r-50 p-t-5 p-lr-0-lg">
-                <h4 className="mtext-105 cl2 js-name-detail p-b-14">
-                  {product.product_name}
-                </h4>
-                <span className="mtext-106 cl2 p-b-5">
+              <form className="col-md-6 col-lg-5 p-b-10">
+                <div className="p-r-50 p-t-5 p-lr-0-lg">
+                  <h4 className="mtext-105 cl2 js-name-detail p-b-14">
+                    {product.product_name}
+                  </h4>
+                  <span className="mtext-106 cl2 p-b-5">
                   Giá bán: {formatPrice(product.price)}
                 </span>
                   <div className="mt-3">
@@ -186,116 +186,116 @@ function Productdetail() {
                     </div>
                   </div>
 
-                <div className="p-t-33">
-                  {product.options.map((options) => (
-                    // item.option_name
-                    <div
-                      className="flex-w flex-r-m p-b-10"
-                      key={options.option_name}
-                    >
-                      <div className="size-203 flex-c-m respon6">
-                        {options.option_name}
-                      </div>
-
-                      <div className="size-204 respon6-next">
-                        <select
-                          className="form-select form-select-sm"
-                          name="time"
-                        >
-                          <option>Chọn {options.option_name}</option>
-                          {options.option_values.map((values) => (
-                            <option key={values.id} value={values.id}>
-                              {values.value_name}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="dropDownSelect2"></div>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="flex-w flex-r-m p-b-10">
-                    <div className="size-203 flex-c-m respon6">Số lượng</div>
-                    <div className="size-204 flex-w flex-m respon6-next">
-                      <div className="wrap-num-product flex-w m-r-20 m-tb-10">
+                  <div className="p-t-33">
+                    {product.options.map((options) => (
+                        // item.option_name
                         <div
-                          className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
-                          onClick={handleDecrease}
+                            className="flex-w flex-r-m p-b-10"
+                            key={options.option_name}
                         >
-                          <i className="fs-16 zmdi zmdi-minus"></i>
+                          <div className="size-203 flex-c-m respon6">
+                            {options.option_name}
+                          </div>
+
+                          <div className="size-204 respon6-next">
+                            <select
+                                className="form-select form-select-sm"
+                                name="time"
+                            >
+                              <option>Chọn {options.option_name}</option>
+                              {options.option_values.map((values) => (
+                                  <option key={values.id} value={values.id}>
+                                    {values.value_name}
+                                  </option>
+                              ))}
+                            </select>
+                            <div className="dropDownSelect2"></div>
+                          </div>
                         </div>
+                    ))}
 
-                        <input
-                          className="mtext-104 cl3 txt-center num-product"
-                          type="number"
-                          name="num-product"
-                          value={quantity}
-                          readOnly
-                        />
+                    <div className="flex-w flex-r-m p-b-10">
+                      <div className="size-203 flex-c-m respon6">Số lượng</div>
+                      <div className="size-204 flex-w flex-m respon6-next">
+                        <div className="wrap-num-product flex-w m-r-20 m-tb-10">
+                          <div
+                              className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+                              onClick={handleDecrease}
+                          >
+                            <i className="fs-16 zmdi zmdi-minus"></i>
+                          </div>
 
-                        <div
-                          className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
-                          onClick={handleIncrease}
-                        >
-                          <i className="fs-16 zmdi zmdi-plus"></i>
+                          <input
+                              className="mtext-104 cl3 txt-center num-product"
+                              type="number"
+                              name="num-product"
+                              value={quantity}
+                              readOnly
+                          />
+
+                          <div
+                              className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+                              onClick={handleIncrease}
+                          >
+                            <i className="fs-16 zmdi zmdi-plus"></i>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="d-grid gap-2 d-md-block">
-                  <button
-                    className="btn btn-dark btn-lg m-2 rounded-pill"
-                    type="submit"
-                    onClick={handleSubmit(submit)}
-                  >
-                    Thêm vào giỏ
-                  </button>
+                  <div className="d-grid gap-2 d-md-block">
+                    <button
+                        className="btn btn-dark btn-lg m-2 rounded-pill"
+                        type="submit"
+                        onClick={handleSubmit(submit)}
+                    >
+                      Thêm vào giỏ
+                    </button>
 
-                  <button className="btn btn-dark btn-lg rounded-pill">
-                    Mua hàng
-                  </button>
+                    <button className="btn btn-dark btn-lg rounded-pill">
+                      Mua hàng
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+            {/* Related Products Section */}
+            {/** // <section className="sec-popular bg0 p-t-45 p-b-105">
+             //   <div className="container">
+             //     <div className="sec-title p-b-60">
+             //       <h3 className="m-text5 t-center">Sản phẩm liên quan</h3>
+             //     </div>
+             //     // <div className="row">
+             //     //   {randomProducts &&
+             //     //     randomProducts.length > 0 &&
+             //     //     randomProducts.map((item) => (
+             //     //       <div key={item.id} className="col-sm-6 col-md-4 col-lg-3 p-b-35">
+             //     //         <div className="block2">
+             //     //           <div className="block2-pic hov-img0">
+             //     //             <img
+             //     //               src={item.product_img}
+             //     //               alt="Sản phẩm ngẫu nhiên"
+             //     //               className="img-fluid"
+             //     //             />
+             //     //           </div>
+             //     //           <div className="block2-txt">
+             //     //             <a href="#" className="block2-name">
+             //     //               {item.product_name}
+             //     //             </a>
+             //     //             <span className="block2-price">
+             //     //               {formatPrice(item.price)}
+             //     //             </span>
+             //     //           </div>
+             //     //         </div>
+             //     //       </div>
+             //     //     ))}
+             //     // </div>
+             //   </div>
+             // </section>*/}
           </div>
-          {/* Related Products Section */}
-          {/** // <section className="sec-popular bg0 p-t-45 p-b-105">
-          //   <div className="container">
-          //     <div className="sec-title p-b-60">
-          //       <h3 className="m-text5 t-center">Sản phẩm liên quan</h3>
-          //     </div>
-          //     // <div className="row">
-          //     //   {randomProducts &&
-          //     //     randomProducts.length > 0 &&
-          //     //     randomProducts.map((item) => (
-          //     //       <div key={item.id} className="col-sm-6 col-md-4 col-lg-3 p-b-35">
-          //     //         <div className="block2">
-          //     //           <div className="block2-pic hov-img0">
-          //     //             <img
-          //     //               src={item.product_img}
-          //     //               alt="Sản phẩm ngẫu nhiên"
-          //     //               className="img-fluid"
-          //     //             />
-          //     //           </div>
-          //     //           <div className="block2-txt">
-          //     //             <a href="#" className="block2-name">
-          //     //               {item.product_name}
-          //     //             </a>
-          //     //             <span className="block2-price">
-          //     //               {formatPrice(item.price)}
-          //     //             </span>
-          //     //           </div>
-          //     //         </div>
-          //     //       </div>
-          //     //     ))}
-          //     // </div>
-          //   </div>
-          // </section>*/}
-        </div>
-      </section>
-      <Footer />
-    </div>
+        </section>
+        <Footer />
+      </div>
   );
 }
 

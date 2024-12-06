@@ -1,15 +1,18 @@
+
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCoupons ,fetchDeleteCoupon} from "../actions/unitActions";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 
 function Coupons() {
     const dispatch = useDispatch();
     const unitState = useSelector((state) => state.unit);
+    const navigate = useNavigate();
     //format giá sản phẩm
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
@@ -35,6 +38,7 @@ function Coupons() {
                 });
                 dispatch(fetchDeleteCoupon(id));
             }
+            navigate("/coupon");
         });
     };
 
@@ -78,7 +82,6 @@ function Coupons() {
                                                 <tr>
                                                     <th>Mã giảm giá</th>
                                                     <th>Giá giảm </th>
-                                                    <th>Loại giảm giá</th>
                                                     <th>Giá trị chiết khấu</th>
                                                     <th>Ngày bắt đầu</th>
                                                     <th>Ngày kết thúc</th>
@@ -91,13 +94,6 @@ function Coupons() {
                                                         <td>{item.code_name|| "Không có thông tin"}</td>
                                                         <td>
                                                             {formatCurrency(item.minium_order_value)}
-                                                        </td>
-                                                        <td>
-                                                            {item.discount_type ===0 ? (
-                                                                <span className="badge badge-success">Thanh toán tiền mặt</span>
-                                                            ) : (
-                                                                <span className="badge badge-warning">Thanh toán tài khoản</span>
-                                                            )}
                                                         </td>
                                                         <td>
                                                             {item.discount_value || "Không có thông tin"}

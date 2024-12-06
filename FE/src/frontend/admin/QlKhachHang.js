@@ -4,7 +4,7 @@ import Menu from "./layout/Menu";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchKhachHangs, lockUser } from "../actions/unitActions";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 function QlKhachHang() {
   const dispatch = useDispatch();
@@ -93,11 +93,13 @@ function QlKhachHang() {
                                       </button>
                                     </td>
                                     <td>
-                                      <button
-                                          className="item"
-                                      >
-                                        Chi Tiết
-                                      </button>
+
+                                        <Link to={`/details/${item.id}`}>
+                                          <button className="item" title="Chi tiết">
+                                           Chi Tiết
+                                          </button>
+                                        </Link>
+
                                     </td>
                                   </tr>
                               ))}

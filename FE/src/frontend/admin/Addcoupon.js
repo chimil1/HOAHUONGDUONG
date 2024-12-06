@@ -1,3 +1,4 @@
+
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
@@ -5,16 +6,22 @@ import Menu from "./layout/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { fetchAddCoupon } from "../actions/unitActions";
-import axios from 'axios';
+import axios from "axios";
 
 function AddCoupon() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const unitState = useSelector((state) => state.unit);
 
-    const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        getValues,
+        setError,
+    } = useForm();
 
     if (unitState.loading) {
         return <p>Loading...</p>;
@@ -25,7 +32,9 @@ function AddCoupon() {
     }
     const checkCouponCode = async (code) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/checkCode/${code}`);
+            const response = await axios.get(
+                `http://localhost:8000/api/checkCode/${code}`
+            );
             if (response.data.message === "Mã giảm giá đã tồn tại") {
                 return false; // Mã giảm giá đã tồn tại
             }
@@ -43,16 +52,18 @@ function AddCoupon() {
             // Hiển thị thông báo lỗi nếu mã đã tồn tại
             Swal.fire({
                 text: "Mã giảm giá đã tồn tại!",
-                icon: "error"
+                icon: "error",
             });
-            setError("code_name", { type: "manual", message: "Mã giảm giá đã tồn tại" });
+            setError("code_name", {
+                type: "manual",
+                message: "Mã giảm giá đã tồn tại",
+            });
             return; // Ngừng thực hiện nếu mã đã tồn tại
         }
 
         const formData = new FormData();
         formData.append("name_coupon", data.name_coupon);
         formData.append("code_name", data.code_name);
-        formData.append("discount_type", data.discount_type);
         formData.append("discount_value", data.discount_value);
         formData.append("minium_order_value", data.minium_order_value);
         formData.append("start_date", data.start_date);
@@ -61,7 +72,7 @@ function AddCoupon() {
         dispatch(fetchAddCoupon(formData));
         Swal.fire({
             text: "Thêm mã giảm giá thành công!",
-            icon: "success"
+            icon: "success",
         }).then((result) => {
             if (result.isConfirmed) {
                 navigate("/coupon");
@@ -90,9 +101,15 @@ function AddCoupon() {
                                                 className="form-control"
                                                 id="name_coupon"
                                                 placeholder="Nhập mã giảm giá"
-                                                {...register("name_coupon", { required: "Vui lòng nhập tên mã giảm giá" })}
+                                                {...register("name_coupon", {
+                                                    required: "Vui lòng nhập tên mã giảm giá",
+                                                })}
                                             />
-                                            {errors.name_coupon && <p className="text-danger">{errors.name_coupon.message}</p>}
+                                            {errors.name_coupon && (
+                                                <p className="text-danger">
+                                                    {errors.name_coupon.message}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="form-group">
@@ -102,27 +119,18 @@ function AddCoupon() {
                                                 className="form-control"
                                                 id="code_name"
                                                 placeholder="Nhập code"
-                                                {...register("code_name", { required: "Vui lòng nhập code" })}
+                                                {...register("code_name", {
+                                                    required: "Vui lòng nhập code",
+                                                })}
                                             />
-                                            {errors.code_name && <p className="text-danger">{errors.code_name.message}</p>}
+                                            {errors.code_name && (
+                                                <p className="text-danger">
+                                                    {errors.code_name.message}
+                                                </p>
+                                            )}
                                         </div>
-
                                         <div className="form-group">
-                                            <label>Loại giảm giá</label>
-                                            <select
-                                                className="form-control"
-                                                id="discount_type"
-                                                {...register("discount_type", { required: "Vui lòng chọn loại giảm giá" })}
-                                            >
-                                                <option value="">Chọn giảm giá</option>
-                                                <option value="0">VNĐ</option>
-                                                <option value="1">%</option>
-                                            </select>
-                                            {errors.discount_type && <p className="text-danger">{errors.discount_type.message}</p>}
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label htmlFor="discount_value">Giá trị giảm giá</label>
+                                            <label htmlFor="discount_value">Giá trị giảm giá(%)</label>
                                             <input
                                                 type="number"
                                                 className="form-control"
@@ -130,10 +138,21 @@ function AddCoupon() {
                                                 placeholder="Nhập giá trị giảm giá"
                                                 {...register("discount_value", {
                                                     required: "Vui lòng nhập giá trị giảm giá",
-                                                    min: { value: 1, message: "Giá trị giảm giá phải lớn hơn 0" }
+                                                    min: {
+                                                        value: 1,
+                                                        message: "Giá trị giảm giá phải lớn hơn 0",
+                                                    },
+                                                    max: {
+                                                        value: 100,
+                                                        message: "Giá trị giảm giá không được lớn hơn 100",
+                                                    }, // Thêm kiểm tra giá trị tối đa
                                                 })}
                                             />
-                                            {errors.discount_value && <p className="text-danger">{errors.discount_value.message}</p>}
+                                            {errors.discount_value && (
+                                                <p className="text-danger">
+                                                    {errors.discount_value.message}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="form-group">
@@ -145,10 +164,17 @@ function AddCoupon() {
                                                 placeholder="Nhập giá tối thiểu"
                                                 {...register("minium_order_value", {
                                                     required: "Vui lòng nhập giá tối thiểu",
-                                                    min: { value: 0, message: "Giá tối thiểu phải lớn hơn hoặc bằng 0" }
+                                                    min: {
+                                                        value: 0,
+                                                        message: "Giá tối thiểu phải lớn hơn hoặc bằng 0",
+                                                    }, // Không cho phép giá trị âm
                                                 })}
                                             />
-                                            {errors.minium_order_value && <p className="text-danger">{errors.minium_order_value.message}</p>}
+                                            {errors.minium_order_value && (
+                                                <p className="text-danger">
+                                                    {errors.minium_order_value.message}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="form-group">
@@ -157,9 +183,15 @@ function AddCoupon() {
                                                 type="datetime-local"
                                                 className="form-control"
                                                 id="start_date"
-                                                {...register("start_date", { required: "Vui lòng chọn ngày bắt đầu" })}
+                                                {...register("start_date", {
+                                                    required: "Vui lòng chọn ngày bắt đầu",
+                                                })}
                                             />
-                                            {errors.start_date && <p className="text-danger">{errors.start_date.message}</p>}
+                                            {errors.start_date && (
+                                                <p className="text-danger">
+                                                    {errors.start_date.message}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <div className="form-group">
@@ -168,9 +200,13 @@ function AddCoupon() {
                                                 type="datetime-local"
                                                 className="form-control"
                                                 id="end_date"
-                                                {...register("end_date", { required: "Vui lòng chọn ngày kết thúc" })}
+                                                {...register("end_date", {
+                                                    required: "Vui lòng chọn ngày kết thúc",
+                                                })}
                                             />
-                                            {errors.end_date && <p className="text-danger">{errors.end_date.message}</p>}
+                                            {errors.end_date && (
+                                                <p className="text-danger">{errors.end_date.message}</p>
+                                            )}
                                         </div>
 
                                         <button type="submit" className="btn btn-dark">

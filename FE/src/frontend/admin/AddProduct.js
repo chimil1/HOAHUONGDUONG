@@ -148,10 +148,18 @@ function AddProduct() {
                           className="form-control"
                           name="price"
                           id="price"
-                          {...register("price", { required: true })}
+                          {...register("price", {
+                            required: "Giá là bắt buộc",
+                            min: {
+                              value: 20000,
+                              message: "Giá phải lớn hơn hoặc bằng 20.000",
+                            },
+                            validate: (value) =>
+                                value > 0 || "Giá không được là số âm",
+                          })}
                         />
                         {errors.price && (
-                          <small className="text-danger">Giá là bắt buộc</small>
+                            <small className="text-danger">{errors.price.message}</small>
                         )}
                       </div>
 
