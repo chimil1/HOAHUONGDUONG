@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import Loading from "./layout/Loading";
 function Productdetail() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -102,7 +103,7 @@ function Productdetail() {
   }
 
   if (productState.loading) {
-    return <p>Loading...</p>;
+    return <p><Loading></Loading></p>;
   }
 
   if (productState.error) {

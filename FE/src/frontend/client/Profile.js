@@ -14,7 +14,7 @@
   // import { useForm } from "react-hook-form";
   import Swal from "sweetalert2";
   import axios from "axios";
-
+  import Loading from "./layout/Loading";
   function Profile() {
     const [cities, setCities] = useState([]);
     const [districts, setDistricts] = useState([]);
@@ -215,7 +215,7 @@
 
     // USER
     if (userState.loading) {
-      return <p>Loading...</p>;
+      return <p><Loading></Loading></p>;
     }
 
     if (userState.error) {

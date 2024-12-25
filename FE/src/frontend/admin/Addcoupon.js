@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { fetchAddCoupon } from "../actions/unitActions";
 import axios from "axios";
-
+import Loading from "../client/layout/Loading";
 function AddCoupon() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ function AddCoupon() {
     } = useForm();
 
     if (unitState.loading) {
-        return <p>Loading...</p>;
+        return <p><Loading></Loading></p>;
     }
 
     if (unitState.error) {

@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
-
+import Loading from "../client/layout/Loading";
 function AddCategory() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function AddCategory() {
   } = useForm();
 
   if (categoryState.loading) {
-    return <p>Loading...</p>;
+    return <p><Loading></Loading></p>;
   }
 
   if (categoryState.error) {
