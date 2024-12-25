@@ -16,18 +16,16 @@ class CartItemController extends Controller
     public function index()
     {
         try{
-            $userId = Auth::id(); // Hoặc lấy từ token nếu sử dụng API authentication
-
-            // Lấy các sản phẩm trong giỏ hàng của người dùng
-            $cartItems = CartItem::where('user_id', $userId) 
-            ->with('product') // Nếu bạn muốn thông tin sản phẩm đi kèm
+            $userId = Auth::id();
+            $cartItems = CartItem::where('user_id', $userId)
+            ->with('product')
                 ->get();
-    
+
             return response()->json($cartItems);
         }catch(\Exception $e){
             return response()->json($e->getMessage());
         }
-      
+
     }
 
     /**
@@ -42,22 +40,13 @@ class CartItemController extends Controller
     public function store(Request $request)
     {
         try {
-            // Lấy thông tin người dùng, sản phẩm, số lượng và các tùy chọn
             $userId = Auth::user()->id;
             $productId = $request->product_id;
             $quantity = $request->quantity;
-            // $options = $request->options; // Mảng tùy chọn (option_id và option_value_id)
-
-            // Lấy danh sách option_value_id từ mảng options
-            // $optionValueIds = array_column($options, 'option_value_id');
-
-            // Tìm kiếm CartItem với product_id và các option_value_id
             $cartItem = CartItem::where('user_id', $userId)
                 ->where('product_id', $productId)
                 ->first();
 
-
-            // Nếu CartItem chưa tồn tại, tạo mới CartItem
             if (!$cartItem) {
                 $cartItem = CartItem::create([
                     'user_id' => $userId,

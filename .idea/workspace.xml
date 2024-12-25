@@ -5,48 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d4bd7b51-9e31-4163-86e4-1ea519e55dc6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/FE/src/frontend/admin/OrderManagement.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/CartItemController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/CartItemController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ReviewController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ReviewController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ShippingAddressController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ShippingAddressController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Models/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Models/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/database/migrations/0001_01_01_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/database/migrations/0001_01_01_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/resources/views/emails/reset-password.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/resources/views/emails/reset-password.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BA/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/FE/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/FE/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/public/asset/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/FE/public/asset/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/FE/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/AddCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/AddCategory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/AddProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/AddProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/Addcoupon.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/Addcoupon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/Coupons.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/Coupons.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/EditCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/EditCategory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/EditCoupon.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/EditCoupon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlDanhMuc.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlDanhMuc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlDonHang.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlDonHang.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlKhachHang.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlKhachHang.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/ThongKe.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/ThongKe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/layout/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/layout/Menu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/orderDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/orderDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Product-detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Product-detail.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Product.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/ShippingList.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/ShippingList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/ShoppingCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/ShoppingCart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/addshipping.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/addshipping.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/auth/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/auth/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/auth/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/auth/Register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/editShipping.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/editShipping.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/layout/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/layout/Footer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/layout/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/layout/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/reducers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/reducers/relatedProductsReducer.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,6 +266,8 @@
       <workItem from="1731530746751" duration="3603000" />
       <workItem from="1731547648277" duration="31171000" />
       <workItem from="1732787747111" duration="58328000" />
+      <workItem from="1733477403925" duration="9977000" />
+      <workItem from="1734508188519" duration="1882000" />
     </task>
     <servers />
   </component>
@@ -334,7 +301,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/FE/src/frontend/client/layout/Header.js</url>
           <line>61</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>

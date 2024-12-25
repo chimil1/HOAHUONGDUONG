@@ -11,35 +11,64 @@ function Product() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortOrder, setSortOrder] = useState(null);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isRecording, setIsRecording] = useState(false); // Trạng thái ghi âm
   const itemsPerPage = 8;
 
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
-  // const categoryTypeState = useSelector((state) => state.unit);
+
   const formatCurrency = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
   };
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
+  const handleVoiceSearch = () => {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "vi-VN";
+
+    setIsRecording(true);
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setSearchTerm(transcript);
+      setCurrentPage(1);
+      setIsRecording(false);
+    };
+
+    recognition.onerror = () => {
+      alert("Không thể nhận diện giọng nói!");
+      setIsRecording(false);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognition.start();
   };
 
-  // Lọc sản phẩm theo các điều kiện tìm kiếm và bộ lọc
-  let filteredProducts = Array.isArray(productState.units)
-      ? productState.units.filter((product) => {
-        const price = product.price;
-        const min = minPrice ? parseFloat(minPrice) : -Infinity;
-        const max = maxPrice ? parseFloat(maxPrice) : Infinity;
-        return (
-            price >= min &&
-            price <= max &&
-            product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      })
-      : [];
+  const clearSearch = () => {
+    setSearchTerm("");
+    setCurrentPage(1); // Quay lại trang đầu
+  };
 
+  const filterProducts = () => {
+    const min = minPrice ? parseFloat(minPrice) : -Infinity;
+    const max = maxPrice ? parseFloat(maxPrice) : Infinity;
+
+    return Array.isArray(productState.units)
+        ? productState.units.filter(
+            (product) =>
+                product.price >= min &&
+                product.price <= max &&
+                product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
+  };
+
+  let filteredProducts = filterProducts();
 
   if (sortOrder === "asc") {
     filteredProducts.sort((a, b) => a.price - b.price);
@@ -53,7 +82,6 @@ function Product() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentCatetype = categoryTypeState.units.slice(indexOfFirstItem, indexOfLastItem);
   const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -72,11 +100,6 @@ function Product() {
   const handleSortChange = (e) => {
     setSortOrder(e.target.value);
     setCurrentPage(1);
-  }
-  const categoryState = useSelector((state) => state.unit);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
   };
 
   useEffect(() => {
@@ -86,7 +109,15 @@ function Product() {
   }, [dispatch]);
 
   if (productState.loading) {
-    return <p>Loading...</p>;
+    return (
+        <div className="row">
+          {Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="col-md-3">
+                <div className="skeleton skeleton-card"></div>
+              </div>
+          ))}
+        </div>
+    );
   }
 
   if (productState.error) {
@@ -96,15 +127,6 @@ function Product() {
   if (!Array.isArray(productState.units)) {
     return <p>Error: Data format is incorrect, expected an array.</p>;
   }
-  // if (categoryTypeState.loading) {
-  //   return <p>Loading...</p>;
-  // }
-  // if (categoryTypeState.error) {
-  //   return <p>Error: {categoryTypeState.error}</p>;
-  // }
-  // if (!Array.isArray(categoryTypeState.units)) {
-  //   return <p>Error: Data format is incorrect, expected an array.</p>;
-  // }
 
   return (
       <div>
@@ -112,24 +134,41 @@ function Product() {
         <div className="bg0 m-t-23 p-b-140">
           <div className="container">
             <div className="row">
-              {/* Bộ lọc và tìm kiếm sản phẩm bên trái */}
               <div className="col-md-3 p-3 mb-4 mt-5">
-                <div className="d-flex align-items-center mb-3">
-                  <h5 className="text-dark mb-0">Tìm kiếm sản phẩm</h5>
-                </div>
-                {/* Tìm kiếm avatar
-sản phẩm */}
-                <div className="filter-search mb-3">
+                <h5 className="text-dark mb-3">Tìm kiếm sản phẩm</h5>
+
+                {/* Tìm kiếm sản phẩm */}
+                <div className="filter-search mb-3 position-relative">
                   <input
                       type="text"
-                      className="form-control"
+                      className="form-control pe-5"
                       placeholder="Tìm kiếm sản phẩm..."
                       value={searchTerm}
-                      onChange={handleSearch}
+                      onChange={(e) => setSearchTerm(e.target.value)}
                   />
+                  {/* Nút xóa */}
+                  {searchTerm && (
+                      <button
+                          onClick={clearSearch}
+                          className="btn btn-link position-absolute top-50 end-0 translate-middle-y me-5 p-0"
+                          style={{ border: "none", background: "none" }}
+                      >
+                        <i className="fa fa-times fa-lg text-danger"></i>
+                      </button>
+                  )}
+                  {/* Nút microphone */}
+                  <button
+                      onClick={handleVoiceSearch}
+                      className={`btn btn-link position-absolute top-50 end-0 translate-middle-y me-2 p-0 ${
+                          isRecording ? "text-danger" : "text-primary"
+                      }`}
+                      style={{ border: "none", background: "none" }}
+                  >
+                    <i className={`fa fa-microphone fa-lg ${isRecording ? "fa-beat" : ""}`}></i>
+                  </button>
                 </div>
 
-                {/* Lọc theo khoảng giá */}
+                {/* Các bộ lọc khác */}
                 <div className="filter-price mb-3">
                   <label className="form-label fw-bold">Khoảng giá:</label>
                   <input
@@ -148,7 +187,6 @@ sản phẩm */}
                   />
                 </div>
 
-                {/* Dropdown sắp xếp */}
                 <div className="filter-options mb-3">
                   <label className="form-label fw-bold">Sắp xếp theo:</label>
                   <select
@@ -165,66 +203,15 @@ sản phẩm */}
                 </div>
               </div>
 
-
               {/* Danh sách sản phẩm */}
               <div className="col-md-9">
-                <div className="flex-w flex-sb-m p-b-52">
-                  <div className="flex-w flex-l-m filter-tope-group m-tb-10 btn-group">
-                    <a className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" href="/product" t>Tất cả</a>
-                    <div className="dropdown mr-1">
-                      <button type="button" className="dropdown-toggle stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 "
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                              data-reference="parent" id="dropdownMenuOffset">Quần
-                      </button>
-                      <div className="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                        {/* {currentCatetype.map((cate) => (
-                        <Link className="dropdown-item" href="#">{cate.name}</Link>
-                      ))} */}
-                      </div>
-                    </div>
-                    <div className="btn-group">
-                      <button type="button" className="dropdown-toggle stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 "
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                              data-reference="parent" id="dropdownMenuReference">Áo
-                      </button>
-                      <div className="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                        <Link className="dropdown-item" href="#">Áo thun</Link>
-                        <Link className="dropdown-item" href="#">Áo sơ mi</Link>
-                        <Link className="dropdown-item" href="#">Áo Polo</Link>
-                      </div>
-                    </div>
-                    <div className="btn-group">
-                      <button type="button" className="dropdown-toggle stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 "
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                              data-reference="parent" id="ao">Giày
-                      </button>
-                      <div className="dropdown-menu" aria-labelledby="ao">
-                        <Link className="dropdown-item" href="#">Giày thể thao</Link>
-                        <Link className="dropdown-item" href="#">Giày sandal</Link>
-                        <Link className="dropdown-item" href="#">Giày da</Link>
-                      </div>
-                    </div>
-                    <div className="btn-group">
-                      <button type="button" className="dropdown-toggle stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 "
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                              data-reference="parent" id="PK">Phụ Kiện
-                      </button>
-                      <div className="dropdown-menu" aria-labelledby="PK">
-                        <Link className="dropdown-item" href="#">Đồng hồ</Link>
-                        <Link className="dropdown-item" href="#">Nhẫn</Link>
-                        <Link className="dropdown-item" href="#">Dây chuyền</Link>
-                        <Link className="dropdown-item" href="#">Vòng tay</Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div className="row isotope-grid">
                   {currentItems.length > 0 ? (
                       currentItems.map((product) => (
-                          <div key={product.id} className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                          <div key={product.id} className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
                             <div className="block2">
                               <div className="block2-pic hov-img0">
-                                <img src={product.img}/>
+                                <img src={product.img} alt={product.product_name} />
                                 <Link
                                     to={`${product.id}`}
                                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
@@ -234,17 +221,26 @@ sản phẩm */}
                               </div>
                               <div className="block2-txt flex-w flex-t p-t-14">
                                 <div className="block2-txt-child1 flex-col-l">
-                                  <Link to={`${product.id}`} className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                  <Link
+                                      to={`${product.id}`}
+                                      className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
+                                  >
                                     {product.product_name}
                                   </Link>
-                                  <span className="stext-105 cl3 text-danger">{formatCurrency(product.price)}</span>
+                                  <span className="stext-105 cl3 text-danger">
+                              {formatCurrency(product.price)}
+                            </span>
                                 </div>
                               </div>
                             </div>
                           </div>
                       ))
                   ) : (
-                      <p>Không tìm được sản phẩm liên quan</p>
+                      <p className="text-center mt-5">
+                        <i className="fa fa-search-minus fa-2x text-muted"></i>
+                        <br />
+                        Không tìm thấy sản phẩm liên quan.
+                      </p>
                   )}
                 </div>
 
@@ -262,7 +258,7 @@ sản phẩm */}
                       <button
                           onClick={handleNextPage}
                           disabled={currentPage === totalPages}
-                          className="btn btn-outline-dark mr-2"
+                          className="btn btn-outline-dark"
                       >
                         Sau
                       </button>
@@ -271,7 +267,6 @@ sản phẩm */}
               </div>
             </div>
           </div>
-
         </div>
         <Footer />
       </div>

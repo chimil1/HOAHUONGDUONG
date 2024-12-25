@@ -211,26 +211,20 @@ class ProductController extends Controller
         // Tìm sản phẩm với coupon liên quan
         $product = Product::with('coupon')
             ->where('id', $productId)
-            ->first(); // Lấy sản phẩm đầu tiên
-
-        // Kiểm tra nếu không tìm thấy sản phẩm
+            ->first();
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
 
-        // Lấy coupon liên quan
         $coupon = $product->coupon;
 
-        // Tính toán giá sau khi giảm giá
         $finalPrice = $product->price;
 
         if ($coupon) {
-            // Kiểm tra và tính toán theo loại giảm giá
             if ($coupon->discount_type == 'percentage') {
-                // Giảm theo phần trăm
                 $finalPrice = $product->price * (1 - $coupon->discount_value / 100);
             } elseif ($coupon->discount_type == 'fixed') {
-                // Giảm cố định (trừ trực tiếp giá trị giảm)
+
                 $finalPrice = $product->price - $coupon->discount_value;
             }
 
@@ -248,9 +242,10 @@ class ProductController extends Controller
             'discount_type' => $coupon ? $coupon->discount_type : null,
             'discount_value' => $coupon ? $coupon->discount_value : null,
             'minium_order_value' => $coupon ? $coupon->minium_order_value : null,
-            'final_price' => $finalPrice // Giá cuối cùng sau khi áp dụng giảm giá
+            'final_price' => $finalPrice
         ]);
     }
+
     public function destroy(Product $product)
     {
         $product->delete();

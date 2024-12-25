@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoriController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ShippingAddressController;
 use App\Http\Controllers\StatisticalController;
+use App\Http\Controllers\ChatbotController;
 
 
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
@@ -31,6 +32,7 @@ Route::post('shipping-addresses/{user_id}', [ShippingAddressController::class, '
 Route::get('/auth/redirect', [GoogleController::class, 'redirectToProvider']);
 Route::post('/auth/callback', [GoogleController::class, 'handleProviderCallback']);
 Route::get('/products/search', [ProductController::class, 'search']);
+Route::post('/chatbot', [ChatbotController::class, 'handleRequest']);
 
 Route::apiResource('user', UserController::class);
 Route::get('/typeCate',[CategoryController::class,'Type']);

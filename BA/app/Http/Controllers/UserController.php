@@ -76,7 +76,7 @@ class UserController extends Controller
     public function getMonthlyUserStats(Request $request)
     {
         // Lấy 7 ngày gần nhất
-        $startDate = Carbon::now()->subDays(6); // Lấy ngày cách đây 6 ngày
+        $startDate = Carbon::now()->subDays(6);
         $endDate = Carbon::now();
 
         // Tạo mảng để lưu kết quả theo từng ngày
