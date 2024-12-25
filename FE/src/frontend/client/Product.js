@@ -4,7 +4,7 @@ import Footer from "./layout/Footer";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, fetchCategory, fetchCategoryType } from "../actions/unitActions";
-
+import Loading from "./layout/Loading";
 function Product() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,7 +25,11 @@ function Product() {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
-
+  useEffect(() => {
+    dispatch(fetchCategory());
+    dispatch(fetchCategoryType());
+    dispatch(fetchProducts());
+  }, [dispatch]);
   // Lọc sản phẩm theo các điều kiện tìm kiếm và bộ lọc
   let filteredProducts = Array.isArray(productState.units)
       ? productState.units.filter((product) => {
@@ -79,14 +83,10 @@ function Product() {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  useEffect(() => {
-    dispatch(fetchCategory());
-    dispatch(fetchCategoryType());
-    dispatch(fetchProducts());
-  }, [dispatch]);
+
 
   if (productState.loading) {
-    return <p>Loading...</p>;
+    return <p><Loading></Loading></p>;
   }
 
   if (productState.error) {

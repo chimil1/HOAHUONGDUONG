@@ -96,7 +96,7 @@ function Coupons() {
                                                             {formatCurrency(item.minium_order_value)}
                                                         </td>
                                                         <td>
-                                                            {item.discount_value || "Không có thông tin"}
+                                                            {item.discount_value}%
                                                         </td>
                                                         <td>{item.start_date}</td>
                                                         <td>{item.end_date}</td>

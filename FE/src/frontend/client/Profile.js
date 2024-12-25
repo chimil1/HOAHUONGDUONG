@@ -266,17 +266,17 @@
             <div className="container-xxl py-5">
               <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item" role="presentation">
-                  <a
+                  <Link
                       className="nav-link active text-dark"
                       id="profile-tab"
                       data-bs-toggle="tab"
-                      href="#profile"
+                      to="#profile"
                       role="tab"
                       aria-controls="profile"
                       aria-selected="true"
                   >
                     Thông tin người dùng
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item" role="presentation">
                   <button
@@ -301,6 +301,14 @@
                     Địa chỉ giao hàng
                   </a>
                 </li>
+                <li className="nav-item" >
+                <Link
+                    className="nav-link text-dark"
+                    to={`/Order/${userId}`}
+                >
+                  Đơn hàng
+                </Link>
+              </li>
               </ul>
               <div className="tab-content mt-4" id="myTabContent">
                 <div className="tab-pane fade show active" id="address-tab" role="tabpanel" aria-labelledby="profile-tab">

@@ -677,6 +677,8 @@ export const addToCart = (data) => {
       });
   };
 };
+
+
 export const CartItem = () => {
     return (dispatch) => {
         dispatch({ type: "FETCH_CART_REQUEST" });

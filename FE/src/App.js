@@ -26,7 +26,7 @@ import AddPersonnel from "./frontend/admin/AddPersonnel";
 import Orderdetails from "./frontend/admin/orderDetail";
 import OrderManagement from "./frontend/admin/OrderManagement";
 import Editshipping from "./frontend/client/editShipping";
-
+import Order from "./frontend/client/Order";
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
@@ -45,7 +45,7 @@ import AddShipping from "./frontend/client/AddShipping";
 import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
 import PayMent from "./frontend/client/cart";
-
+import Loading from "./frontend/client/layout/Loading"
 function App() {
   return (
     <div className="App">
@@ -60,7 +60,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
-
+          <Route path="/Loading" element={<Loading />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/addshipping/:id" element={<AddShipping />} />
           <Route path="/login" element={<Login />} />
@@ -70,12 +70,13 @@ function App() {
           <Route path="/listaddress" element={<ListAddress />} />
           <Route path="/editshipping/:id" element={<Editshipping />} />
           <Route path="/listaddress/:id" element={<ListAddress />} />
+          <Route path="/Order/:id" element={< Order/>} />
 
-          <Route path='/register'  element={<Register />}/>
-          <Route path='/forgot-password'  element={<ForgotPassword />}/>
-          <Route path='/reset-password'  element={<ConfirmPassword />}/>
-          <Route path='/listaddress'  element={<ListAddress/>}/>
-          <Route path='/cart'  element={<Cart/>}/>
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ConfirmPassword />} />
+          <Route path="/listaddress" element={<ListAddress />} />
+          <Route path="/cart" element={<Cart />} />
           {/* Các Route cho admin */}
           <Route path="/admin" element={<LoginForm />} />
           <Route path="/thongke" element={<ThongKe />} />
@@ -100,7 +101,7 @@ function App() {
           <Route path="/orderdetails" element={<OrderDetail />} />
           <Route path="/addpersonnel" element={<AddPersonnel />} />
           <Route path="/orderdetails" element={<Orderdetails />} />
-          <Route path="/details/:id" element={<OrderManagement/>} />
+          <Route path="/details/:id" element={<OrderManagement />} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />
           <Route path="/Addcoupon" element={<Addcoupon />} />
@@ -108,9 +109,9 @@ function App() {
           <Route path="/reviewdetail" element={<ReviewDetail />} />
           <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
           <Route path="/home" element={<Home />} />
-            <Route path="/editProduct/:id" element={<EditProduct />} />
+          <Route path="/editProduct/:id" element={<EditProduct />} />
           <Route path="/payment" element={<PayMent />} />
-            {/* <Route path="/admin/login" element={<LoginForm />} /> */}
+          {/* <Route path="/admin/login" element={<LoginForm />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
