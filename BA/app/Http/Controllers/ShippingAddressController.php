@@ -11,10 +11,10 @@ use Illuminate\Http\Request;
 
 class ShippingAddressController extends Controller
 {
-
     public function index()
     {
-        $shippingAddress = ShippingAddress::all();
+        $user = Auth::user();
+        $shippingAddress = ShippingAddress::where('user_id', $user->id)->get();
         return response()->json($shippingAddress);
     }
 

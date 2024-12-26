@@ -4,19 +4,28 @@ import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, fetchProductDelete } from "../actions/unitActions";
+import { fetchProducts, fetchDelete } from "../actions/unitActions";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function QlSanPham() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
-
+  const navigate = useNavigate();
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  };
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  const handleEditClick = (id) => {
+    navigate(`/editProduct/${id}`);
+  };
   const handleDelete = (id) => {
     Swal.fire({
       text: "Bạn có muốn xóa sản phẩm này?",
@@ -31,7 +40,7 @@ function QlSanPham() {
           text: "Xóa sản phẩm thành công!",
           icon: "success",
         });
-        dispatch(fetchProductDelete(id));
+        dispatch(fetchDelete(id));
       }
     });
   };
@@ -79,49 +88,57 @@ function QlSanPham() {
                             <th>Tên sản phẩm</th>
                             <th>Giá</th>
                             <th>Mô tả</th>
-                            <th>Trạng thái</th>
+                            {/* <th>Trạng thái</th> */}
                             <th>Danh mục</th>
+                            {/* <th>Mô tả</th> */}
+                            {/* <th>Trạng thái</th> */}
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
                           {productState.units.map((product) => (
-                            <tr className="tr-shadow" key={product.id}>
-                              <td>{product.product_img}</td>
-                              <td>{product.product_name}</td>
-                              <td>{product.price}</td>
-                              <td>{product.description}</td>
-                              <td>{product.status}</td>
-                              <td>{product.category_id}</td>
-                              <td>
-                                <div className="table-data-feature">
-                                  <Link to={`/productdetail/${product.id}`}>
-                                  <button
-                                    className="item"
-                                    // onClick={() => handleDetailClick(product)}
-                                    title="Chi tiết"
-                                  >
-                                    <i className="zmdi zmdi-mail-send"></i>
-                                  </button>
-                                  </Link>
-                                  <button
-                                    className="item"
-                                    // onClick={() => handleEditClick(product)}
-                                    title="Sửa"
-                                  >
-                                    <i className="zmdi zmdi-edit"></i>
-                                  </button>
-                                  <button
-                                    onClick={() => handleDelete(product.id)}
-                                    className="item"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Delete"
-                                  >
-                                    <i className="zmdi zmdi-delete"></i>
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
+                              <tr className="tr-shadow" key={product.id}>
+                                <td>
+                                  {product.img ? (
+                                      <img src={product.img}
+                                           style={{width: '50px', height: '90px', objectFit: 'cover'}}/>
+                                  ) : (
+                                      'Không có thông tin'
+                                  )}
+                                </td>
+                                <td>{product.product_name}</td>
+                                <td>{formatCurrency(product.price)}</td>
+                                <td>{product.description}</td>
+                                {/* <td>{product.status}</td> */}
+                                <td>{product.name_category}</td>
+                                <td>
+                                  <div className="table-data-feature">
+                                    <button
+                                        className="item"
+                                        // onClick={() => handleDetailClick(product)}
+                                        title="Chi tiết"
+                                    >
+                                      <i className="zmdi zmdi-mail-send"></i>
+                                    </button>
+                                    <button
+                                        className="item"
+                                        onClick={() => handleEditClick(product.id)}
+                                        title="Sửa"
+                                    >
+                                      <i className="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(product.id)}
+                                        className="item"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Delete"
+                                    >
+                                      <i className="zmdi zmdi-delete"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
                           ))}
                         </tbody>
                       </table>

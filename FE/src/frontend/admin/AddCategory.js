@@ -30,6 +30,7 @@ function AddCategory() {
   const submit = (data) => {
     dispatch(fetchAddCategory(data));
 
+
     Swal.fire({
       text: "Thêm sản phẩm thành công!",
       icon: "success",

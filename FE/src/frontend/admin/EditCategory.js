@@ -42,6 +42,7 @@ function EditCategory() {
     return <p>Error: {categoryState.error}</p>;
   }
 
+
   const submit = (data) => {
     const jsonData = {
       name: data.name,
@@ -50,7 +51,9 @@ function EditCategory() {
       img: data.img,
     };
 
+
     try {
+      dispatch(updateCategory(id, jsonData)); // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
       dispatch(updateCategory(id, jsonData)); // Sử dụng JSON thay vì FormData  // Đợi API hoàn thành
       Swal.fire({
         text: "Cập nhật danh mục thành công!",
@@ -63,6 +66,7 @@ function EditCategory() {
         icon: "error",
       });
     }
+  };
   };
 
   return (
@@ -93,7 +97,27 @@ function EditCategory() {
                           <span className="text-danger">
                             Tên sản phẩm không được bỏ trống!
                           </span>
-                        )}
+                          )}
+                        </div>
+                        <div className="form-group col-md-6 mb-3 position-relative">
+                          <label htmlFor="status">Trạng thái</label>
+                          <select
+                              {...register("status", { required: true })}
+                              id="status"
+                              className={`form-control custom-select ${
+                                  errors.status ? "is-invalid" : ""
+                              }`}
+                          >
+                            <option value="">Chọn trạng thái</option>
+                            <option value="0">Đang Hoạt Động</option>
+                            <option value="1">Ngừng Hoạt Động</option>
+                          </select>
+                          {errors.status && (
+                              <span className="text-danger">
+                            Trạng thái sản phẩm không được bỏ trống!
+                          </span>
+                          )}
+                        </div>
                       </div>
                       <div className="form-group col-md-6 mb-3 position-relative">
                         <label htmlFor="status">Trạng thái</label>

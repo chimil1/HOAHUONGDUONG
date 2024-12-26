@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
+      setUserId(userId);
     } else {
       setIsLoggedIn(false);
+      setUserId(null);
     }
   }, []);
 
@@ -18,45 +22,35 @@ function Header() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setIsLoggedIn(false);
+    setUserId(null);
+    navigate('/admin');
   };
 
   return (
-    <div>
-      <header className="header-desktop2 bg-dark">
-        <div className="section__content section__content--p30">
-          <div className="container-fluid">
-            <div className="header-wrap2">
-              <div className="logo d-block d-lg-none">
-                <Link to="#">
-                  <img
-                    src="/public/assets/images/logo.png"
-                    alt="Logo"
-                    className="img-fluid"
-                  />
-                </Link>
-              </div>
-              <div className="header-button2">
-                <Dropdown align="end">
-                  <Dropdown.Toggle
-                    variant="link"
-                    id="dropdown-basic"
-                    className="text-white p-0"
-                  >
-                    <i class="fa-solid fa-user"></i>
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="/admin" onClick={handleLogout}>
-                      Đăng Xuất
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+      <div>
+        <header className="header-desktop2 bg-dark">
+          <div className="section__content section__content--p30">
+            <div className="container-fluid">
+              <div className="header-wrap2">
+                <div className="logo d-block d-lg-none">
+                  <Link to="#">
+                    <img
+                        src="/public/assets/images/logo.png"
+                        alt="Logo"
+                        className="img-fluid"
+                    />
+                  </Link>
+                </div>
+                <div className="header-button2">
+                  <button onClick={handleLogout}>
+                    <i class="fa-solid fa-right-from-bracket" style={{ color: '#ffffff' }}></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </header>
-    </div>
+        </header>
+      </div>
   );
 }
 

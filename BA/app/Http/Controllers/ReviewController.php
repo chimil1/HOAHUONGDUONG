@@ -20,7 +20,6 @@ class ReviewController extends Controller
             return [
                 'id' => $product->id,
                 'name' => $product->product_name,
-                'img' => $product->images->first()->product_img,
                 'review_count' => $product->reviews_count,
             ];
         });

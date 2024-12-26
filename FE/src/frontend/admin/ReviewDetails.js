@@ -50,14 +50,14 @@ function ReviewDetail() {
                                                     <table className="table table-data2">
                                                         <thead>
                                                             <tr>
-                                                                <th>Mã sản phẩm</th>
-                                                                <th>Số sao</th>
+                                                            <th>Mã sản phẩm</th>
+                                                                <th>Số Sao</th>
                                                                 <th>Comment</th>
                                                                 <th>ID khách hàng</th>
                                                                 <th>ID sản phẩm</th>
-                                                                <th>ID đơn hàng</th>
-                                                                <th>Ngày đăng</th>
-                                                                <th>Ngày cập nhật</th>
+                                                                <th>ID Đơn hàng</th>
+                                                                <th>Ngày</th>
+                                                                <th>Ngày</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

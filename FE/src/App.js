@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThongKe from "./frontend/admin/ThongKe";
 import CNDanhMuc from "./frontend/admin/CNDanhMuc";
 import CNDonHang from "./frontend/admin/CNDonHang";
-import CNNhanVien from "./frontend/admin/CNNhanVien";
 import CNSanPham from "./frontend/admin/CNSanPham";
 import CNTaiKhoan from "./frontend/admin/CNTaiKhoan";
 import QlDanhMuc from "./frontend/admin/QlDanhMuc";
@@ -11,8 +10,8 @@ import EditCategory from "./frontend/admin/EditCategory";
 import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
-import QlNhanVien from "./frontend/admin/QlNhanVien";
 import QlSanPham from "./frontend/admin/QlSanPham";
+import EditProduct from "./frontend/admin/EditProduct";
 import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
 import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
@@ -22,16 +21,17 @@ import Coupons from "./frontend/admin/Coupons";
 import Review from "./frontend/admin/Review";
 import Addcoupon from "./frontend/admin/Addcoupon";
 import EditCoupon from "./frontend/admin/EditCoupon";
-import LoginForm from "./frontend/admin/LoginForm";
 import AddCategory from "./frontend/admin/AddCategory";
 import AddPersonnel from "./frontend/admin/AddPersonnel";
 import Orderdetails from "./frontend/admin/orderDetail";
+import OrderManagement from "./frontend/admin/OrderManagement";
 import Editshipping from "./frontend/client/editShipping";
 
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
 import Contact from "./frontend/client/Contact";
+import LoginForm from "./frontend/admin/LoginForm";
 import Productdetail from "./frontend/client/Product-detail";
 import Blog from "./frontend/client/Blog";
 import ShoppingCart from "./frontend/client/ShoppingCart";
@@ -40,10 +40,11 @@ import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
-import Shipping from "./frontend/client/Shipping";
-import AddShipping from "./frontend/client/addshipping";
-import Search from "./frontend/client/Search";
+import AddShipping from "./frontend/client/AddShipping";
+// import ListAddress from "./frontend/client/listAddess";
+import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
+import PayMent from "./frontend/client/cart";
 
 function App() {
   return (
@@ -59,9 +60,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
-          <Route path="/search" element={<Search />} />
+
           <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/shipping" element={<Shipping />} />
           <Route path="/addshipping/:id" element={<AddShipping />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -71,12 +71,16 @@ function App() {
           <Route path="/editshipping/:id" element={<Editshipping />} />
           <Route path="/listaddress/:id" element={<ListAddress />} />
 
+          <Route path='/register'  element={<Register />}/>
+          <Route path='/forgot-password'  element={<ForgotPassword />}/>
+          <Route path='/reset-password'  element={<ConfirmPassword />}/>
+          <Route path='/listaddress'  element={<ListAddress/>}/>
+          <Route path='/cart'  element={<Cart/>}/>
           {/* Các Route cho admin */}
           <Route path="/admin" element={<LoginForm />} />
           <Route path="/thongke" element={<ThongKe />} />
           <Route path="/cndanhmuc" element={<CNDanhMuc />} />
           <Route path="/cndonhang" element={<CNDonHang />} />
-          <Route path="/cnnhanvien" element={<CNNhanVien />} />
           <Route path="/cnsanpham" element={<CNSanPham />} />
           <Route path="/cntaikhoan" element={<CNTaiKhoan />} />
           <Route path="/review" element={<Review />} />
@@ -88,7 +92,6 @@ function App() {
           <Route path="/qldonhang" element={<QlDonHang />} />
           <Route path="/qldonhang/:id" element={<QlDonHang />} />
           <Route path="/qlkhachhang" element={<QlKhachHang />} />
-          <Route path="/qlnhanvien" element={<QlNhanVien />} />
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/productdetail" element={<ProductDetails />} />
           <Route path="/productdetail/:id" element={<ProductDetails />} />
@@ -97,6 +100,7 @@ function App() {
           <Route path="/orderdetails" element={<OrderDetail />} />
           <Route path="/addpersonnel" element={<AddPersonnel />} />
           <Route path="/orderdetails" element={<Orderdetails />} />
+          <Route path="/details/:id" element={<OrderManagement/>} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />
           <Route path="/Addcoupon" element={<Addcoupon />} />
@@ -104,7 +108,9 @@ function App() {
           <Route path="/reviewdetail" element={<ReviewDetail />} />
           <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
           <Route path="/home" element={<Home />} />
-          {/* <Route path="/admin/login" element={<LoginForm />} /> */}
+            <Route path="/editProduct/:id" element={<EditProduct />} />
+          <Route path="/payment" element={<PayMent />} />
+            {/* <Route path="/admin/login" element={<LoginForm />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
