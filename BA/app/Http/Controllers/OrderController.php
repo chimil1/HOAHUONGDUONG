@@ -124,32 +124,31 @@ class OrderController extends Controller
             ->with(['orderDetails', 'user:id,name'])
             ->get();
         $orders->each(function ($order) {
-            $order->username = $order->user->name;
+            $order->usern = $order->user->name;
             unset($order->user);
         });
 
         return response()->json($orders);
     }
 
-
     public function updateOrderStatus(Request $request, $id)
     {
         try {
             // Lấy giá trị 'status' từ request
             $status = $request->input('status');
-
-            // Kiểm tra giá trị status hợp lệ (0: Chờ xác nhận, 1: Đã xác nhận, 2: Đang vận chuyển, 3: Hoàn tất)
-            if ($status === null || !in_array($status, [0, 1, 2, 3, 4])) {
+    
+            // Kiểm tra giá trị status hợp lệ (0: Chờ xác nhận, 1: Đã xác nhận, 2: Đang vận chuyển, 3: Hoàn tất, 4: Đã hủy, 5: Đánh giá)
+            if ($status === null || !in_array($status, [0, 1, 2, 3, 4, 5])) {
                 return response()->json(['message' => 'Trạng thái không hợp lệ'], 400);
             }
-
+    
             // Tìm đơn hàng theo ID
             $order = Order::find($id);
-
+    
             if (!$order) {
                 return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
             }
-
+    
             // Kiểm tra trạng thái hiện tại và chuyển trạng thái hợp lý
             if ($order->status == 0 && $status == 1) {
                 // Chuyển từ "Chờ xác nhận" -> "Đã xác nhận"
@@ -158,22 +157,22 @@ class OrderController extends Controller
                 // Chuyển từ "Đã xác nhận" -> "Đang vận chuyển"
                 $order->status = 2;
             } elseif ($order->status == 2 && $status == 3) {
-                // Chuyển từ "Đang vận chuyển" -> "Đã nhận hàng"
+                // Chuyển từ "Đang vận chuyển" -> "Hoàn tất"
                 $order->status = 3;
-            } elseif ($order->status == 3 && $status == 4) {
-                // Chuyển từ "Đã nhận hàng" -> "Đã hủy"
-                $order->status = 4;
+            } elseif ($order->status == 3 && $status == 5) {
+                // Chuyển từ "Hoàn tất" -> "Đánh giá"
+                $order->status = 5;
             } elseif ($status == 4) {
-                // Trạng thái "Hủy" có thể thay đổi bất cứ lúc nào, ngay cả khi đơn hàng chưa "Đang vận chuyển"
+                // Trạng thái "Hủy" có thể thay đổi bất cứ lúc nào
                 $order->status = 4;
             } else {
-                // Nếu trạng thái không hợp lệ (ví dụ: đang vận chuyển mà cố gắng chuyển sang đã xác nhận)
+                // Nếu trạng thái không hợp lệ
                 return response()->json(['message' => 'Không thể chuyển trạng thái này'], 400);
             }
-
+    
             // Cập nhật trạng thái
             $order->save();
-
+    
             return response()->json(['message' => 'Cập nhật trạng thái thành công', 'order' => $order], 200);
         } catch (\Exception $exception) {
             return response()->json([
@@ -183,27 +182,8 @@ class OrderController extends Controller
             ], 500);
         }
     }
-    public function approveOrder($id)
-    {
-        try{
-            $order = Order::find($id);
-            if (!$order) {
-                return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
-            }
-            $order->status = 0;
-            $order->update();
-            return response()->json(['message' => 'Đơn hàng đã được duyệt thành công', 'order' => $order], 200);
-        }catch(\Exception $exception){
-            return response()->json([
-                'error' => $exception,
-                'success' => false,
-                'message' => 'Thêm dữ liệu không thành công.',
-            ], 500);
-
-        }
-
-    }
-
+    
+    
     /**
      * Update the specified resource in storage.
      */

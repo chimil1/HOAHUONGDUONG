@@ -26,7 +26,8 @@ import AddPersonnel from "./frontend/admin/AddPersonnel";
 import Orderdetails from "./frontend/admin/orderDetail";
 import OrderManagement from "./frontend/admin/OrderManagement";
 import Editshipping from "./frontend/client/editShipping";
-import Order from "./frontend/client/Order";
+import OrderClient from "./frontend/client/OrderClient";
+import OrderDetailClient from"./frontend/client/OrderDetailClient";
 import Home from "./frontend/client/Home";
 import Product from "./frontend/client/Product";
 import About from "./frontend/client/About";
@@ -40,8 +41,6 @@ import Login from "./frontend/client/auth/Login";
 import Register from "./frontend/client/auth/Register";
 import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
-import AddShipping from "./frontend/client/AddShipping";
-// import ListAddress from "./frontend/client/listAddess";
 import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
 import PayMent from "./frontend/client/cart";
@@ -62,7 +61,7 @@ function App() {
           <Route path="/shoppingcart" element={<ShoppingCart />} />
           <Route path="/Loading" element={<Loading />} />
           <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/addshipping/:id" element={<AddShipping />} />
+          {/* <Route path="/addshipping/:id" element={<AddShipping />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -70,7 +69,9 @@ function App() {
           <Route path="/listaddress" element={<ListAddress />} />
           <Route path="/editshipping/:id" element={<Editshipping />} />
           <Route path="/listaddress/:id" element={<ListAddress />} />
-          <Route path="/Order/:id" element={< Order/>} />
+          <Route path="/orderuser" element={< OrderClient/>} />
+          <Route path="/orderuser/:id" element={< OrderClient/>} />
+          <Route path="/orderdetailclient/:id" element={< OrderDetailClient/>} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

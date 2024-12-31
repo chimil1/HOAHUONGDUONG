@@ -9,7 +9,7 @@ const initialState = {
     loading: false,
     user: null,
     units: [],
-    error: ''
+    error: null
 };
 
 const unitReducer = (state = initialState, action) => {

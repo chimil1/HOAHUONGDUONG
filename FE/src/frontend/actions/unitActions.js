@@ -352,18 +352,27 @@ export const updateOrderStatus = (id, newStatus) => {
             });
     };
 };
-// export const approveOrder = (id) => {
-//     return (dispatch) => {
-//         return axios
-//             .put(`http://localhost:8000/api/order/approve/${id}`)
-//             .then(() => {
-//                 dispatch(fetchOrders());
-//             })
-//             .catch((error) => {
-//                 console.error("Lỗi khi duyệt đơn hàng:", error);
-//             });
-//     };
-// }
+export const fetchOrderManagementcline = (id) => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`${url}/users/orders/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const units = Array.isArray(response.data) ? response.data : []; // Đảm bảo luôn là mảng
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};
 export const fetchOrderManagement = (id) => {
     return (dispatch) => {
         dispatch(fetchUnitsRequest());

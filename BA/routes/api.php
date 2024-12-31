@@ -43,7 +43,6 @@ Route::apiResource('category', CategoryController::class);
 Route::apiResource('order', OrderController::class);
 Route::middleware('auth:sanctum')->post('addOrder', [OrderController::class,'store']);
 
-Route::put('/order/approve/{id}', [OrderController::class, 'approveOrder']);
 Route::put('/order/status/{id}', [OrderController::class, 'updateOrderStatus']);
 Route::get('/users/orders/{userId}', [OrderController::class, 'getOrdersByUser']);
 Route::apiResource('review', ReviewController::class);
