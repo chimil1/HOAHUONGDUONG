@@ -138,6 +138,9 @@ function Login() {
                         </Button>
                       </div>
                     </Form>
+                    <p className="text-center text-muted mt-3 mb-0">
+                      Bạn Có Muốn Quay Lại <Link to="/home" className="fw-bold text-body"><u>Trang Chủ</u></Link>
+                    </p>
                   </div>
                 </div>
               </div>

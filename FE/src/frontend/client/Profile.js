@@ -78,6 +78,7 @@ function Profile() {
         text: "Đổi mật khẩu thành công!",
         icon: "success",
       });
+      navigate(`/profile/${id}`);
     } catch (error) {
       Swal.fire({
         text: "Có lỗi xảy ra khi đổi mật khẩu!",
@@ -89,8 +90,11 @@ function Profile() {
   return (
       <div>
         <Header />
-        <section className="pt-5 m-t-80" style={{ backgroundColor: "#eee" }}>
+        <section className="pt-5" style={{ backgroundColor: "#eee" }}>
           <div className="container py-5">
+            <div className="text-center mb-5">
+              <h2 className="text-dark">Thông Tin Người Dùng</h2>
+            </div>
             <div className="row">
               <div className="col-lg-4">
                 <div className="card mb-4">
@@ -99,13 +103,13 @@ function Profile() {
                         src="../../asset/images/avatar.jpg"
                         alt="avatar"
                         className="rounded-circle img-fluid"
-                        style={{ width: "150px" }}
+                        style={{width: "150px"}}
                     />
                     <div>
                       {userState.user && (
                           <div>
-                            <h5 className="my-3">{userState.user.name}</h5>
-                            <p className="text-success mb-1">{userState.user.email}</p>
+                            <h5 className="my-3 text-dark">{userState.user.name}</h5> {/* Set name text to black */}
+                            <p className="text-dark mb-1">{userState.user.email}</p>
                           </div>
                       )}
                     </div>
@@ -117,31 +121,31 @@ function Profile() {
                   <div className="card-body">
                     <div className="row">
                       <div className="col-sm-3">
-                        <p className="mb-0 text-muted">Họ Và Tên</p>
+                        <p className="mb-0 text-dark fw-bold">Họ Và Tên:</p>
                       </div>
                       <div className="col-sm-9">
-                        <p className="text-success mb-0">{user.name}</p>
+                        <p className="text-dark mb-0" style={{textTransform: 'capitalize'}}>{user.name}</p>
                       </div>
                     </div>
-                    <hr />
+                    <hr/>
                     <div className="row">
                       <div className="col-sm-3">
-                        <p className="mb-0 text-muted">Email:</p>
+                        <p className="mb-0 text-dark fw-bold">Email:</p>
                       </div>
-                      <div className="col-sm-9">
-                        <p className="text-success mb-0">{user.email}</p>
+                      <div className="col-sm-8">
+                        <p className="text-dark mb-0">{user.email}</p>
                       </div>
                     </div>
-                    <hr />
+                    <hr/>
                     <div className="row">
                       <div className="col-sm-3">
-                        <p className="mb-0 text-muted">Phone:</p>
+                        <p className="mb-0 text-dark fw-bold">Phone:</p>
                       </div>
                       <div className="col-sm-9">
-                        <p className="text-success mb-0">{user.phone}</p>
+                        <p className="text-dark mb-0 ">{user.phone}</p>
                       </div>
                     </div>
-                    <hr />
+                    <hr/>
                     <div className="mt-5">
                       <form action="" method="post">
                         <Link to="">
@@ -228,7 +232,6 @@ function Profile() {
             </div>
           </div>
         </form>
-        <Footer />
       </div>
   );
 }

@@ -18,10 +18,10 @@ function Menu() {
               </Link>
             </li>
             <li className="has-sub">
-            <Link className="js-arrow" to="/coupon">
-            <i className="fa fa-ticket"></i>Mã giảm giá
-            </Link>
-          </li>
+              <Link className="js-arrow" to="/coupon">
+                <i className="fa fa-ticket"></i>Mã giảm giá
+              </Link>
+            </li>
             <li className="has-sub">
               <Link className="js-arrow" to="/review">
                 <i className="fas fa-comment-alt"></i>Đánh giá
@@ -40,24 +40,12 @@ function Menu() {
             </li>
             <li className="has-sub">
               <Link className="js-arrow" to="/QlKhachhang">
-                <i className="fas fa-users"></i>Quản lý Khách Hàng
+                <i className="fas fa-users"></i>Quản lý Tài Khoản
               </Link>
             </li>
             <li className="has-sub">
               <Link className="js-arrow" to="/qlsanpham">
                 <i className="fas fa-table"></i>Quản lý Sản Phẩm
-              </Link>
-            </li>
-            <li className="has-sub">
-              <Link className="js-arrow" to="/QlTaiKhoan">
-                <i className="fas fa-map-marker-alt"></i>Quản lý Tài Khoản
-              </Link>
-            </li>
-
-            {/* Thêm nút chuyển trang qua client */}
-            <li className="has-sub">
-              <Link className="js-arrow" to="/Home">
-                <i className="fas fa-home"></i>Trang chủ Client
               </Link>
             </li>
           </ul>

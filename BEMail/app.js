@@ -22,8 +22,21 @@ app.post('/send-email', (req, res) => {
     const mailOptions = {
         from: 'hoaahuongduongg@gmail.com',
         to: userInfo.email,
-        subject: 'Welcome to HoaHuongDuong',
-        text: `${userInfo.name} `
+        subject: 'Chúng tôi rất trân trọng ý kiến đóng góp của bạn',
+        text: `
+            ${userInfo.name},
+
+            Cảm ơn bạn đã đồng hành cùng Đội ngũ shop Hoa Hướng Dương! Chúng tôi rất trân trọng sự ủng hộ của bạn.
+
+            Chúng tôi rất mong nhận được ý kiến đóng góp từ bạn! Những phản hồi của bạn sẽ giúp chúng tôi cải thiện dịch vụ và mang đến những trải nghiệm tốt hơn cho bạn. Dù là những gợi ý về sản phẩm mới, cách thức nâng cao trải nghiệm mua sắm hay bất kỳ suy nghĩ nào khác, chúng tôi đều muốn lắng nghe.
+
+            Xin vui lòng dành chút thời gian chia sẻ ý kiến của bạn bằng cách trả lời email này hoặc nhấp vào liên kết dưới đây để điền vào mẫu phản hồi nhanh:
+
+            Chúng tôi rất mong được nghe những ý kiến quý giá từ bạn để cải thiện hơn nữa dịch vụ của mình!
+
+            Trân trọng,
+            Đội ngũ shop Hoa Hướng Dương`
+
     };
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -36,5 +49,5 @@ app.post('/send-email', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    
+
 });

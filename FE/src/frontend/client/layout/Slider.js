@@ -2,7 +2,7 @@ import React from "react";
 
 function SliderComponent() {
   return (
-    <div style={{ marginTop: '80px' }}>
+    <div>
       <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
 
         <div className="carousel-inner">
@@ -18,6 +18,13 @@ function SliderComponent() {
             className="d-block w-100"
             src="../../asset/images/slide-02.jpg"
             alt="Second slide"
+          />
+        </div>
+        <div className="carousel-item position-relative">
+          <img
+            className="d-block w-100"
+            src="../../asset/images/slide-03.png"
+            alt="Third slide"
           />
         </div>
       </div>

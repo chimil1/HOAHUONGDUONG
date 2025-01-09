@@ -3,6 +3,7 @@ import {
   fetchProductDetails,
   fetchRelatedProducts,
   fetchReviews,
+  addReview,
 } from "../actions/unitActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -20,7 +21,7 @@ function Productdetail() {
 
   const initialImage =
     Array.isArray(productState.units.images) &&
-    productState.units.images.length > 0
+      productState.units.images.length > 0
       ? productState.units.images[0].product_img
       : "";
   const [currentImage, setCurrentImage] = useState(initialImage);
@@ -47,6 +48,21 @@ function Productdetail() {
     }
   }, [productState]);
 
+  useEffect(() => {
+    dispatch(fetchProductDetails(id));
+    dispatch(fetchReviews(id)); 
+  }, [dispatch, id]);
+
+  
+  const reviewsState = useSelector((state) => state.reviews); 
+
+  
+  useEffect(() => {
+    console.log("Reviews state updated:", reviewsState);
+  }, [reviewsState]); 
+
+
+
   const product = productState.units;
   const [quantity, setQuantity] = useState(1);
 
@@ -62,6 +78,36 @@ function Productdetail() {
 
   const handleThumbnailClick = (img) => {
     setCurrentImage(img);
+  };
+  const [comment, setReviewText] = useState('');
+  const [rating, setRating] = useState(0); 
+  const handleReviewTextChange = (e) => {
+    setReviewText(e.target.value);
+  };
+
+  const handleRatingChange = (e) => {
+    setRating(parseInt(e.target.value)); 
+  };
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+
+    if (!comment.trim() || rating === 0) {
+      alert("Vui lòng nhập đánh giá và chọn số sao.");
+      return;
+    }
+
+    const reviewData = {
+      productId: id, 
+      // userId: 16,
+      rating, 
+      comment, 
+    };
+
+    dispatch(addReview(reviewData)); 
+     
+
+    setReviewText("");
+    setRating(0);
   };
 
   if (!product) {
@@ -128,12 +174,10 @@ function Productdetail() {
                 )}
               </div>
               <div className="d-flex justify-content-center mb-3">
-                {Array.isArray(productState.units.images) &&
-                productState.units.images.length > 0 ? (
+                {Array.isArray(productState.units.images) && productState.units.images.length > 0 ? (
                   productState.units.images.slice(0, 5).map((item, index) => (
                     <Link
                       className="border mx-1 rounded-2 item-thumb"
-                      data-type="image"
                       key={index}
                       onClick={() => handleThumbnailClick(item.product_img)}
                       href={item.product_img}
@@ -171,21 +215,17 @@ function Productdetail() {
                 </div>
 
                 <div className="p-t-33">
-                  {product.options.map((options) => (
+                  {productState.units && Array.isArray(productState.units.options) && productState.units.options.map((options) => (
                     // item.option_name
                     <div className="flex-w flex-r-m p-b-10">
                       <div className="size-203 flex-c-m respon6">
                         {options.option_name}
                       </div>
-
                       <div className="size-204 respon6-next">
-                        <select
-                          className="form-select form-select-sm"
-                          name="time"
-                        >
+                        <select className="form-select form-select-sm" name="time">
                           <option>Chọn {options.option_name}</option>
-                          {options.option_values.map((values) => (
-                            <option value={values.id}>
+                          {options.option_values && options.option_values.map((values) => (
+                            <option key={values.id} value={values.id}>
                               {values.value_name}
                             </option>
                           ))}
@@ -194,7 +234,7 @@ function Productdetail() {
                       </div>
                     </div>
                   ))}
-
+                  
                   <div className="flex-w flex-r-m p-b-10">
                     <div className="size-203 flex-c-m respon6">Số lượng</div>
                     <div className="size-204 flex-w flex-m respon6-next">
@@ -205,7 +245,6 @@ function Productdetail() {
                         >
                           <i className="fs-16 zmdi zmdi-minus"></i>
                         </div>
-
                         <input
                           className="mtext-104 cl3 txt-center num-product"
                           type="number"
@@ -213,7 +252,6 @@ function Productdetail() {
                           value={quantity}
                           readOnly
                         />
-
                         <div
                           className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
                           onClick={handleIncrease}
@@ -228,7 +266,6 @@ function Productdetail() {
                   <button className="btn btn-dark btn-lg m-2 rounded-pill">
                     Thêm vào giỏ
                   </button>
-
                   <button className="btn btn-dark btn-lg rounded-pill">
                     Mua hàng
                   </button>
@@ -289,26 +326,81 @@ function Productdetail() {
                     role="tabpanel"
                     aria-labelledby="reviews-tab"
                   >
+                    <div className="row">
+                      <div className="col-lg-8 mx-auto">
+                       
+                        {Array.isArray(reviewsState.units) && reviewsState.units.length > 0 ? (
+                          reviewsState.units.map((review) => {
+                            if (review.status != 1) {
+                              return (
+                                <div className="d-flex align-items-start mb-4" key={review.id}>
+                                  <img
+                                    src={review.user_avatar || "../../asset/images/avatar.jpg"} 
+                                    alt="AVATAR"
+                                    className="rounded-circle me-3"
+                                    width="60"
+                                    height="60"
+                                  />
+                                  <div>
+                                    <h6 className="fw-bold">{review.username}</h6>
+                                    <p className="small mb-2">
+                                      {Array.from({ length: 5 }, (_, index) => (
+                                        <i
+                                          key={index}
+                                          className={`text-warning me-1 zmdi zmdi-star${index < review.rating ? "" : "-outline"}`}
+                                        ></i>
+                                      ))}
+                                    </p>
+                                    <p className="text-muted">{review.comment}</p>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          })
+                        ) : (
+                          <p>Không có đánh giá nào.</p>
+                        )}
 
+                        <form onSubmit={handleReviewSubmit}>
+                          <div className="mb-3">
+                            <label htmlFor="review" className="form-label">
+                              Đánh giá của bạn
+                            </label>
+                            <textarea
+                              className="form-control"
+                              id="review"
+                              rows="4"
+                              placeholder="Nhập đánh giá..."
+                              value={comment}
+                              onChange={handleReviewTextChange}
+                            ></textarea>
+                          </div>
 
-                    <form>
-                      <div className="mb-3">
-                        <label htmlFor="review" className="form-label">
-                          Nhập đánh giá
-                        </label>
-                        <textarea
-                          className="form-control"
-                          id="review"
-                          rows="4"
-                          placeholder="Đánh giá của bạn..."
-                        ></textarea>
+                          <div className="mb-3">
+                            <label className="form-label">Đánh giá sao</label>
+                            <select
+                              className="form-select"
+                              value={rating}
+                              onChange={handleRatingChange}
+                            >
+                              <option value={0}>Chọn sao</option>
+                              <option value={1}>1 Sao</option>
+                              <option value={2}>2 Sao</option>
+                              <option value={3}>3 Sao</option>
+                              <option value={4}>4 Sao</option>
+                              <option value={5}>5 Sao</option>
+                            </select>
+                          </div>
+
+                          <div className="text-end">
+                            <button type="submit" className="btn btn-dark ">
+                              Gửi đánh giá
+                            </button>
+                          </div>
+                        </form>
                       </div>
-                      <div className="d-flex justify-content-end">
-                        <button type="submit" className="btn btn-dark">
-                          Submit 
-                        </button>
-                      </div>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -324,21 +416,13 @@ function Productdetail() {
           </div>
           <div className="wrap-slick2">
             <div className="row isotope-grid">
-              {relatedProductsState.loading ? (
-                <p>Đang tải sản phẩm...</p>
-              ) : relatedProductsState.relatedProducts &&
-                relatedProductsState.relatedProducts.length > 0 ? (
+              {Array.isArray(relatedProductsState.relatedProducts) && relatedProductsState.relatedProducts.length > 0 ? (
                 relatedProductsState.relatedProducts.map((relatedProduct) => (
-                  <div
-                    className="col-sm-6 col-md-4 col-lg-3 p-b-35"
-                    key={relatedProduct.id} // Sửa lại key thành id của sản phẩm
-                  >
+                  <div className="col-sm-6 col-md-4 col-lg-3 p-b-35" key={relatedProduct.id}>
                     <div className="block2">
                       <div className="block2-pic hov-img0 position-relative">
                         <img
-                          src={
-                            relatedProduct.img
-                          }
+                          src={relatedProduct.img || ""}
                           alt={relatedProduct.product_name || "Product Image"}
                           className="img-fluid"
                         />
@@ -360,9 +444,7 @@ function Productdetail() {
                             {relatedProduct.product_name || "Tên sản phẩm"}
                           </Link>
                           <span className="stext-105 cl3">
-                            {relatedProduct.price
-                              ? formatPrice(relatedProduct.price)
-                              : "Liên hệ"}
+                            {relatedProduct.price ? formatPrice(relatedProduct.price) : "Liên hệ"}
                           </span>
                         </div>
                       </div>
@@ -372,6 +454,8 @@ function Productdetail() {
               ) : (
                 <p className="text-center">Không có sản phẩm liên quan.</p>
               )}
+
+
             </div>
           </div>
         </div>

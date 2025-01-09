@@ -15,6 +15,7 @@ class Order extends Model
         'amount',
         'payment_type',
         'bankname',
+        'username',
         'account_number',
         'user_id'
     ];

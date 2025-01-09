@@ -12,6 +12,7 @@ class Product extends Model
         'product_name',
         'description',
         'status',
+        'price',
         'category_id'
     ];
 
@@ -42,5 +43,9 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    public function coupon()
+    {
+        return $this->hasOne(Coupon::class, 'product_id');
     }
 }

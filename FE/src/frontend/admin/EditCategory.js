@@ -66,86 +66,86 @@ function EditCategory() {
   };
 
   return (
-    <div className="page-wrapper">
-      <Menu />
-      <div className="page-container">
-        <Header />
-        <div className="main-content">
-          <div className="section__content section__content--p30">
-            <div className="container-fluid">
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="title-5 m-b-35">Sửa danh mục</h3>
-                </div>
-                <div className="card-body">
-                  <form onSubmit={handleSubmit(submit)}>
-                    <div className="row">
-                      <div className="form-group col-md-6 mb-3">
-                        <label htmlFor="name">Tên danh mục</label>
-                        <input
-                          {...register("name", { required: true })}
-                          type="text"
-                          id="name"
-                          placeholder="Nhập tên sản phẩm..."
-                          className="form-control"
-                        />
-                        {errors.name && (
-                          <span className="text-danger">
+      <div className="page-wrapper">
+        <Menu />
+        <div className="page-container">
+          <Header />
+          <div className="main-content">
+            <div className="section__content section__content--p30">
+              <div className="container-fluid">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="title-5 m-b-35">Sửa danh mục</h3>
+                  </div>
+                  <div className="card-body">
+                    <form onSubmit={handleSubmit(submit)}>
+                      <div className="row">
+                        <div className="form-group col-md-6 mb-3">
+                          <label htmlFor="name">Tên danh mục</label>
+                          <input
+                              {...register("name", { required: true })}
+                              type="text"
+                              id="name"
+                              placeholder="Nhập tên sản phẩm..."
+                              className="form-control"
+                          />
+                          {errors.name && (
+                              <span className="text-danger">
                             Tên sản phẩm không được bỏ trống!
                           </span>
-                        )}
-                      </div>
-                      <div className="form-group col-md-6 mb-3 position-relative">
-                        <label htmlFor="status">Trạng thái</label>
-                        <select
-                          {...register("status", { required: true })}
-                          id="status"
-                          className={`form-control custom-select ${
-                            errors.status ? "is-invalid" : ""
-                          }`}
-                        >
-                          <option value="">Chọn trạng thái</option>
-                          <option value="0">Đang Hoạt Động</option>
-                          <option value="1">Ngừng Hoạt Động</option>
-                        </select>
-                        {errors.status && (
-                          <span className="text-danger">
+                          )}
+                        </div>
+                        <div className="form-group col-md-6 mb-3 position-relative">
+                          <label htmlFor="status">Trạng thái</label>
+                          <select
+                              {...register("status", { required: true })}
+                              id="status"
+                              className={`form-control custom-select ${
+                                  errors.status ? "is-invalid" : ""
+                              }`}
+                          >
+                            <option value="">Chọn trạng thái</option>
+                            <option value="0">Đang Hoạt Động</option>
+                            <option value="1">Ngừng Hoạt Động</option>
+                          </select>
+                          {errors.status && (
+                              <span className="text-danger">
                             Trạng thái sản phẩm không được bỏ trống!
                           </span>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="description">Mô tả</label>
-                      <textarea
-                        {...register("description", { required: true })}
-                        id="description"
-                        rows="9"
-                        placeholder="Nhập mô tả..."
-                        className="form-control"
-                      ></textarea>
-                      {errors.description && (
-                        <span className="text-danger">
+                      <div className="form-group">
+                        <label htmlFor="description">Mô tả</label>
+                        <textarea
+                            {...register("description", { required: true })}
+                            id="description"
+                            rows="9"
+                            placeholder="Nhập mô tả..."
+                            className="form-control"
+                        ></textarea>
+                        {errors.description && (
+                            <span className="text-danger">
                           Mô tả sản phẩm không được bỏ trống!
                         </span>
-                      )}
-                    </div>
-                    <div className="d-flex justify-content-end">
-                      <button type="submit" className="btn btn-dark">
-                        <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
-                      </button>
-                    </div>
-                  </form>
-                </div>
-                <div className="card-footer">
-                  <Footer />
+                        )}
+                      </div>
+                      <div className="d-flex justify-content-end">
+                        <button type="submit" className="btn btn-dark">
+                          <i className="zmdi zmdi-edit"></i> Cập nhật danh mục
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="card-footer">
+                    <Footer />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
 
