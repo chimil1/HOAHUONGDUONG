@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchAddProduct, fetchCategory } from "../actions/unitActions";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-
+import Loading from "../client/layout/Loading";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
@@ -27,19 +27,16 @@ function AddProduct() {
     formState: { errors },
   } = useForm();
 
-  // Thay đổi hàm handleAddOption
   const handleAddOption = () => {
     setOptions([...options, { name: "", values: [""] }]);
   };
 
-  // Thêm hàm để thêm value cho mỗi option
   const handleAddValue = (optionIndex) => {
     const newOptions = [...options];
-    newOptions[optionIndex].values.push(""); // Thêm một value mới (chuỗi rỗng)
+    newOptions[optionIndex].values.push(""); 
     setOptions(newOptions);
   };
 
-  // Hàm để thay đổi giá trị của mỗi value
   const handleValueChange = (optionIndex, valueIndex, event) => {
     const newOptions = [...options];
     newOptions[optionIndex].values[valueIndex] = event.target.value;
@@ -68,7 +65,6 @@ function AddProduct() {
       .filter((input) => input.file)
       .map((input) => input.file.name);
 
-    // Loại bỏ các giá trị trống trong options
     const filteredOptions = options
       .map((option) => ({
         ...option,
@@ -80,14 +76,9 @@ function AddProduct() {
 
     data.options = filteredOptions;
     data.images = images;
-
-    // Thêm các trường còn lại vào formData
     formData.append("options", JSON.stringify(data.options));
     formData.append("images", JSON.stringify(data.images));
-
-    // Log dữ liệu (chỉ để kiểm tra)
     console.log("Product Data:", data);
-
     dispatch(fetchAddProduct(data));
     Swal.fire({
       text: "Thêm sản phẩm thành công!",
@@ -99,7 +90,7 @@ function AddProduct() {
     });
   };
   if (unitState.loading) {
-    return <p>Loading...</p>;
+    return <Loading/>;
   }
 
   if (unitState.error) {
@@ -121,7 +112,6 @@ function AddProduct() {
                 <div className="card-body">
                   <form onSubmit={handleSubmit(submit)}>
                     <div className="row">
-                      {/* Hàng đầu tiên */}
                       <div className="col-md-6 mb-3">
                         <label htmlFor="product_name" className="form-label">
                           Tên sản phẩm

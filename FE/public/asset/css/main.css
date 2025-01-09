@@ -9184,9 +9184,6 @@ input.num-product::-webkit-inner-spin-button {
   opacity: 1;
 }
 
-
-
-
 /*==================================================================
   RESPONSIVE RESPONSIVE RESPONSIVE RESPONSIVE RESPONSIVE RESPONSIVE
 ==================================================================*/
@@ -9373,6 +9370,6 @@ input.num-product::-webkit-inner-spin-button {
   opacity: 1;
 }
 
-footer {
+/* footer {
   margin-top: 50px;
-}
+} */

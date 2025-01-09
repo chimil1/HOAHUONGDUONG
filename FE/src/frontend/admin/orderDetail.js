@@ -1,17 +1,16 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
-
+import Loading from "../client/layout/Loading";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrderDetails } from "../actions/unitActions";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-function OrderDetail() {
+function OrderDetails() {
   let { id } = useParams();
   const dispatch = useDispatch();
   const unitState = useSelector((state) => state.unit);
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchOrderDetails(id));
@@ -24,7 +23,7 @@ function OrderDetail() {
   }
 
   if (unitState.loading) {
-    return <p>Đang tải...</p>;
+    return <Loading/>;
   }
 
   if (unitState.error) {
@@ -33,7 +32,7 @@ function OrderDetail() {
 
   const calculateTotalAmount = () => {
     if (Array.isArray(order.order_details)) {
-      return order.order_details.reduce((total, item) => total + (item.price * item.quantity), 0);
+      return order.order_details.reduce((total, item) => total + item.price * item.quantity, 0);
     }
     return 0; // Trả về 0 nếu không có order_details hợp lệ
   };
@@ -42,7 +41,7 @@ function OrderDetail() {
 
   // Định dạng giá trị theo VND
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value);
   };
 
   return (
@@ -63,44 +62,61 @@ function OrderDetail() {
                     </div>
                     <div className="card-body">
                       <div className="order-info">
-                        <h4 className="mb-4"><strong>Thông tin khách hàng</strong></h4>
+                        <h4 className="mb-4">
+                          <strong>Thông tin khách hàng</strong>
+                        </h4>
                         <table className="table table-bordered">
                           <tbody>
                             <tr>
-                              <td>  <strong>Đơn hàng:</strong> {order.id ? `DH${order.id.toString().padStart(5, '0')}` : "Không có thông tin"}</td>
-                              <td><strong>Tên người nhận:</strong> {order.username || "Không có thông tin"}</td>
+                              <td>
+                                <strong>Đơn hàng:</strong> {order.id ? `DH${order.id.toString().padStart(3, "0")}` : "Không có thông tin"}
+                              </td>
+                              <td>
+                                <strong>Tên người nhận:</strong> {order.username || "Không có thông tin"}
+                              </td>
                             </tr>
                             <tr>
                               <td>
                                 <strong>Ngày đặt hàng:</strong>{" "}
                                 {order.created_at
                                   ? new Date(order.created_at).toLocaleString("vi-VN", {
-                                    year: "numeric",
-                                    month: "2-digit",
-                                    day: "2-digit",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })
-                                  : "Không có thông tin"}</td>
-                              <td><strong>Địa chỉ:</strong> {order.shipping_address || "Không có thông tin"}</td>
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })
+                                  : "Không có thông tin"}
+                              </td>
+                              <td>
+                                <strong>Địa chỉ:</strong> {order.shipping_address || "Không có thông tin"}
+                              </td>
                             </tr>
                             <tr>
-                              <td><strong>Số điện thoại:</strong> {order.shipping_phone || "Không có thông tin"}</td>
-                              <td><strong>Phương thức thanh toán:</strong> {order.payment_type === 0 ? "Thanh toán khi nhận hàng" : "Thanh toán chuyển khoản"}</td>
-                            
+                              <td>
+                                <strong>Số điện thoại:</strong> {order.shipping_phone || "Không có thông tin"}
+                              </td>
+                              <td>
+                                <strong>Phương thức thanh toán:</strong>{" "}
+                                {order.payment_type === 0 ? "Thanh toán khi nhận hàng" : "Thanh toán chuyển khoản"}
+                              </td>
                             </tr>
                             {order.payment_type === 1 && (
                               <tr>
-                                  {order.payment_type === 1 && (
-                                <td><strong>Ngân hàng:</strong> {order.bankname}</td>
-                              )}
-                                <td><strong>STK:</strong> {order.account_number}</td>
+                                <td>
+                                  <strong>Ngân hàng:</strong> {order.bankname}
+                                </td>
+                                <td>
+                                  <strong>STK:</strong> {order.account_number}
+                                </td>
                               </tr>
                             )}
                           </tbody>
                         </table>
 
-                        <h4 className="mt-5"><strong>Thông tin sản phẩm</strong></h4>
+                        <h4 className="mt-5">
+                          <strong>Thông tin sản phẩm</strong>
+                        </h4>
                         <table className="table table-striped">
                           <thead>
                             <tr>
@@ -121,12 +137,13 @@ function OrderDetail() {
                                 </tr>
                               ))
                             ) : (
-                              <tr><td colSpan="4">Không có sản phẩm nào trong đơn hàng.</td></tr>
+                              <tr>
+                                <td colSpan="4">Không có sản phẩm nào trong đơn hàng.</td>
+                              </tr>
                             )}
                           </tbody>
                         </table>
 
-                        {/* Phần tổng tiền hóa đơn nằm dưới thông tin sản phẩm */}
                         <div className="order-summary mt-4">
                           <div className="row">
                             <div className="col-md-6 text-right">
@@ -154,4 +171,4 @@ function OrderDetail() {
   );
 }
 
-export default OrderDetail;
+export default OrderDetails;

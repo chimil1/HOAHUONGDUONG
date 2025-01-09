@@ -11,7 +11,6 @@ import {
   fetchUser,
   updateUser
 } from "../actions/unitActions";
-// import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Loading from "./layout/Loading";
@@ -95,11 +94,11 @@ function Profile() {
 
   useEffect(() => {
     axios.get("https://provinces.open-api.vn/api/p/")
-        .then(response => {
-          const sortedCities = response.data.sort((a, b) => a.name.localeCompare(b.name));
-          setCities(sortedCities);
-        })
-        .catch(error => console.error("Error fetching cities:", error));
+      .then(response => {
+        const sortedCities = response.data.sort((a, b) => a.name.localeCompare(b.name));
+        setCities(sortedCities);
+      })
+      .catch(error => console.error("Error fetching cities:", error));
   }, []);
   const handleCityChange = async (e) => {
     const cityCode = e.target.value;
@@ -176,7 +175,7 @@ function Profile() {
         text: "Thêm địa chỉ thành công!",
         icon: "success",
       }).then(() => {
-          window.location.reload();
+        window.location.reload();
       });
     } catch (error) {
       console.error("Error adding address:", error); // Log lỗi chi tiết
@@ -211,7 +210,7 @@ function Profile() {
 
   // USER
   if (userState.loading) {
-    return <p><Loading></Loading></p>;
+    return <Loading></Loading>;
   }
 
   if (userState.error) {
@@ -256,147 +255,147 @@ function Profile() {
   };
 
   return (
-      <div>
-        <Header />
-        <section className="pt-5" style={{ backgroundColor: "#eee" }}>
-          <div className="container-xxl ">
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <Link
-                    className="nav-link active text-dark"
-                    id="profile-tab"
-                    data-bs-toggle="tab"
-                    to="#profile"
-                    role="tab"
-                    aria-controls="profile"
-                    aria-selected="true"
-                >
-                  Thông tin người dùng
-                </Link>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                    type="button"
-                    className="nav-link text-dark"
-                    data-bs-toggle="modal"
-                    data-bs-target="#examppass"
-                >
-                  Đổi mật khẩu
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <Link
-                    className="nav-link text-dark"
-                    id="address-tab"
-                    data-bs-toggle="tab"
-                    href="#address"
-                    role="tab"
-                    aria-controls="address"
-                    aria-selected="false"
-                >
-                  Địa chỉ giao hàng
-                </Link>
-              </li>
-              <li className="nav-item" >
+    <div>
+      <Header />
+      <section className="pt-5" style={{ backgroundColor: "#eee" }}>
+        <div className="container-xxl">
+          <ul className="nav nav-tabs" id="myTab" role="tablist">
+            <li className="nav-item" role="presentation">
               <Link
-                  className="nav-link text-dark"
-                  to={`/orderuser/${userId}`}
+                className="nav-link active text-dark"
+                id="profile-tab"
+                data-bs-toggle="tab"
+                to="#profile"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="true"
+              >
+                Thông tin người dùng
+              </Link>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button
+                type="button"
+                className="nav-link text-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#examppass"
+              >
+                Đổi mật khẩu
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <a
+                className="nav-link text-dark"
+                id="address-tab"
+                data-bs-toggle="tab"
+                href="#address"
+                role="tab"
+                aria-controls="address"
+                aria-selected="false"
+              >
+                Địa chỉ giao hàng
+              </a>
+            </li>
+            <li className="nav-item" >
+              <Link
+                className="nav-link text-dark"
+                to={`/orderuser/${userId}`}
               >
                 Đơn hàng
               </Link>
             </li>
-            </ul>
-            <div className="tab-content" id="myTabContent">
-              <div className="tab-pane fade show active" id="address-tab" role="tabpanel" aria-labelledby="profile-tab">
+          </ul>
+          <div className="tab-content" id="myTabContent">
+            <div className="tab-pane fade show active" id="address-tab" role="tabpanel" aria-labelledby="profile-tab">
 
-              </div>
             </div>
-            <div className="tab-content" id="myTabContent">
-              <div className="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div className="row">
-                  <div className="col-lg-4">
-                    <div className="card mb-4">
-                      <div className="card-body text-center">
-                        <img
-                            src="../../asset/images/avatar.jpg"
-                            alt="avatar"
-                            className="rounded-circle img-fluid"
-                            style={{width: "150px"}}
-                        />
-                        <div>
-                          {userState.user && (
-                              <div>
-                                <h5 className="my-3 text-dark">{userState.user.name}</h5>
-                                <p className="text-dark mb-1">{userState.user.email}</p>
-                              </div>
-                          )}
-                        </div>
+          </div>
+          <div className="tab-content" id="myTabContent">
+            <div className="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <div className="row col-lg-12">
+                <div className="col-lg-4">
+                  <div className="card mt-4">
+                    <div className="card-body text-center">
+                      <img
+                        src="../../asset/images/avatar.jpg"
+                        alt="avatar"
+                        className="rounded-circle img-fluid"
+                        style={{ width: "150px" }}
+                      />
+                      <div>
+                        {userState.user && (
+                          <div>
+                            <h5 className="my-3 text-dark">{userState.user.name}</h5>
+                            <p className="text-dark mb-1">{userState.user.email}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-8">
-                    <div className="card ">
-                      <div className="card-body">
-                        <div className="row">
-                          <div className="col-sm-3">
-                            <p className="mb-0 text-dark fw-bold">Họ và tên:</p>
-                          </div>
-                          <div className="col-sm-9">
-                            <p className="text-dark mb-0" style={{textTransform: 'capitalize'}}>{user.name}</p>
-                          </div>
+                </div>
+                <div className="col-lg-8">
+                  <div className="card mt-4">
+                    <div className="card-body">
+                      <div className="row">
+                        <div className="col-sm-3">
+                          <p className="mb-0 text-dark fw-bold">Họ và tên:</p>
                         </div>
-                        <hr/>
-                        <div className="row">
-                          <div className="col-sm-3">
-                            <p className="mb-0 text-dark fw-bold">Email:</p>
-                          </div>
-                          <div className="col-sm-8">
-                            <p className="text-dark mb-0">{user.email}</p>
-                          </div>
+                        <div className="col-sm-9">
+                          <p className="text-dark mb-0" style={{ textTransform: 'capitalize' }}>{user.name}</p>
                         </div>
-                        <hr/>
-                        <div className="row">
-                          <div className="col-sm-3">
-                            <p className="mb-0 text-dark fw-bold">Số điện thoại:</p>
-                          </div>
-                          <div className="col-sm-9">
-                            <p className="text-dark mb-0 ">{user.phone}</p>
-                          </div>
+                      </div>
+                      <hr />
+                      <div className="row">
+                        <div className="col-sm-3">
+                          <p className="mb-0 text-dark fw-bold">Email:</p>
                         </div>
-                        <hr/>
-                        <div className="mt-5">
-                          <form action="" method="post">
-                            <button className="btn btn-outline-dark me-2" onClick={handleLogout}>
-                              Đăng Xuất
-                            </button>
-                          </form>
+                        <div className="col-sm-8">
+                          <p className="text-dark mb-0">{user.email}</p>
                         </div>
+                      </div>
+                      <hr />
+                      <div className="row">
+                        <div className="col-sm-3">
+                          <p className="mb-0 text-dark fw-bold">Số điện thoại:</p>
+                        </div>
+                        <div className="col-sm-9">
+                          <p className="text-dark mb-0 ">{user.phone}</p>
+                        </div>
+                      </div>
+                      <hr />
+                      <div className="mt-5">
+                        <form action="" method="post">
+                          <button className="btn btn-outline-dark me-2" onClick={handleLogout}>
+                            Đăng Xuất
+                          </button>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                <div className="container-xxl py-2">
-                  <div className="container-xxl py-1">
-                    <div className="row g-4">
-                      <div className="col-lg-12">
-                        <div className="card shadow border-0">
-                          <div className="card-body">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                              <h4 className="text-dark">Danh sách địa chỉ giao hàng</h4>
-                              <button
-                                  type="button"
-                                  className="btn btn-outline-dark"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#addAddressModal"
-                              >
-                                Thêm địa chỉ
-                              </button>
-                            </div>
-                            <div className="table-responsive">
-                              <table className="table table-bordered table-striped align-middle text-center">
-                                <thead className="table-light">
+            </div>
+            <div className="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+              <div className="container-xxl py-2">
+                <div className="container-xxl py-1">
+                  <div className="row g-4">
+                    <div className="col-lg-12">
+                      <div className="card shadow border-0">
+                        <div className="card-body">
+                          <div className="d-flex justify-content-between align-items-center mb-4">
+                            <h4 className="text-dark">Danh sách địa chỉ giao hàng</h4>
+                            <button
+                              type="button"
+                              className="btn btn-outline-dark"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addAddressModal"
+                            >
+                              Thêm địa chỉ
+                            </button>
+                          </div>
+                          <div className="table-responsive">
+                            <table className="table table-bordered table-striped align-middle text-center">
+                              <thead className="table-light">
                                 <tr>
                                   <th>#</th>
                                   <th className={"text-center text-nowrap"}>Tên người nhận</th>
@@ -405,140 +404,139 @@ function Profile() {
                                   <th className={"text-center text-nowrap"}>Số điện thoại</th>
                                   <th className={"text-center text-nowrap"}>Hành động</th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                              </thead>
+                              <tbody>
                                 {addressState.addresses.map((item, index) => {
                                   const shippingAddress = item.shipping_address?.split(",") || [];
                                   const specificAddress = shippingAddress[0]?.trim() || "N/A";
                                   const fullAddress = shippingAddress.slice(1).join(",") || "N/A";
                                   return (
-                                      <tr key={item.id}>
-                                        <td>{index + 1}</td>
-                                        <td style={{textTransform: "capitalize"}}>{item.shipping_name}</td>
-                                        <td>{specificAddress}</td>
-                                        <td>{fullAddress}</td>
-                                        <td>{item.shipping_phone}</td>
-                                        <td>
-                                          <button className="btn btn-sm btn-danger"
-                                                  onClick={() => handleDelete(item.id)}>
-                                            Xóa
-                                          </button>
-                                        </td>
-                                      </tr>
+                                    <tr key={item.id}>
+                                      <td>{index + 1}</td>
+                                      <td style={{ textTransform: "capitalize" }}>{item.shipping_name}</td>
+                                      <td>{specificAddress}</td>
+                                      <td>{fullAddress}</td>
+                                      <td>{item.shipping_phone}</td>
+                                      <td>
+                                        <button className="btn btn-sm btn-danger"
+                                          onClick={() => handleDelete(item.id)}>
+                                          Xóa
+                                        </button>
+                                      </td>
+                                    </tr>
                                   );
                                 })}
-                                </tbody>
-                              </table>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="modal fade" id="addAddressModal" tabIndex="-1"
+                    aria-labelledby="addAddressModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="addAddressModalLabel">Thêm địa chỉ</h5>
+                          <button type="button" className="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                          <form onSubmit={address.handleSubmit(submitAddress)}>
+                            <div className="mb-3">
+                              <label className="form-label">Họ tên</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Nhập tên người nhận"
+                                {...address.register("shipping_name", { required: "Họ tên là bắt buộc" })}
+                              />
+                              {address.formState.errors.shipping_name &&
+                                <p className="text-danger">{address.formState.errors.shipping_name.message}</p>}
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="modal fade" id="addAddressModal" tabIndex="-1"
-                         aria-labelledby="addAddressModalLabel" aria-hidden="true">
-                      <div className="modal-dialog modal-dialog-centered modal-lg">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h5 className="modal-title" id="addAddressModalLabel">Thêm địa chỉ</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                          </div>
-                          <div className="modal-body">
-                            <form onSubmit={address.handleSubmit(submitAddress)}>
-                              <div className="mb-3">
-                                <label className="form-label">Họ tên</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Nhập tên người nhận"
-                                    {...address.register("shipping_name", {required: "Họ tên là bắt buộc"})}
-                                />
-                                {address.formState.errors.shipping_name &&
-                                    <p className="text-danger">{address.formState.errors.shipping_name.message}</p>}
+                            <div className="mb-3">
+                              <label className="form-label">Số điện thoại</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Nhập số điện thoại"
+                                {...address.register("shipping_phone", {
+                                  required: "Số điện thoại là bắt buộc",
+                                  pattern: {
+                                    value: /^(0|\+84)[3|5|7|8|9][0-9]{8}$/,
+                                    message: "Số điện thoại không hợp lệ"
+                                  },
+                                })}
+                              />
+                              {address.formState.errors.shipping_phone &&
+                                <p className="text-danger">{address.formState.errors.shipping_phone.message}</p>}
+                            </div>
+                            <div className="row g-3 mb-3">
+                              <div className="col-md-4">
+                                <label className="form-label">Thành phố</label>
+                                <select
+                                  className="form-select"
+                                  {...address.register("city", { required: "Thành phố là bắt buộc" })}
+                                  value={selectedCity}
+                                  onChange={handleCityChange}
+                                >
+                                  <option value="">Chọn thành phố</option>
+                                  {cities.map((city) => (
+                                    <option key={city.code} value={city.code}>
+                                      {city.name}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
-                              <div className="mb-3">
-                                <label className="form-label">Số điện thoại</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Nhập số điện thoại"
-                                    {...address.register("shipping_phone", {
-                                      required: "Số điện thoại là bắt buộc",
-                                      pattern: {
-                                        value: /^(0|\+84)[3|5|7|8|9][0-9]{8}$/,
-                                        message: "Số điện thoại không hợp lệ"
-                                      },
-                                    })}
-                                />
-                                {address.formState.errors.shipping_phone &&
-                                    <p className="text-danger">{address.formState.errors.shipping_phone.message}</p>}
+                              <div className="col-md-4">
+                                <label className="form-label">Quận/Huyện</label>
+                                <select
+                                  className="form-select"
+                                  {...address.register("district", { required: "Quận/Huyện là bắt buộc" })}
+                                  value={selectedDistrict}
+                                  onChange={handleDistrictChange}
+                                  disabled={!selectedCity}
+                                >
+                                  <option value="">Chọn Quận/Huyện</option>
+                                  {districts.map((district) => (
+                                    <option key={district.code} value={district.code}>
+                                      {district.name}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
-                              <div className="row g-3 mb-3">
-                                <div className="col-md-4">
-                                  <label className="form-label">Thành phố</label>
-                                  <select
-                                      className="form-select"
-                                      {...address.register("city", {required: "Thành phố là bắt buộc"})}
-                                      value={selectedCity}
-                                      onChange={handleCityChange}
-                                  >
-                                    <option value="">Chọn thành phố</option>
-                                    {cities.map((city) => (
-                                        <option key={city.code} value={city.code}>
-                                          {city.name}
-                                        </option>
-                                    ))}
-                                  </select>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="form-label">Quận/Huyện</label>
-                                  <select
-                                      className="form-select"
-                                      {...address.register("district", {required: "Quận/Huyện là bắt buộc"})}
-                                      value={selectedDistrict}
-                                      onChange={handleDistrictChange}
-                                      disabled={!selectedCity}
-                                  >
-                                    <option value="">Chọn Quận/Huyện</option>
-                                    {districts.map((district) => (
-                                        <option key={district.code} value={district.code}>
-                                          {district.name}
-                                        </option>
-                                    ))}
-                                  </select>
-                                </div>
-                                <div className="col-md-4">
-                                  <label className="form-label">Phường/Xã</label>
-                                  <select
-                                      className="form-select"
-                                      {...address.register("ward", {required: "Phường/Xã là bắt buộc"})}
-                                      value={selectedWard}
-                                      onChange={handleWardChange}
-                                      disabled={!selectedDistrict}
-                                  >
-                                    <option value="">Chọn Phường/Xã</option>
-                                    {wards.map((ward) => (
-                                        <option key={ward.code} value={ward.name}>
-                                          {ward.name}
-                                        </option>
-                                    ))}
-                                  </select>
-                                </div>
+                              <div className="col-md-4">
+                                <label className="form-label">Phường/Xã</label>
+                                <select
+                                  className="form-select"
+                                  {...address.register("ward", { required: "Phường/Xã là bắt buộc" })}
+                                  value={selectedWard}
+                                  onChange={handleWardChange}
+                                  disabled={!selectedDistrict}
+                                >
+                                  <option value="">Chọn Phường/Xã</option>
+                                  {wards.map((ward) => (
+                                    <option key={ward.code} value={ward.name}>
+                                      {ward.name}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
-                              <div className="mb-3">
-                                <label className="form-label">Địa chỉ cụ thể</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Nhập địa chỉ cụ thể"
-                                    {...address.register("street_address", {required: "Địa chỉ là bắt buộc"})}
-                                />
-                                {address.formState.errors.street_address &&
-                                    <p className="text-danger">{address.formState.errors.street_address.message}</p>}
-                              </div>
-                              <button type="submit" className="btn btn-outline-dark w-100">Thêm Địa Chỉ</button>
-                            </form>
-                          </div>
+                            </div>
+                            <div className="mb-3">
+                              <label className="form-label">Địa chỉ cụ thể</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Nhập địa chỉ cụ thể"
+                                {...address.register("street_address", { required: "Địa chỉ là bắt buộc" })}
+                              />
+                              {address.formState.errors.street_address &&
+                                <p className="text-danger">{address.formState.errors.street_address.message}</p>}
+                            </div>
+                            <button type="submit" className="btn btn-outline-dark w-100">Thêm Địa Chỉ</button>
+                          </form>
                         </div>
                       </div>
                     </div>
@@ -547,76 +545,77 @@ function Profile() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Modal đổi mật khẩu */}
-        <form onSubmit={(e) => password.handleSubmit((data) => submit(data, e))(e)}>
-          <div
-              className="modal fade"
-              id="examppass"
-              tabIndex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-          >
-            <div className="modal-dialog modal-lg modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalLabel">
-                    Đổi Mật Khẩu
-                  </h5>
-                  <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                  ></button>
+      {/* Modal đổi mật khẩu */}
+      <form onSubmit={(e) => password.handleSubmit((data) => submit(data, e))(e)}>
+        <div
+          className="modal fade"
+          id="examppass"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
+                  Đổi Mật Khẩu
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label className="form-label">Mật khẩu cũ</label>
+                  <input
+                    {...password.register("oldPassword", { required: "Mật khẩu cũ là bắt buộc" })}
+                    type="password"
+                    className="form-control"
+                  />
+                  {password.formState.errors.oldPassword &&
+                    <p className="text-danger">{password.formState.errors.oldPassword.message}</p>}
                 </div>
-                <div className="modal-body">
-                  <div className="mb-3">
-                    <label className="form-label">Mật khẩu cũ</label>
-                    <input
-                        {...password.register("oldPassword", {required: "Mật khẩu cũ là bắt buộc"})}
-                        type="password"
-                        className="form-control"
-                    />
-                    {password.formState.errors.oldPassword &&
-                        <p className="text-danger">{password.formState.errors.oldPassword.message}</p>}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Mật khẩu mới</label>
-                    <input
-                        {...password.register("newPassword", {required: "Mật khẩu mới là bắt buộc"})}
-                        type="password"
-                        className="form-control"
-                    />
-                    {password.formState.errors.newPassword &&
-                        <p className="text-danger">{password.formState.errors.newPassword.message}</p>}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Nhập lại mật khẩu mới</label>
-                    <input
-                        {...password.register("confirmPassword", {required: "Xác nhận mật khẩu là bắt buộc"})}
-                        type="password"
-                        className="form-control"
-                    />
-                    {password.formState.errors.confirmPassword &&
-                        <p className="text-danger">{password.formState.errors.confirmPassword.message}</p>}
-                  </div>
+                <div className="mb-3">
+                  <label className="form-label">Mật khẩu mới</label>
+                  <input
+                    {...password.register("newPassword", { required: "Mật khẩu mới là bắt buộc" })}
+                    type="password"
+                    className="form-control"
+                  />
+                  {password.formState.errors.newPassword &&
+                    <p className="text-danger">{password.formState.errors.newPassword.message}</p>}
                 </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                    Đóng
-                  </button>
-                  <button type="submit" className="btn btn-outline-dark">
-                    Đồng ý
-                  </button>
+                <div className="mb-3">
+                  <label className="form-label">Nhập lại mật khẩu mới</label>
+                  <input
+                    {...password.register("confirmPassword", { required: "Xác nhận mật khẩu là bắt buộc" })}
+                    type="password"
+                    className="form-control"
+                  />
+                  {password.formState.errors.confirmPassword &&
+                    <p className="text-danger">{password.formState.errors.confirmPassword.message}</p>}
                 </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                  Đóng
+                </button>
+                <button type="submit" className="btn btn-outline-dark">
+                  Đồng ý
+                </button>
               </div>
             </div>
           </div>
-        </form>
-        <Footer/>
-      </div>
+        </div>
+      </form>
+      <Footer />
+    </div>
   );
 }
 

@@ -12,8 +12,8 @@ const fetchUnitsRequest = () => ({
 
 const fetchUnitsSuccess = (userData) => ({
     type: FETCH_UNITS_SUCCESS,
-    payload: userData, // Dữ liệu người dùng
-});
+    payload: userData,
+})
 
 const fetchUnitsFailure = (errorMessage) => ({
     type: FETCH_UNITS_FAILURE,
@@ -328,7 +328,7 @@ export const fetchOrders = () => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());
       axios
-        .get(`http://localhost:8000/api/order`)
+        .get(url+`/order`)
         .then((response) => {
           const units = response.data;
           dispatch(fetchUnitsSuccess(units));
@@ -339,11 +339,13 @@ export const fetchOrders = () => {
         });
     };
   };
-export const updateOrderStatus = (id, newStatus) => {
+  export const updateOrderStatus = (id, newStatus) => {
+    // console.log("id", id);
+    
     return (dispatch) => {
-        dispatch(fetchUnitsRequest)
+        dispatch(fetchUnitsRequest());
         return axios
-            .put(url+`/order/status/${id}`, { status: newStatus }) // Gửi giá trị status
+            .put(url + `/order/status/${id}`, { status: newStatus })
             .then(() => {
                 dispatch(fetchOrders());
             })

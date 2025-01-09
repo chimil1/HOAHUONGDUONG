@@ -1,7 +1,7 @@
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
-
+import Loading from "../client/layout/Loading";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -65,15 +65,12 @@ function QlDanhMuc() {
         });
   };
 
-
   if (categoryState.loading) {
-    return <p>Đang tải...</p>;
+    return <Loading/>;
   }
-
   if (categoryState.error) {
     return <p>Lỗi: {categoryState.error}</p>;
   }
-
   if (!Array.isArray(categoryState.units) || categoryState.units.length === 0) {
     return <p>Không có danh mục nào.</p>;
   }

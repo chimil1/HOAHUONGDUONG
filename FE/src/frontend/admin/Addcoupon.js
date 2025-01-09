@@ -24,7 +24,7 @@ function AddCoupon() {
     } = useForm();
 
     if (unitState.loading) {
-        return <p><Loading></Loading></p>;
+        return <Loading></Loading>;
     }
 
     if (unitState.error) {

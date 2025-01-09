@@ -1,19 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ThongKe from "./frontend/admin/ThongKe";
-import CNDanhMuc from "./frontend/admin/CNDanhMuc";
-import CNDonHang from "./frontend/admin/CNDonHang";
-import CNSanPham from "./frontend/admin/CNSanPham";
-import CNTaiKhoan from "./frontend/admin/CNTaiKhoan";
 import QlDanhMuc from "./frontend/admin/QlDanhMuc";
 import EditCategory from "./frontend/admin/EditCategory";
 import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
+import OrderDetails from "./frontend/admin/orderDetail";
 import EditProduct from "./frontend/admin/EditProduct";
-import QlTaiKhoan from "./frontend/admin/QlTaiKhoan";
-import OrderDetail from "./frontend/admin/orderDetail";
 import AddProduct from "./frontend/admin/AddProduct";
 import ProductDetails from "./frontend/admin/ProductDetails";
 import ReviewDetail from "./frontend/admin/ReviewDetails";
@@ -22,8 +17,6 @@ import Review from "./frontend/admin/Review";
 import Addcoupon from "./frontend/admin/Addcoupon";
 import EditCoupon from "./frontend/admin/EditCoupon";
 import AddCategory from "./frontend/admin/AddCategory";
-import AddPersonnel from "./frontend/admin/AddPersonnel";
-import Orderdetails from "./frontend/admin/orderDetail";
 import OrderManagement from "./frontend/admin/OrderManagement";
 import Editshipping from "./frontend/client/editShipping";
 import OrderClient from "./frontend/client/OrderClient";
@@ -61,7 +54,6 @@ function App() {
           <Route path="/shoppingcart" element={<ShoppingCart />} />
           <Route path="/Loading" element={<Loading />} />
           <Route path="/profile/:id" element={<Profile />} />
-          {/* <Route path="/addshipping/:id" element={<AddShipping />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -72,7 +64,6 @@ function App() {
           <Route path="/orderuser" element={< OrderClient/>} />
           <Route path="/orderuser/:id" element={< OrderClient/>} />
           <Route path="/orderdetailclient/:id" element={< OrderDetailClient/>} />
-
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ConfirmPassword />} />
@@ -81,10 +72,6 @@ function App() {
           {/* Các Route cho admin */}
           <Route path="/admin" element={<LoginForm />} />
           <Route path="/thongke" element={<ThongKe />} />
-          <Route path="/cndanhmuc" element={<CNDanhMuc />} />
-          <Route path="/cndonhang" element={<CNDonHang />} />
-          <Route path="/cnsanpham" element={<CNSanPham />} />
-          <Route path="/cntaikhoan" element={<CNTaiKhoan />} />
           <Route path="/review" element={<Review />} />
           <Route path="/qldanhmuc" element={<QlDanhMuc />} />
           <Route path="/addcategory" element={<AddCategory />} />
@@ -97,11 +84,8 @@ function App() {
           <Route path="/qlsanpham" element={<QlSanPham />} />
           <Route path="/productdetail" element={<ProductDetails />} />
           <Route path="/productdetail/:id" element={<ProductDetails />} />
-          <Route path="/qltaikhoan" element={<QlTaiKhoan />} />
-          <Route path="/orderdetails/:id" element={<OrderDetail />} />
-          <Route path="/orderdetails" element={<OrderDetail />} />
-          <Route path="/addpersonnel" element={<AddPersonnel />} />
-          <Route path="/orderdetails" element={<Orderdetails />} />
+          <Route path="/orderdetails/:id" element={<OrderDetails />} />
+          <Route path="/orderdetails" element={<OrderDetails />} />
           <Route path="/details/:id" element={<OrderManagement />} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/coupon" element={<Coupons />} />

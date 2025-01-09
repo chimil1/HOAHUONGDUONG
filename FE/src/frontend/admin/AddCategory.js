@@ -20,7 +20,7 @@ function AddCategory() {
   } = useForm();
 
   if (categoryState.loading) {
-    return <p><Loading></Loading></p>;
+    return <Loading></Loading>;
   }
 
   if (categoryState.error) {
