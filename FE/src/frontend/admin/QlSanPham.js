@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
 
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, fetchDelete } from "../actions/unitActions";
-
+import Loading from "../client/layout/Loading";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -13,12 +13,24 @@ function QlSanPham() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
   const navigate = useNavigate();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productPerPage] = useState(5); // Số sản phẩm trên mỗi trang
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
     }).format(amount);
   };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
@@ -26,6 +38,7 @@ function QlSanPham() {
   const handleEditClick = (id) => {
     navigate(`/editProduct/${id}`);
   };
+
   const handleDelete = (id) => {
     Swal.fire({
       text: "Bạn có muốn xóa sản phẩm này?",
@@ -46,7 +59,7 @@ function QlSanPham() {
   };
 
   if (productState.loading) {
-    return <p>Loading...</p>;
+    return <p><Loading/></p>;
   }
 
   if (productState.error) {
@@ -56,12 +69,29 @@ function QlSanPham() {
   if (!Array.isArray(productState.units)) {
     return <p>Error: Data format is incorrect, expected an array.</p>;
   }
+
+  // Lấy sản phẩm hiện tại dựa trên phân trang
+  const indexOfLastItem = currentPage * productPerPage;
+  const indexOfFirstItem = indexOfLastItem - productPerPage;
+  const currentItems = [...productState.units]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(productState.units.length / productPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
   return (
     <div className="page-wrapper">
-      <Menu></Menu>
+      <Menu />
       <div className="page-container">
-        <Header></Header>
-
+        <Header />
         <div className="main-content">
           <div className="section__content section__content--p30">
             <div className="container-fluid">
@@ -88,63 +118,88 @@ function QlSanPham() {
                             <th>Tên sản phẩm</th>
                             <th>Giá</th>
                             <th>Mô tả</th>
-                            {/* <th>Trạng thái</th> */}
                             <th>Danh mục</th>
-                            {/* <th>Mô tả</th> */}
-                            {/* <th>Trạng thái</th> */}
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {productState.units.map((product) => (
-                              <tr className="tr-shadow" key={product.id}>
-                                <td>
-                                  {product.img ? (
-                                      <img src={product.img}
-                                           style={{width: '50px', height: '90px', objectFit: 'cover'}}/>
-                                  ) : (
-                                      'Không có thông tin'
-                                  )}
-                                </td>
-                                <td>{product.product_name}</td>
-                                <td>{formatCurrency(product.price)}</td>
-                                <td>{product.description}</td>
-                                {/* <td>{product.status}</td> */}
-                                <td>{product.name_category}</td>
-                                <td>
-                                  <div className="table-data-feature">
-                                    <button
-                                        className="item"
-                                        // onClick={() => handleDetailClick(product)}
-                                        title="Chi tiết"
-                                    >
-                                      <i className="zmdi zmdi-mail-send"></i>
-                                    </button>
-                                    <button
-                                        className="item"
-                                        onClick={() => handleEditClick(product.id)}
-                                        title="Sửa"
-                                    >
-                                      <i className="zmdi zmdi-edit"></i>
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(product.id)}
-                                        className="item"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        title="Delete"
-                                    >
-                                      <i className="zmdi zmdi-delete"></i>
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
+                          {currentItems.map((product) => (
+                            <tr className="tr-shadow" key={product.id}>
+                              <td>
+                                {product.img ? (
+                                  <img
+                                    src={product.img}
+                                    style={{
+                                      width: "50px",
+                                      height: "90px",
+                                      objectFit: "cover",
+                                    }}
+                                  />
+                                ) : (
+                                  "Không có thông tin"
+                                )}
+                              </td>
+                              <td>{truncateText(product.product_name, 20)}</td>
+                              <td>{formatCurrency(product.price)}</td>
+                              <td>{truncateText(product.description, 70)}</td>
+                              <td>{product.name_category}</td>
+                              <td>
+                                <div className="table-data-feature">
+                                  <button
+                                    className="item"
+                                    title="Chi tiết"
+                                  >
+                                    <i className="zmdi zmdi-mail-send"></i>
+                                  </button>
+                                  <button
+                                    className="item"
+                                    onClick={() =>
+                                      handleEditClick(product.id)
+                                    }
+                                    title="Sửa"
+                                  >
+                                    <i className="zmdi zmdi-edit"></i>
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleDelete(product.id)
+                                    }
+                                    className="item"
+                                    title="Xóa"
+                                  >
+                                    <i className="zmdi zmdi-delete"></i>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
                           ))}
                         </tbody>
                       </table>
+                      <div
+                        className="pagination-center d-flex justify-content-between align-items-center mt-3"
+                        style={{ width: "300px", margin: "0 auto" }}
+                      >
+                        <button
+                          onClick={handlePrevPage}
+                          disabled={currentPage === 1}
+                          className="btn btn-outline-dark mr-2"
+                        >
+                          Trang trước
+                        </button>
+                        <span>
+                          Trang {currentPage} / {totalPages}
+                        </span>
+                        <button
+                          onClick={handleNextPage}
+                          disabled={currentPage === totalPages}
+                          className="btn btn-outline-dark"
+                        >
+                          Trang sau
+                        </button>
+                      </div>
                     </div>
                     <div className="card-footer">
-                      <Footer></Footer>
+                      <Footer />
                     </div>
                   </div>
                 </div>
