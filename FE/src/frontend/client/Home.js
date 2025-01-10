@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { fetchProducts } from "../actions/unitActions";
+import { fetchProducts,addToCart } from "../actions/unitActions";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 
 import Header from "./layout/Header";
 import Slider from "./layout/Slider";
 import Footer from "./layout/Footer";
-
+import Swal from "sweetalert2";
+import Loading from "./layout/Loading";
 function Home() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
@@ -14,10 +15,14 @@ function Home() {
   const [visibleProductses, setVisibleProductses] = useState(8);
   const [currentProductIndex, setCurrentProductIndex] = React.useState(0);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
 
   const truncate = (text, maxLength) => {
+    if (!text) return ""; // Nếu text không xác định, trả về chuỗi rỗng
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
+
 
   const handleImageClick = (productId) => {
     navigate(`/product/${productId}`);
@@ -30,11 +35,20 @@ function Home() {
     }).format(price);
   };
 
+
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   const handleNextProduct = () => {
-    setCurrentProductIndex((prevIndex) =>
-        prevIndex < productState.units.length - 1 ? prevIndex + 1 : 0
-    );
+    if (Array.isArray(productState.units) && productState.units.length > 0) {
+      setCurrentProductIndex((prevIndex) =>
+          prevIndex < productState.units.length - 1 ? prevIndex + 1 : 0
+      );
+    }
   };
+
 
   const handlePreviousProduct = () => {
     setCurrentProductIndex((prevIndex) =>
@@ -43,16 +57,47 @@ function Home() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleNextProduct();
-    }, 3000);
+    if (Array.isArray(productState.units) && productState.units.length > 0) {
+      const interval = setInterval(() => {
+        handleNextProduct();
+      }, 3000);
 
-    return () => clearInterval(interval);
-  }, [productState.units.length]);
+      return () => clearInterval(interval);
+    }
+  }, [productState.units]);
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+
+
+
+  const handleAddToCart = (product) => {
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn cần đăng nhập để thêm vào giỏ hàng",
+        confirmButtonText: "Đăng nhập",
+      }).then((result) => {
+        if (result.isConfirmed) navigate("/login");
+      });
+      return;
+    }
+
+    const data = {
+      product_id: product.id,
+      quantity: 1, // Mặc định là 1
+      options: {}, // Mặc định không có tùy chọn
+    };
+
+    dispatch(addToCart(data));
+    Swal.fire({
+      icon: "success",
+      title: "Thêm vào giỏ hàng thành công!",
+      timer: 1200,
+      showConfirmButton: false,
+    }).then(() => {
+      console.log("Alert closed");
+    });
+  };
+
 
   const toggleProducts = () => {
     if (visibleProducts >= productState.units.length) {
@@ -105,6 +150,18 @@ function Home() {
 
     return () => clearInterval(timer); // Cleanup khi component unmount
   }, []);
+
+
+  if (productState.loading ) {
+    return (
+        <p>
+          <Loading></Loading>
+        </p>
+    );
+  }
+  if (productState.error) {
+    return <p>Error: {productState.error}</p>;
+  }
 
   return (
       <div className="App ">
@@ -179,8 +236,10 @@ function Home() {
                             <button
                                 type="button"
                                 className="btn btn-dark text-white"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"
+                                onClick={(e) => {
+                                  console.log("Clicked element:", e.target); // Kiểm tra DOM element
+                                  handleAddToCart(product);
+                                }}
                             >
                               <i className="fas fa-cart-plus"></i>
                             </button>
@@ -245,7 +304,7 @@ function Home() {
                     </div>
                   </div>
                 </div>
-                <Link to="" className="primary-btn">
+                <Link to="/product" className="primary-btn">
                   Mua ngay
                 </Link>
               </div>
@@ -275,7 +334,7 @@ function Home() {
                                 </h6>
                               </div>
                               <Link
-                                  to={`/product/${productState.id}`}
+                                  to={`/product/${productState.units[currentProductIndex].id}`}
                                   className="text-dark fs-4 fw-bold"
                               >
                                 {productState.units[currentProductIndex].product_name}
@@ -329,8 +388,10 @@ function Home() {
                               <button
                                   type="button"
                                   className="btn btn-dark text-white"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
+                                  onClick={(e) => {
+                                    console.log("Clicked element:", e.target); // Kiểm tra DOM element
+                                    handleAddToCart(product);
+                                  }}
                               >
                                 <i className="fas fa-cart-plus"></i>
                               </button>

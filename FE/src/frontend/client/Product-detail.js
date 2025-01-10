@@ -4,21 +4,28 @@ import {
   fetchRelatedProducts,
   fetchReviews,
   addReview,
+  addToCart
 } from "../actions/unitActions";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useForm } from "react-hook-form";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import { Link, useParams } from "react-router-dom";
-
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import Loading from "./layout/Loading";
 function Productdetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const { handleSubmit } = useForm();
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
   const relatedProductsState = useSelector(
       (state) => state.relatedProducts || []
   );
-
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
   const initialImage =
       Array.isArray(productState.units.images) &&
       productState.units.images.length > 0
@@ -28,6 +35,14 @@ function Productdetail() {
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
   };
+
+
+  useEffect(() => {
+    // Kiểm tra xem dữ liệu sản phẩm có sẵn trong Redux hay không
+    if (!productState.units || !productState.units.id) {
+      dispatch(fetchProductDetails(id)); // Gọi lại sản phẩm nếu chưa có
+    }
+  }, [dispatch, id, productState.units]);
 
   useEffect(() => {
     dispatch(fetchProductDetails(id));
@@ -53,6 +68,35 @@ function Productdetail() {
     dispatch(fetchReviews(id));
   }, [dispatch, id]);
 
+  const submit = () => {
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn cần đăng nhập để thêm vào giỏ hàng",
+        showConfirmButton: true,
+        confirmButtonText: "Đăng nhập",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+      });
+      return;
+    }
+
+    const data = {
+      product_id: product.id,
+      quantity,
+      options: selectedOptions, // Gửi các tùy chọn đã chọn
+    };
+
+    dispatch(addToCart(data));
+    Swal.fire({
+      icon: "success",
+      title: "Thêm giỏ hàng thành công!",
+      showConfirmButton: false,
+      timer: 1200,
+    });
+  };
 
   const reviewsState = useSelector((state) => state.reviews);
 
@@ -115,7 +159,7 @@ function Productdetail() {
   }
 
   if (productState.loading) {
-    return <p>Loading...</p>;
+    return <p><Loading></Loading></p>;
   }
 
   if (productState.error) {
@@ -271,7 +315,8 @@ function Productdetail() {
                     </div>
                   </div>
                   <div className="d-grid gap-2 d-md-block">
-                    <button className="btn btn-dark btn-lg m-2 rounded-pill">
+                    <button className="btn btn-dark btn-lg m-2 rounded-pill"
+                            onClick={handleSubmit(submit)}>
                       Thêm vào giỏ
                     </button>
 
@@ -371,43 +416,43 @@ function Productdetail() {
                           <p>Không có đánh giá nào.</p>
                         )}
 
-                        <form onSubmit={handleReviewSubmit}>
-                          <div className="mb-3">
-                            <label htmlFor="review" className="form-label">
-                              Đánh giá của bạn
-                            </label>
-                            <textarea
-                              className="form-control"
-                              id="review"
-                              rows="4"
-                              placeholder="Nhập đánh giá..."
-                              value={comment}
-                              onChange={handleReviewTextChange}
-                            ></textarea>
-                          </div>
+                          <form onSubmit={handleReviewSubmit}>
+                            <div className="mb-3">
+                              <label htmlFor="review" className="form-label">
+                                Đánh giá của bạn
+                              </label>
+                              <textarea
+                                className="form-control"
+                                id="review"
+                                rows="4"
+                                placeholder="Nhập đánh giá..."
+                                value={comment}
+                                onChange={handleReviewTextChange}
+                              ></textarea>
+                            </div>
 
-                          <div className="mb-3">
-                            <label className="form-label">Đánh giá sao</label>
-                            <select
-                              className="form-select"
-                              value={rating}
-                              onChange={handleRatingChange}
-                            >
-                              <option value={0}>Chọn sao</option>
-                              <option value={1}>1 Sao</option>
-                              <option value={2}>2 Sao</option>
-                              <option value={3}>3 Sao</option>
-                              <option value={4}>4 Sao</option>
-                              <option value={5}>5 Sao</option>
-                            </select>
-                          </div>
+                            <div className="mb-3">
+                              <label className="form-label">Đánh giá sao</label>
+                              <select
+                                className="form-select"
+                                value={rating}
+                                onChange={handleRatingChange}
+                              >
+                                <option value={0}>Chọn sao</option>
+                                <option value={1}>1 Sao</option>
+                                <option value={2}>2 Sao</option>
+                                <option value={3}>3 Sao</option>
+                                <option value={4}>4 Sao</option>
+                                <option value={5}>5 Sao</option>
+                              </select>
+                            </div>
 
-                          <div className="text-end">
-                            <button type="submit" className="btn btn-dark ">
-                              Gửi đánh giá
-                            </button>
-                          </div>
-                        </form>
+                            <div className="text-end">
+                              <button type="submit" className="btn btn-dark ">
+                                Gửi đánh giá
+                              </button>
+                            </div>
+                          </form>
                       </div>
                     </div>
                   </div>
@@ -446,8 +491,7 @@ function Productdetail() {
                               <button
                                   type="button"
                                   className="btn btn-dark text-white mt-2 position-absolute cart-button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
+                                  onClick={handleSubmit(submit)}
                               >
                                 <i className="fas fa-cart-plus"></i>
                               </button>

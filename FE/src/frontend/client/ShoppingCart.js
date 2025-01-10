@@ -111,7 +111,7 @@ function ShoppingCart() {
     <div>
       <Header></Header>
 
-      <form class="bg0 p-t-75 p-b-85">
+      <form class="bg0 p-t-75 p-b-85 m-t-80">
         <div class="container">
           <div class="row">
             <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">

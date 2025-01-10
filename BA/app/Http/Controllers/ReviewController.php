@@ -38,9 +38,9 @@ class ReviewController extends Controller
             'rating' => 'required|integer|min:1|max:5', // Rating phải là số nguyên từ 1 đến 5
             'comment' => 'required|string', // Bình luận phải là chuỗi không được để trống
         ]);
-    
+
         $review = Review::create($validatedData);
-    
+
         return response()->json($review, 201); // Trả về JSON với mã trạng thái 201 (created)
     }
 
@@ -57,7 +57,6 @@ class ReviewController extends Controller
             'comment' => $request->comment,
             'user_id' => $userId,
             'product_id' => $request->productId,
-            // 'order_id' => $request->orderId,
         ]);
         return response()->json($review);
     } catch (\Exception $e) {
@@ -75,9 +74,24 @@ class ReviewController extends Controller
      */
     public function show($id)
     {
-        $relatedProducts = Review::where('product_id', $id)->get();
-        return response()->json(  $relatedProducts);
+        $relatedProducts = Review::with('user') // Eager load thông tin người dùng
+        ->where('product_id', $id)
+            ->get();
+
+        // Thay thế user_id bằng user_name trong response
+        return response()->json($relatedProducts->map(function ($review) {
+            // Thêm tên người dùng vào review
+            $review->user_name = $review->user->name;
+
+            // Loại bỏ user_id và user object nếu không cần thiết
+            unset($review->user_id);
+            unset($review->user);
+
+            return $review;
+        }));
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -110,7 +124,7 @@ class ReviewController extends Controller
         if (!$comment) {
             return response()->json(['message' => 'Bình luận không tồn tại'], 404);
         }
-    
+
         // Cập nhật trạng thái khóa bình luận
         $comment->status = 1;
         $comment->update();
@@ -120,7 +134,7 @@ class ReviewController extends Controller
             'error' => "Lỗi: ". $e->getMessage()],500
         );
     }
-   
+
 }
 
 }

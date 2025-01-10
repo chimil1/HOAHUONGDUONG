@@ -50,7 +50,7 @@ Route::get('/users/orders/{userId}', [OrderController::class, 'getOrdersByUser']
 Route::apiResource('review', ReviewController::class);
 Route::apiResource('coupon', CouponController::class);
 Route::apiResource('product', ProductController::class);
-Route::apiResource('review', ReviewController::class);
+//Route::apiResource('review', ReviewController::class);
 Route::middleware('auth:sanctum')->post('/addReview', [ReviewController::class, 'store']);
 Route::put('comment/{id}', [ReviewController::class, 'lockComment']);
 Route::get('/statistical', [StatisticalController::class, 'getStatistics']);

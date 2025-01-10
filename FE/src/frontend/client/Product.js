@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, fetchCategory, fetchCategoryType } from "../actions/unitActions";
+import { fetchProducts, fetchCategory, fetchCategoryType,addToCart } from "../actions/unitActions";
 import Loading from "./layout/Loading";
+import Swal from "sweetalert2";
 function Product() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,16 +14,18 @@ function Product() {
   const [sortOrder, setSortOrder] = useState(null);
   const [isRecording, setIsRecording] = useState(false); // Trạng thái ghi âm
   const itemsPerPage = 8;
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
 
   const truncate = (text, maxLength) => {
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
 
-  const formatCurrency = (price) => {
+  const formatPrice = (price) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -112,6 +115,35 @@ function Product() {
     dispatch(fetchCategoryType());
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const handleAddToCart = (product) => {
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn cần đăng nhập để thêm vào giỏ hàng",
+        confirmButtonText: "Đăng nhập",
+      }).then((result) => {
+        if (result.isConfirmed) navigate("/login");
+      });
+      return;
+    }
+
+    const data = {
+      product_id: product.id,
+      quantity: 1, // Mặc định là 1
+      options: {}, // Mặc định không có tùy chọn
+    };
+
+    dispatch(addToCart(data));
+    Swal.fire({
+      icon: "success",
+      title: "Thêm vào giỏ hàng thành công!",
+      timer: 1200,
+      showConfirmButton: false,
+    }).then(() => {
+      console.log("Alert closed");
+    });
+  };
 
   if (productState.loading) {
     return <Loading></Loading>;
@@ -216,26 +248,42 @@ function Product() {
                       currentItems.map((product) => (
                           <div key={product.id} className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
                             <div className="block2">
-                              <div className="block2-pic hov-img0">
-                                <img src={product.img} alt={product.product_name}/>
-                                <Link
-                                    to={`${product.id}`}
-                                    className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                              <div className="block2-pic hov-img0 position-relative">
+                                <div
+                                    className="block2-pic hov-img0 position-relative"
+
+                                    style={{cursor: "pointer"}}
                                 >
-                                  Xem
-                                </Link>
+                                  <img src={product.img} alt="IMG-PRODUCT"/>
+                                </div>
+
+                                <div
+                                    className="cart-eye-buttons d-flex flex-column align-items-center position-absolute">
+                                  <button
+                                      type="button"
+                                      className="btn btn-dark text-white"
+                                      onClick={(e) => {
+                                        console.log("Clicked element:", e.target); // Kiểm tra DOM element
+                                        handleAddToCart(product);
+                                      }}
+
+                                  >
+                                    <i className="fas fa-cart-plus"></i>
+                                  </button>
+                                </div>
                               </div>
+
                               <div className="block2-txt flex-w flex-t p-t-14">
                                 <div className="block2-txt-child1 flex-col-l">
                                   <Link
-                                      to={`${product.id}`}
+                                      to={`/product/${product.id}`}
                                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                                   >
                                     {truncate(product.product_name, 20)}
                                   </Link>
                                   <span className="stext-105 cl3 text-danger">
-                  {formatCurrency(product.price)}
-                </span>
+                        {formatPrice(product.price)}
+                      </span>
                                 </div>
                               </div>
                             </div>

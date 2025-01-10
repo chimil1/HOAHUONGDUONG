@@ -280,7 +280,7 @@ export const updateProduct = (id, product) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .put(url+`/product/${id}`, data)
+      .put(url+`/product/${id}`, product)
       .then((response) => {
         const product = response.data;
         dispatch(fetchUnitsSuccess(product));
@@ -537,7 +537,7 @@ export const fetchReviewDetails = (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .get(`http://localhost:8000/api/review/${id}`)
+      .get(`http://localhost:8000/api/6/${id}`)
       .then((response) => {
         const units = response.data;
         dispatch(fetchUnitsSuccess(units));
@@ -550,21 +550,21 @@ export const fetchReviewDetails = (id) => {
 };
 
 //details review
-export const fetchReviewDetails = (id) => {
-  return (dispatch) => {
-    dispatch(fetchUnitsRequest());
-    axios
-      .get(`http://localhost:8000/api/review/${id}`)
-      .then((response) => {
-        const units = response.data;
-        dispatch(fetchUnitsSuccess(units));
-      })
-      .catch((error) => {
-        const errorMsg = error.message;
-        dispatch(fetchUnitsFailure(errorMsg));
-      });
-  };
-};
+// export const fetchReviewDetails = (id) => {
+//   return (dispatch) => {
+//     dispatch(fetchUnitsRequest());
+//     axios
+//       .get(`http://localhost:8000/api/review/${id}`)
+//       .then((response) => {
+//         const units = response.data;
+//         dispatch(fetchUnitsSuccess(units));
+//       })
+//       .catch((error) => {
+//         const errorMsg = error.message;
+//         dispatch(fetchUnitsFailure(errorMsg));
+//       });
+//   };
+// };
 
 export const fetchStatiscal = () => {
   return (dispatch) => {
@@ -693,7 +693,7 @@ export const addToCart = (data) => {
       })
       .then((response) => {
         const units = response.data;
-        dispatch(fetchUnitsSuccess(units));
+        dispatch(fetchProducts());
       })
       .catch((error) => {
         const errorMsg = error.message;
@@ -781,42 +781,42 @@ export const fetchAddOrder = (data) => {
     };
 };
 
-export const fetchReviews = (product_id) => {
-    return (dispatch) => {
-        dispatch({ type: "FETCH_REVIEW_REQUEST" });
-        axios
-            .get(`http://localhost:8000/api/review/${product_id}`)
-            .then((response) => {
-                dispatch({ type: "FETCH_REVIEW_SUCCESS", payload: response.data });
-            })
-            .catch((error) => {
-                dispatch({ type: "FETCH_REVIEW_FAILURE", payload: error.message });
-            });
-    };
-};
-export const fetchAddOrder = (data) => {
-  return (dispatch) => {
-    dispatch(fetchUnitsRequest());
-    const token = localStorage.getItem("token");
-    axios
-      .post(`http://localhost:8000/api/addOrder`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        const units = response.data;
-        dispatch(fetchUnitsSuccess(units));
-      })
-      .catch((error) => {
-        const errorMsg = error.response?.data?.message || error.message;
-        console.log(errorMsg);
-
-        dispatch(fetchUnitsFailure(errorMsg));
-        // Swal.fire("Error", "Failed to create order!", "error");
-      });
-  };
-};
+// export const fetchReviews = (product_id) => {
+//     return (dispatch) => {
+//         dispatch({ type: "FETCH_REVIEW_REQUEST" });
+//         axios
+//             .get(`http://localhost:8000/api/review/${product_id}`)
+//             .then((response) => {
+//                 dispatch({ type: "FETCH_REVIEW_SUCCESS", payload: response.data });
+//             })
+//             .catch((error) => {
+//                 dispatch({ type: "FETCH_REVIEW_FAILURE", payload: error.message });
+//             });
+//     };
+// };
+// export const fetchAddOrder = (data) => {
+//   return (dispatch) => {
+//     dispatch(fetchUnitsRequest());
+//     const token = localStorage.getItem("token");
+//     axios
+//       .post(`http://localhost:8000/api/addOrder`, data, {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       })
+//       .then((response) => {
+//         const units = response.data;
+//         dispatch(fetchUnitsSuccess(units));
+//       })
+//       .catch((error) => {
+//         const errorMsg = error.response?.data?.message || error.message;
+//         console.log(errorMsg);
+//
+//         dispatch(fetchUnitsFailure(errorMsg));
+//         // Swal.fire("Error", "Failed to create order!", "error");
+//       });
+//   };
+// };
 
 export const fetchReviews = (product_id) => {
   return (dispatch) => {
@@ -845,7 +845,7 @@ export const addReview = (data) => {
       })
       .then((response) => {
         const review = response.data;
-        dispatch({ type: "FETCH_REVIEW_SUCCESS", payload: review });
+        dispatch({ type: "ADD_REVIEW", payload: review });
       })
       .catch((error) => {
         const errorMsg =

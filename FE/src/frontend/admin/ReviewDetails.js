@@ -95,7 +95,7 @@ function ReviewDetail() {
                                                 <th>Mã Đánh giá</th>
                                                 <th>Số sao</th>
                                                 <th>Đánh giá</th>
-                                                <th>Mã khách hàng</th>
+                                                <th>Tên khách hàng</th>
                                                 <th>Mã sản phẩm</th>
                                                 <th>Mã đơn hàng</th>
                                                 <th>Ngày tạo</th>
@@ -114,7 +114,7 @@ function ReviewDetail() {
                                                             ? "Bình luận đã khóa"
                                                             : review.comment || "Chưa có bình luận"}
                                                     </td>
-                                                    <td>{review.user_id}</td>
+                                                    <td>{review.user_name}</td>
                                                     <td>{review.product_id}</td>
                                                     <td>{review.order_id}</td>
                                                     <td>{formatDate(review.created_at)}</td>

@@ -6,45 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="d4bd7b51-9e31-4163-86e4-1ea519e55dc6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/resources/views/emails/order_invoice.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/resources/views/emails/order_invoice.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/resources/views/emails/reset-password.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/resources/views/emails/reset-password.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/public/asset/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/FE/public/asset/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ReviewController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ReviewController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Models/Review.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Models/Review.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/routes/api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/AddCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/AddCategory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/AddProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/AddProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/Addcoupon.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/Addcoupon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/CNDanhMuc.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/CNDanhMuc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/Coupons.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/Coupons.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/EditCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/EditCategory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/EditCoupon.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/EditCoupon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/EditProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/EditProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/LoginForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/OrderManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/OrderManagement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlDanhMuc.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlDanhMuc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlDonHang.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlDonHang.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlKhachHang.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlKhachHang.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/QlSanPham.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/QlSanPham.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/Review.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/Review.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/ReviewDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/ReviewDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/ThongKe.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/ThongKe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/layout/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/layout/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/orderDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/orderDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/About.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/About.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Blog.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Blog.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Contact.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Contact.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/OrderClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/OrderClient.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/OrderDetailClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/OrderDetailClient.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Product-detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Product-detail.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Product.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/ShoppingCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/ShoppingCart.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/cart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/layout/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/layout/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/layout/Slider.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/layout/Slider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE/src/frontend/reducers/RelateReview.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/reducers/RelateReview.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,27 +191,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;tamnt&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/TKW2/PHP3/HOAHUONGDUONG&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;F:\\PhpStorm 2024.1.4\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "tamnt",
+    "last_opened_file_path": "F:/TKW2/PHP3/HOAHUONGDUONG",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "ts.external.directory.path": "F:\\PhpStorm 2024.1.4\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;CSS&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "CSS"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\TKW2\PHP3\HOAHUONGDUONG\BA\resources\views\emails" />
@@ -343,7 +315,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/FE/src/frontend/admin/Coupons.js</url>
           <line>36</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
