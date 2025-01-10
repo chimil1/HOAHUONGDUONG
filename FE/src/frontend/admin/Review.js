@@ -48,10 +48,10 @@ function Review() {
                       <table className="table table-data2">
                         <thead>
                           <tr>
-                            <th>STT</th>
-                            <th>Tên Sản Phẩm</th>
-                            <th>Hình</th>
-                            <th>Tổng Review</th> 
+                            <th>Mã sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            {/* <th>Hình</th> */}
+                            <th>Số Lượng</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -60,14 +60,14 @@ function Review() {
 
                               <td>{item.id || 'Không có thông tin'}</td>
                               <td>{item.name || 'Không có thông tin'}</td>
-                              <td>
+                              {/* <td>
                                 {item.img ? (
                                     <img src={item.img}
                                          style={{width: '50px', height: '50px', objectFit: 'cover'}}/>
                                 ) : (
                                     'Không có thông tin'
                                 )}
-                              </td>
+                              </td> */}
                               <td>{item.review_count || 'Không có thông tin'}</td>
 
                               <td>

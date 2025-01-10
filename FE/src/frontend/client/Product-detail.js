@@ -3,6 +3,7 @@ import {
   fetchProductDetails,
   fetchRelatedProducts,
   fetchReviews,
+  addReview,
 } from "../actions/unitActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -47,6 +48,21 @@ function Productdetail() {
     }
   }, [productState]);
 
+  useEffect(() => {
+    dispatch(fetchProductDetails(id));
+    dispatch(fetchReviews(id));
+  }, [dispatch, id]);
+
+
+  const reviewsState = useSelector((state) => state.reviews);
+
+
+  useEffect(() => {
+    console.log("Reviews state updated:", reviewsState);
+  }, [reviewsState]);
+
+
+
   const product = productState.units;
   const [quantity, setQuantity] = useState(1);
 
@@ -62,6 +78,36 @@ function Productdetail() {
 
   const handleThumbnailClick = (img) => {
     setCurrentImage(img);
+  };
+  const [comment, setReviewText] = useState('');
+  const [rating, setRating] = useState(0);
+  const handleReviewTextChange = (e) => {
+    setReviewText(e.target.value);
+  };
+
+  const handleRatingChange = (e) => {
+    setRating(parseInt(e.target.value));
+  };
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+
+    if (!comment.trim() || rating === 0) {
+      alert("Vui lòng nhập đánh giá và chọn số sao.");
+      return;
+    }
+
+    const reviewData = {
+      productId: id,
+      // userId: 16,
+      rating,
+      comment,
+    };
+
+    dispatch(addReview(reviewData));
+
+
+    setReviewText("");
+    setRating(0);
   };
 
   if (!product) {
@@ -270,52 +316,107 @@ function Productdetail() {
                   </ul>
                 </div>
 
-                <div className="card-body">
-                  <div className="tab-content">
-                    {/* Tab Mô tả sản phẩm */}
-                    <div
-                        className="tab-pane fade show active"
-                        id="description"
-                        role="tabpanel"
-                        aria-labelledby="description-tab"
-                    >
-                      <p className="text-start">{product.description}</p>
-                    </div>
+              <div className="card-body">
+                <div className="tab-content">
+                  {/* Tab Mô tả sản phẩm */}
+                  <div
+                    className="tab-pane fade show active"
+                    id="description"
+                    role="tabpanel"
+                    aria-labelledby="description-tab"
+                  >
+                    <p className="text-start">{product.description}</p>
+                  </div>
 
-                    {/* Tab Đánh giá */}
-                    <div
-                        className="tab-pane fade"
-                        id="reviews"
-                        role="tabpanel"
-                        aria-labelledby="reviews-tab"
-                    >
+                  {/* Tab Đánh giá */}
+                  <div
+                    className="tab-pane fade"
+                    id="reviews"
+                    role="tabpanel"
+                    aria-labelledby="reviews-tab"
+                  >
+                    <div className="row">
+                      <div className="col-lg-8 mx-auto">
 
+                        {Array.isArray(reviewsState.units) && reviewsState.units.length > 0 ? (
+                          reviewsState.units.map((review) => {
+                            if (review.status != 1) {
+                              return (
+                                <div className="d-flex align-items-start mb-4" key={review.id}>
+                                  <img
+                                    src={review.user_avatar || "../../asset/images/avatar.jpg"}
+                                    alt="AVATAR"
+                                    className="rounded-circle me-3"
+                                    width="60"
+                                    height="60"
+                                  />
+                                  <div>
+                                    <h6 className="fw-bold">{review.username}</h6>
+                                    <p className="small mb-2">
+                                      {Array.from({ length: 5 }, (_, index) => (
+                                        <i
+                                          key={index}
+                                          className={`text-warning me-1 zmdi zmdi-star${index < review.rating ? "" : "-outline"}`}
+                                        ></i>
+                                      ))}
+                                    </p>
+                                    <p className="text-muted">{review.comment}</p>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          })
+                        ) : (
+                          <p>Không có đánh giá nào.</p>
+                        )}
 
-                      <form>
-                        <div className="mb-3">
-                          <label htmlFor="review" className="form-label">
-                            Nhập đánh giá
-                          </label>
-                          <textarea
+                        <form onSubmit={handleReviewSubmit}>
+                          <div className="mb-3">
+                            <label htmlFor="review" className="form-label">
+                              Đánh giá của bạn
+                            </label>
+                            <textarea
                               className="form-control"
                               id="review"
                               rows="4"
-                              placeholder="Đánh giá của bạn..."
-                          ></textarea>
-                        </div>
-                        <div className="d-flex justify-content-end">
-                          <button type="submit" className="btn btn-dark">
-                            Submit
-                          </button>
-                        </div>
-                      </form>
+                              placeholder="Nhập đánh giá..."
+                              value={comment}
+                              onChange={handleReviewTextChange}
+                            ></textarea>
+                          </div>
+
+                          <div className="mb-3">
+                            <label className="form-label">Đánh giá sao</label>
+                            <select
+                              className="form-select"
+                              value={rating}
+                              onChange={handleRatingChange}
+                            >
+                              <option value={0}>Chọn sao</option>
+                              <option value={1}>1 Sao</option>
+                              <option value={2}>2 Sao</option>
+                              <option value={3}>3 Sao</option>
+                              <option value={4}>4 Sao</option>
+                              <option value={5}>5 Sao</option>
+                            </select>
+                          </div>
+
+                          <div className="text-end">
+                            <button type="submit" className="btn btn-dark ">
+                              Gửi đánh giá
+                            </button>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         <section className="sec-relate-product bg0 p-t-45 p-b-105">
           <div className="container">
