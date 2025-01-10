@@ -33,7 +33,7 @@ function Review() {
       <div className="page-container">
         <Header></Header>
 
-        <div className="main-content">
+        <div className="main-content m-t-100">
           <div className="section__content section__content--p30">
             <div className="container-fluid">
               <div className="card">

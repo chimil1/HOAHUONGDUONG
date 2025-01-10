@@ -38,6 +38,7 @@ import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
 import PayMent from "./frontend/client/cart";
 import Loading from "./frontend/client/layout/Loading"
+import ProtectedRoute from "./frontend/admin/ProtectedRoute";
 function App() {
   return (
     <div className="App">
@@ -69,34 +70,33 @@ function App() {
           <Route path="/reset-password" element={<ConfirmPassword />} />
           <Route path="/listaddress" element={<ListAddress />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/payment" element={<PayMent />} />
+
           {/* Các Route cho admin */}
           <Route path="/admin" element={<LoginForm />} />
-          <Route path="/thongke" element={<ThongKe />} />
-          <Route path="/review" element={<Review />} />
-          <Route path="/qldanhmuc" element={<QlDanhMuc />} />
-          <Route path="/addcategory" element={<AddCategory />} />
-          <Route path="/editcategory/:id" element={<EditCategory />} />
-          <Route path="/editcoupon/:id" element={<EditCoupon />} />
-          <Route path="/qldanhsach" element={<QlDanhSach />} />
-          <Route path="/qldonhang" element={<QlDonHang />} />
-          <Route path="/qldonhang/:id" element={<QlDonHang />} />
-          <Route path="/qlkhachhang" element={<QlKhachHang />} />
-          <Route path="/qlsanpham" element={<QlSanPham />} />
-          <Route path="/productdetail" element={<ProductDetails />} />
-          <Route path="/productdetail/:id" element={<ProductDetails />} />
-          <Route path="/orderdetails/:id" element={<OrderDetails />} />
-          <Route path="/orderdetails" element={<OrderDetails />} />
-          <Route path="/details/:id" element={<OrderManagement />} />
-          <Route path="/addproduct" element={<AddProduct />} />
-          <Route path="/coupon" element={<Coupons />} />
-          <Route path="/Addcoupon" element={<Addcoupon />} />
-          <Route path="/addproduct" element={<AddProduct />} />
-          <Route path="/reviewdetail" element={<ReviewDetail />} />
-          <Route path="/reviewdetail/:id" element={<ReviewDetail />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/editProduct/:id" element={<EditProduct />} />
-          <Route path="/payment" element={<PayMent />} />
-          {/* <Route path="/admin/login" element={<LoginForm />} /> */}
+          <Route path="/thongke" element={<ProtectedRoute><ThongKe /></ ProtectedRoute>} />
+          <Route path="/review" element={<ProtectedRoute><Review /></ ProtectedRoute>} />
+          <Route path="/qldanhmuc" element={<ProtectedRoute><QlDanhMuc /></ ProtectedRoute>} />
+          <Route path="/addcategory" element={<ProtectedRoute><AddCategory /></ ProtectedRoute>} />
+          <Route path="/editcategory/:id" element={<ProtectedRoute><EditCategory /></ ProtectedRoute>} />
+          <Route path="/editcoupon/:id" element={<ProtectedRoute><EditCoupon /></ ProtectedRoute>} />
+          <Route path="/qldanhsach" element={<ProtectedRoute><QlDanhSach /></ ProtectedRoute>} />
+          <Route path="/qldonhang" element={<ProtectedRoute><QlDonHang /></ ProtectedRoute>} />
+          <Route path="/qldonhang/:id" element={<ProtectedRoute><QlDonHang /></ ProtectedRoute>} />
+          <Route path="/qlkhachhang" element={<ProtectedRoute><QlKhachHang /></ ProtectedRoute>} />
+          <Route path="/qlsanpham" element={<ProtectedRoute><QlSanPham /></ ProtectedRoute>} />
+          <Route path="/productdetail" element={<ProtectedRoute><ProductDetails /></ ProtectedRoute>} />
+          <Route path="/productdetail/:id" element={<ProtectedRoute><ProductDetails /></ ProtectedRoute>} />
+          <Route path="/orderdetails/:id" element={<ProtectedRoute><OrderDetails /></ ProtectedRoute>} />
+          <Route path="/orderdetails" element={<ProtectedRoute><OrderDetails /></ ProtectedRoute>} />
+          <Route path="/details/:id" element={<ProtectedRoute><OrderManagement /></ ProtectedRoute>} />
+          <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ ProtectedRoute>} />
+          <Route path="/coupon" element={<ProtectedRoute><Coupons /></ ProtectedRoute>} />
+          <Route path="/Addcoupon" element={<ProtectedRoute><Addcoupon /></ ProtectedRoute>} />
+          <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ ProtectedRoute>} />
+          <Route path="/reviewdetail" element={<ProtectedRoute><ReviewDetail /></ ProtectedRoute>} />
+          <Route path="/reviewdetail/:id" element={<ProtectedRoute><ReviewDetail /></ ProtectedRoute>} />
+          <Route path="/editProduct/:id" element={<ProtectedRoute><EditProduct /></ ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -133,7 +133,7 @@ class UserController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'user' => $user->id,
+                'user' => $user,
                 'token' => $token,
                 'message' => 'Đăng nhập thành công'
             ]);

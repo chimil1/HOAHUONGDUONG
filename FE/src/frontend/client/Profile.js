@@ -257,7 +257,7 @@ function Profile() {
   return (
     <div>
       <Header />
-      <section className="pt-5" style={{ backgroundColor: "#eee" }}>
+      <section className="pt-5 m-t-80" style={{ backgroundColor: "#eee" }}>
         <div className="container-xxl">
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">

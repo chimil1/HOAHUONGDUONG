@@ -17,6 +17,11 @@ function Product() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
 
+  const truncate = (text, maxLength) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
+
   const formatCurrency = (price) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -132,10 +137,10 @@ function Product() {
   return (
       <div>
         <Header />
-        <div className="bg0 m-t-23 p-b-140">
+        <div className="bg0 m-t-23 p-b-140 m-t-150">
           <div className="container">
             <div className="row">
-              <div className="col-md-3 p-3 mb-4 mt-5">
+              <div className="col-md-3 p-3 mb-4 mt-1">
                 <h5 className="text-dark mb-3">Tìm kiếm sản phẩm</h5>
 
                 {/* Tìm kiếm sản phẩm */}
@@ -152,7 +157,7 @@ function Product() {
                       <button
                           onClick={clearSearch}
                           className="btn btn-link position-absolute top-50 end-0 translate-middle-y me-5 p-0"
-                          style={{ border: "none", background: "none" }}
+                          style={{border: "none", background: "none"}}
                       >
                         <i className="fa fa-times fa-lg text-danger"></i>
                       </button>
@@ -163,7 +168,7 @@ function Product() {
                       className={`btn btn-link position-absolute top-50 end-0 translate-middle-y me-2 p-0 ${
                           isRecording ? "text-danger" : "text-primary"
                       }`}
-                      style={{ border: "none", background: "none" }}
+                      style={{border: "none", background: "none"}}
                   >
                     <i className={`fa fa-microphone fa-lg ${isRecording ? "fa-beat" : ""}`}></i>
                   </button>
@@ -212,7 +217,7 @@ function Product() {
                           <div key={product.id} className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
                             <div className="block2">
                               <div className="block2-pic hov-img0">
-                                <img src={product.img} alt={product.product_name} />
+                                <img src={product.img} alt={product.product_name}/>
                                 <Link
                                     to={`${product.id}`}
                                     className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
@@ -226,11 +231,11 @@ function Product() {
                                       to={`${product.id}`}
                                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                                   >
-                                    {product.product_name}
+                                    {truncate(product.product_name, 20)}
                                   </Link>
                                   <span className="stext-105 cl3 text-danger">
-                              {formatCurrency(product.price)}
-                            </span>
+                  {formatCurrency(product.price)}
+                </span>
                                 </div>
                               </div>
                             </div>
@@ -239,7 +244,7 @@ function Product() {
                   ) : (
                       <p className="text-center mt-5">
                         <i className="fa fa-search-minus fa-2x text-muted"></i>
-                        <br />
+                        <br/>
                         Không tìm thấy sản phẩm liên quan.
                       </p>
                   )}
@@ -266,10 +271,11 @@ function Product() {
                     </div>
                 )}
               </div>
+
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer/>
       </div>
   );
 }

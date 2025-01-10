@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [IsLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
@@ -19,8 +18,9 @@ function Header() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("tokenAdmin");
+    localStorage.removeItem("admin");
+    localStorage.removeItem("roleAdmin");
     setIsLoggedIn(false);
     setUserId(null);
     navigate('/admin');
@@ -43,7 +43,7 @@ function Header() {
                 </div>
                 <div className="header-button2">
                   <button onClick={handleLogout}>
-                    <i className="fa-solid fa-right-from-bracket" style={{ color: '#ffffff' }}></i>
+                    <i class="fa-solid fa-right-from-bracket" style={{ color: '#ffffff' }}></i>
                   </button>
                 </div>
               </div>

@@ -10,8 +10,7 @@
 <body>
     <h1>Hóa đơn mua hàng</h1>
     <p>Cảm ơn bạn đã mua hàng tại Hoa Hướng Dương Store! Dưới đây là chi tiết đơn hàng của bạn:</p>
-
-    <p><strong>Mã đơn hàng:</strong> {{ 'DH' . $order->id }}</p>    
+    <p><strong>Mã đơn hàng:</strong> {{ 'DH' . str_pad($order->id, 3, '0', STR_PAD_LEFT) }}</p>
     <p><strong>Người nhận:</strong> {{ $order->username }}</p>
     <p><strong>Số điện thoại:</strong> {{ $order->user->phone }}</p>
     <p><strong>Địa chỉ giao hàng:</strong> {{ $order->shipping_address }}</p>

@@ -152,6 +152,13 @@ class ProductController extends Controller
                 ->with('images:product_id,product_img')
                 ->get();
 
+            foreach ($relatedProducts as $relatedProduct) {
+                // Gán hình ảnh đầu tiên vào thuộc tính riêng
+                $relatedProduct->product_img = $relatedProduct->images->first()?->product_img ?? null;
+
+                // Xóa mối quan hệ images để tinh gọn dữ liệu
+                unset($relatedProduct->images);
+            }
             // Check if any products were found
             if ($relatedProducts->isEmpty()) {
                 return response()->json([

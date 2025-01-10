@@ -2,7 +2,7 @@ import React from "react";
 
 function SliderComponent() {
   return (
-    <div>
+    <div style={{marginTop: '80px'}}>
       <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
 
         <div className="carousel-inner">

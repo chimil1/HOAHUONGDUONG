@@ -45,12 +45,12 @@ function AddCategory() {
         <Menu />
         <div className="page-container">
           <Header />
-          <div className="main-content">
+          <div className="main-content m-t-100">
             <div className="section__content section__content--p30">
               <div className="container-fluid">
                 <div className="card shadow-sm">
-                  <div className="card-header bg-dark text-white">
-                    <h3 className="text-center">Thêm Danh Mục Mới</h3>
+                  <div className="card-header">
+                    <h3 className="title-5 m-b-35">Thêm Danh Mục Mới</h3>
                   </div>
                   <div className="card-body">
                     <form onSubmit={handleSubmit(submit)} className="p-4">
@@ -120,7 +120,7 @@ function AddCategory() {
                     </form>
                   </div>
                   <div className="card-footer">
-                    <Footer />
+                    <Footer/>
                   </div>
                 </div>
               </div>

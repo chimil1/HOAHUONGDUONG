@@ -58,7 +58,7 @@ function OrderDetailClient() {
     return (
         <div className="App ">
             <Header />
-            <section className="pt-3" style={{ backgroundColor: "#eee" }}>
+            <section className="pt-3 m-t-80" style={{ backgroundColor: "#eee" }}>
                 <div className="card mx-auto my-4" style={{ maxWidth: '1000px' }}>
                     <div className="card-body p-3">
                         <div className="card-header d-flex justify-content-between align-items-center">

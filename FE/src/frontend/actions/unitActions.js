@@ -340,8 +340,6 @@ export const fetchOrders = () => {
     };
   };
   export const updateOrderStatus = (id, newStatus) => {
-    // console.log("id", id);
-    
     return (dispatch) => {
         dispatch(fetchUnitsRequest());
         return axios
