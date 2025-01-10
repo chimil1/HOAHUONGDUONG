@@ -87,36 +87,6 @@ function Blog() {
 
             <div className="col-md-4 col-lg-3 p-b-80">
               <div className="side-menu">
-                <div className="bor17 of-hidden pos-relative">
-                  <input
-                    className="stext-103 cl2 plh4 size-116 p-l-28 p-r-55"
-                    type="text"
-                    name="search"
-                    placeholder="Tìm kiếm"
-                  />
-
-                  <button className="flex-c-m size-122 ab-t-r fs-18 cl4 hov-cl1 trans-04">
-                    <i className="zmdi zmdi-search"></i>
-                  </button>
-                </div>
-
-                <div className="p-t-55">
-                  <h4 className="mtext-112 cl2 p-b-33">Danh mục</h4>
-
-                  <ul>
-                    <li className="bor18">
-                      <Link
-                        to="#"
-                        className="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4"
-                      >
-                        Thời trang
-                      </Link>
-                    </li>
-                    {/* Repeat for other categories */}
-                  </ul>
-                </div>
-
-                {/* Featured Products, Archive, and Tags */}
               </div>
             </div>
           </div>

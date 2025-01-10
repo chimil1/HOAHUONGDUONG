@@ -12,8 +12,8 @@ const fetchUnitsRequest = () => ({
 
 const fetchUnitsSuccess = (userData) => ({
     type: FETCH_UNITS_SUCCESS,
-    payload: userData, // Dữ liệu người dùng
-});
+    payload: userData,
+})
 
 const fetchUnitsFailure = (errorMessage) => ({
     type: FETCH_UNITS_FAILURE,
@@ -328,7 +328,7 @@ export const fetchOrders = () => {
     return (dispatch) => {
       dispatch(fetchUnitsRequest());
       axios
-        .get(`http://localhost:8000/api/order`)
+        .get(url+`/order`)
         .then((response) => {
           const units = response.data;
           dispatch(fetchUnitsSuccess(units));
@@ -339,11 +339,13 @@ export const fetchOrders = () => {
         });
     };
   };
-export const updateOrderStatus = (id, newStatus) => {
+  export const updateOrderStatus = (id, newStatus) => {
+    // console.log("id", id);
+    
     return (dispatch) => {
-        dispatch(fetchUnitsRequest)
+        dispatch(fetchUnitsRequest());
         return axios
-            .put(url+`/order/status/${id}`, { status: newStatus }) // Gửi giá trị status
+            .put(url + `/order/status/${id}`, { status: newStatus })
             .then(() => {
                 dispatch(fetchOrders());
             })
@@ -352,18 +354,27 @@ export const updateOrderStatus = (id, newStatus) => {
             });
     };
 };
-// export const approveOrder = (id) => {
-//     return (dispatch) => {
-//         return axios
-//             .put(`http://localhost:8000/api/order/approve/${id}`)
-//             .then(() => {
-//                 dispatch(fetchOrders());
-//             })
-//             .catch((error) => {
-//                 console.error("Lỗi khi duyệt đơn hàng:", error);
-//             });
-//     };
-// }
+export const fetchOrderManagementcline = (id) => {
+  return (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`${url}/users/orders/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const units = Array.isArray(response.data) ? response.data : []; // Đảm bảo luôn là mảng
+        dispatch(fetchUnitsSuccess(units));
+      })
+      .catch((error) => {
+        const errorMsg = error.message;
+        dispatch(fetchUnitsFailure(errorMsg));
+      });
+  };
+};
 export const fetchOrderManagement = (id) => {
     return (dispatch) => {
         dispatch(fetchUnitsRequest());
@@ -677,6 +688,8 @@ export const addToCart = (data) => {
       });
   };
 };
+
+
 export const CartItem = () => {
     return (dispatch) => {
         dispatch({ type: "FETCH_CART_REQUEST" });

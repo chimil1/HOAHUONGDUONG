@@ -43,7 +43,7 @@ function Header() {
                 </div>
                 <div className="header-button2">
                   <button onClick={handleLogout}>
-                    <i class="fa-solid fa-right-from-bracket" style={{ color: '#ffffff' }}></i>
+                    <i className="fa-solid fa-right-from-bracket" style={{ color: '#ffffff' }}></i>
                   </button>
                 </div>
               </div>

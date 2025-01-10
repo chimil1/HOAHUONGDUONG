@@ -11,17 +11,19 @@ import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import Loading from "./layout/Loading";
 function Productdetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+
   const { handleSubmit } = useForm();
   const productState = useSelector((state) => state.unit);
-  const { randomProducts } = useSelector((state) => state.unit);
   // Destructure randomProducts
   const [quantity, setQuantity] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState({});
-
+  const token = localStorage.getItem("token");
+  console.log("Token:", token); 
   const formatPrice = (amount) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
   };
@@ -51,18 +53,36 @@ function Productdetail() {
   const product = productState.units;
 
   const submit = () => {
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn cần đăng nhập để thêm vào giỏ hàng",
+        showConfirmButton: true,
+        confirmButtonText: "Đăng nhập",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+      });
+      return;
+    }
+  
     const data = {
       product_id: product.id,
-      quantity: quantity,
+      quantity,
+      options: selectedOptions, // Gửi các tùy chọn đã chọn
     };
+  
     dispatch(addToCart(data));
     Swal.fire({
       icon: "success",
       title: "Thêm giỏ hàng thành công!",
       showConfirmButton: false,
-      timer: 500
+      timer: 1200,
     });
   };
+  
+  
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -83,7 +103,7 @@ function Productdetail() {
   }
 
   if (productState.loading) {
-    return <p>Loading...</p>;
+    return <p><Loading></Loading></p>;
   }
 
   if (productState.error) {

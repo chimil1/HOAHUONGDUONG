@@ -149,7 +149,7 @@ function ThongKe() {
           <div className="main-content">
             <div className="section__content section__content--p30">
               <div className="container-fluid">
-                <div className="row m-t-25">
+                <div className="row m-t-100">
                   {/* Các phần hiển thị thông tin tổng quan */}
                   <div className="col-sm-6 col-lg-3">
                     <div className="overview-item overview-item--c1">
@@ -212,8 +212,6 @@ function ThongKe() {
                     </div>
                   </div>
                 </div>
-
-                {/* Footer */}
                 <Footer />
               </div>
             </div>

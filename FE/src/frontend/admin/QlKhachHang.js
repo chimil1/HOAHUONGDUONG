@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchKhachHangs, lockUser } from "../actions/unitActions";
 import {Link, useNavigate} from "react-router-dom";
-
+import Loading from "../client/layout/Loading";
 function QlKhachHang() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function QlKhachHang() {
   };
 
   if (unitState.loading) {
-    return <p>Đang tải...</p>;
+    return <Loading/>;
   }
 
   if (unitState.error) {

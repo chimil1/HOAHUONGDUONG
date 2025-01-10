@@ -4,7 +4,7 @@ import Footer from "./layout/Footer";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, fetchCategory, fetchCategoryType } from "../actions/unitActions";
-
+import Loading from "./layout/Loading";
 function Product() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,6 +109,7 @@ function Product() {
   }, [dispatch]);
 
   if (productState.loading) {
+    return <Loading></Loading>;
     return (
         <div className="row">
           {Array.from({ length: 8 }).map((_, index) => (
