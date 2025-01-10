@@ -4,14 +4,13 @@ import Menu from "./layout/Menu";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCoupons, fetchDeleteCoupon } from "../actions/unitActions";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loading from "../client/layout/Loading";
 
 function Coupons() {
   const dispatch = useDispatch();
   const unitState = useSelector((state) => state.unit);
-  const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
   const productPerPage = 5;
