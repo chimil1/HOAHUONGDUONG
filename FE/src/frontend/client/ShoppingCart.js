@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Loading from "./layout/Loading";
+import "./voucher.css"
+
 function ShoppingCart() {
   const dispatch = useDispatch();
   const cartitems = useSelector((state) => state.cart);
@@ -21,6 +23,13 @@ function ShoppingCart() {
       style: "currency",
       currency: "VND",
     }).format(amount);
+  };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
   };
 
   useEffect(() => {
@@ -51,16 +60,8 @@ function ShoppingCart() {
   const units = Array.isArray(cartitems.units) ? cartitems.units : [];
 
   const cartTotal = units.reduce(
-    (total, item) =>
-      total +
-      (item.product && item.product.price
-        ? item.product.price * item.quantity
-        : 0),
-    0
-  );
-  const discount = selectedCoupon
-    ? (cartTotal * selectedCoupon.discount_value) / 100
-    : 0;
+    (total, item) => total + (item.product && item.product.price ? item.product.price * item.quantity : 0),0);
+  const discount = selectedCoupon ? (cartTotal * selectedCoupon.discount_value) / 100 : 0;
   const totalWithDiscount = cartTotal - discount;
 
   // Hàm xóa sản phẩm khỏi giỏ hàng
@@ -97,7 +98,7 @@ function ShoppingCart() {
       <p>
         <Loading></Loading>
       </p>
-    ); // Có thể hiển thị loading nếu đang tải
+    ); 
   }
   if (cartitems.error) {
     return <p>Error: {cartitems.error}</p>;
@@ -109,16 +110,6 @@ function ShoppingCart() {
   return (
     <div>
       <Header></Header>
-      <div class="container">
-        <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-          <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-            Trang chủ
-            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-          </a>
-
-          <span class="stext-109 cl4">Giỏ hàng</span>
-        </div>
-      </div>
 
       <form class="bg0 p-t-75 p-b-85">
         <div class="container">
@@ -169,7 +160,7 @@ function ShoppingCart() {
                               </button>
                             </td>
                             <td class="column-2">
-                              {item.product.product_name}
+                              {truncateText(item.product.product_name,20)}
                             </td>
                             <td class="column-3">
                               {formatCurrency(item.product.price)}
