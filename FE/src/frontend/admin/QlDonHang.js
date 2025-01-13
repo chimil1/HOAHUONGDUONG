@@ -41,15 +41,13 @@ function QLDonHang() {
       case 0:
         return "Chờ xác nhận";
       case 1:
-        return "Chuẩn bị hàng";
+        return "Đã xác nhận";
       case 2:
         return "Đang vận chuyển";
       case 3:
         return "Đã nhận hàng";
       case 4:
         return "Đã hủy";
-      case 5:
-        return "Đánh giá"
       default:
         return "Không rõ";
     }

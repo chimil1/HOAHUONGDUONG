@@ -138,29 +138,29 @@ class OrderController extends Controller
     {
         try {
             $status = $request->input('status');
-    
+
             // Kiểm tra trạng thái mới hợp lệ
             if (!is_numeric($status) || !in_array($status, [0, 1, 2, 3, 4, 5])) {
                 return response()->json(['message' => 'Trạng thái không hợp lệ'], 400);
             }
-    
+
             $order = Order::find($id);
-    
+
             // Kiểm tra đơn hàng tồn tại
             if (!$order) {
                 return response()->json(['message' => 'Không tìm thấy đơn hàng với ID ' . $id], 404);
             }
-    
+
             $orderDetail = Order_detail::join('orders', 'orders.id', '=', 'order_details.order_id')
                 ->where('order_id', $id)
                 ->get();
-    
+
             // Xử lý logic chuyển trạng thái
             switch ($order->status) {
                 case 0: // Chờ xác nhận
                     if ($status == 1) { // Xác nhận đơn hàng
                         $order->status = 1;
-    
+
                         // Gửi email thông báo cho khách hàng
                         $userId = $order->user_id;
                         $userEmail = User::where('id', $userId)->first();
@@ -171,7 +171,7 @@ class OrderController extends Controller
                         $order->status = 4;
                     }
                     break;
-    
+
                 case 1: // Đã xác nhận
                     if ($status == 2) { // Đang vận chuyển
                         $order->status = 2;
@@ -179,35 +179,35 @@ class OrderController extends Controller
                         $order->status = 4;
                     }
                     break;
-    
+
                 case 2: // Đang vận chuyển
                     if ($status == 3) { // Hoàn thành
                         $order->status = 3;
                     }
                     break;
-    
+
                 case 3: // Hoàn thành
                     if ($status == 5) { // Đã đánh giá
                         $order->status = 5;
                     }
                     break;
-    
+
                 case 4: // Đã hủy
                     return response()->json(['message' => 'Đơn hàng đã hủy, không thể thay đổi trạng thái'], 400);
-    
+
                 default:
                     return response()->json(['message' => 'Không thể chuyển trạng thái này'], 400);
             }
-    
+
             // Lưu trạng thái mới
             $order->save();
-    
+
             return response()->json([
                 'message' => 'Cập nhật trạng thái thành công',
                 'order' => $order,
                 'new_status' => $order->status
             ], 200);
-    
+
         } catch (\Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage(),
@@ -216,4 +216,4 @@ class OrderController extends Controller
             ], 500);
         }
     }
-}    
+}
