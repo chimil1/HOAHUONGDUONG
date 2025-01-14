@@ -36,7 +36,7 @@ import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
-import PayMent from "./frontend/client/PayMent";
+import PayMent from "./frontend/client/PayMentOrder";
 import VNPayReturn from "./frontend/client/VNPayReturn";
 
 import Loading from "./frontend/client/layout/Loading"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderSendMail;
 use App\Models\Order;
 use App\Models\Order_detail;
 use Carbon\Carbon;
@@ -10,8 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderInvoiceMail;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -139,8 +140,7 @@ class OrderController extends Controller
 
                 // Sắp xếp tham số
                 ksort($inputData);
-
-                $query = "";
+$query = "";
                 $i = 0;
                 $hashdata = "";
                 foreach ($inputData as $key => $value) {
@@ -155,7 +155,7 @@ class OrderController extends Controller
 
                 $vnp_Url = $vnp_Url . "?" . $query;
                 if (isset($vnp_HashSecret)) {
-                    $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
+                    $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
                     $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
                 }
                 return response()->json([
@@ -174,6 +174,7 @@ class OrderController extends Controller
             return response()->json($e->getMessage());
         }
     }
+
 
     public function vnpayReturn(Request $request)
     {
@@ -295,24 +296,23 @@ class OrderController extends Controller
                 return response()->json(['message' => 'Không tìm thấy đơn hàng với ID ' . $id], 404);
             }
 
-            $orderDetail = Order_detail::join('orders', 'orders.id', '=', 'order_details.order_id')
-                ->where('order_id', $id)
-                ->get();
-
             // Xử lý logic chuyển trạng thái
             switch ($order->status) {
                 case 0: // Chờ xác nhận
                     if ($status == 1) { // Xác nhận đơn hàng
                         $order->status = 1;
-
                         // Gửi email thông báo cho khách hàng
                         $userId = $order->user_id;
                         $userEmail = User::where('id', $userId)->first();
+                        $orderDetail = Order_detail::join('orders', 'orders.id', '=', 'order_details.order_id')
+                            ->where('order_id', $id)
+                            ->get();
                         if ($userEmail) {
-                            Mail::to($userEmail->email)->send(new OrderInvoiceMail($order, $orderDetail));
+                            Mail::to($userEmail->email)->send(new OrderSendMail($order, $orderDetail));
                         }
                     } elseif ($status == 4) { // Hủy đơn hàng
                         $order->status = 4;
+                        $order->save();
                     }
                     break;
 
@@ -331,7 +331,7 @@ class OrderController extends Controller
                     break;
 
                 case 3: // Hoàn thành
-                    if ($status == 5) { // Đã đánh giá
+                    if ($status == 5) { // đánh giá
                         $order->status = 5;
                     }
                     break;
@@ -351,7 +351,6 @@ class OrderController extends Controller
                 'order' => $order,
                 'new_status' => $order->status
             ], 200);
-
         } catch (\Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage(),

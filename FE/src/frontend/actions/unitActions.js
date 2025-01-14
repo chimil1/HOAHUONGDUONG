@@ -847,7 +847,7 @@ export const fetchAddOrder = (data) => {
             const units = response.data;
             dispatch(fetchUnitsSuccess(units));
             // Kiểm tra nếu thanh toán qua VNPay
-            if (data.payment_type == 1 && response.data.url) {
+            if (data.payment_type === 1 && response.data.url) {
                 const vnpayUrl = response.data.url;
                 window.location.href = vnpayUrl; // Chuyển hướng người dùng đến VNPay
             } else {

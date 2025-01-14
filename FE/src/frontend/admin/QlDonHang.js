@@ -20,17 +20,12 @@ function QLDonHang() {
     dispatch(fetchOrders());
   }, [dispatch]);
 
-  if (unitState.loading) {
-    return <Loading/> ;
-  }
-
-  if (unitState.error) {
-    return <p>Lỗi: {unitState.error}</p>;
-  }
-
-  if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
-    return <p>Lỗi: Không có đơn hàng nào.</p>;
-  }
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
 
   const handleUpdateStatus = (id, newStatus) => {
     dispatch(updateOrderStatus(id, newStatus));
@@ -56,11 +51,15 @@ function QLDonHang() {
   const formatOrderId = (id) => {
     return `DH${id.toString().padStart(3, "0")}`;
   };
-  const filteredOrders = unitState.units.filter((order) => {
-    const formattedOrderId = formatOrderId(order.id).toLowerCase();
-    const search = searchTerm.trim().toLowerCase();
-    return [...search].every((char) => formattedOrderId.includes(char));
-  });
+
+  // Kiểm tra unitState.units có phải là mảng không trước khi sử dụng filter()
+  const filteredOrders = Array.isArray(unitState.units) 
+    ? unitState.units.filter((order) => {
+        const formattedOrderId = formatOrderId(order.id).toLowerCase();
+        const search = searchTerm.trim().toLowerCase();
+        return formattedOrderId.includes(search);
+    })
+    : [];
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
@@ -90,6 +89,18 @@ function QLDonHang() {
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
+
+  if (unitState.loading) {
+    return <Loading />;
+  }
+
+  if (unitState.error) {
+    return <p>Lỗi: {unitState.error}</p>;
+  }
+
+  if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
+    return <p>Lỗi: Không có đơn hàng nào.</p>;
+  }
 
   return (
     <div className="page-wrapper">
@@ -136,7 +147,7 @@ function QLDonHang() {
                               <tr key={item.id}>
                                 <td className="text-center text-nowrap">{formatOrderId(item.id)}</td>
                                 <td className="text-center text-nowrap">{item.username || "Không có thông tin"}</td>
-                                <td className="text-center text-nowrap">{item.shipping_address || "Không có thông tin"}</td>
+                                <td className="text-center text-nowrap">{truncateText(item.shipping_address, 20) || "Không có thông tin"}</td>
                                 <td className="text-center text-nowrap">{item.shipping_phone || "Không có thông tin"}</td>
                                 <td className="text-center text-nowrap">{getStatusText(item.status)}</td>
                                 <td className="text-center text-nowrap">
@@ -173,10 +184,8 @@ function QLDonHang() {
                                         <span className="badge badge-primary">Đang vận chuyển</span>
                                       </>
                                     ) : item.status === 3 ? (
-                                      
                                       <span className="badge badge-success">Đã nhận hàng</span>
                                     ) : item.status === 4 ? (
-                                      
                                       <span className="badge badge-danger">Đã hủy</span>
                                     ) : null}
                                   </div>
