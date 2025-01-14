@@ -44,6 +44,7 @@ Route::apiResource('user', UserController::class);
 Route::apiResource('category', CategoryController::class);
 Route::apiResource('order', OrderController::class);
 Route::middleware('auth:sanctum')->post('addOrder', [OrderController::class,'store']);
+Route::middleware('auth:sanctum')->get('vnPay/return', [OrderController::class,'vnpayReturn']);
 
 Route::put('/order/status/{id}', [OrderController::class, 'updateOrderStatus']);
 Route::get('/users/orders/{userId}', [OrderController::class, 'getOrdersByUser']);

@@ -36,7 +36,9 @@ import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
-import PayMent from "./frontend/client/cart";
+import PayMent from "./frontend/client/PayMent";
+import VNPayReturn from "./frontend/client/VNPayReturn";
+
 import Loading from "./frontend/client/layout/Loading"
 import ProtectedRoute from "./frontend/admin/ProtectedRoute";
 function App() {
@@ -71,7 +73,7 @@ function App() {
           <Route path="/listaddress" element={<ListAddress />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/payment" element={<PayMent />} />
-
+          <Route path="/vnpay-return" element={<VNPayReturn />} />
           {/* Các Route cho admin */}
           <Route path="/admin" element={<LoginForm />} />
           <Route path="/thongke" element={<ProtectedRoute><ThongKe /></ ProtectedRoute>} />

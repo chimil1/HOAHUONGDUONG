@@ -5,18 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d4bd7b51-9e31-4163-86e4-1ea519e55dc6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/FE/src/frontend/client/PayMent.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FE/src/frontend/client/VNPayReturn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/ReviewController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/ReviewController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BA/app/Models/Review.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Models/Review.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/app/Http/Controllers/OrderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BA/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/BA/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/actions/unitActions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/admin/ReviewDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/admin/ReviewDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Product-detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Product-detail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/Product.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/ShoppingCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/ShoppingCart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/client/cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/client/cart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FE/src/frontend/reducers/RelateReview.js" beforeDir="false" afterPath="$PROJECT_DIR$/FE/src/frontend/reducers/RelateReview.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

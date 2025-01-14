@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 export const FETCH_UNITS_REQUEST = "FETCH_UNITS_REQUEST";
 export const FETCH_UNITS_SUCCESS = "FETCH_UNITS_SUCCESS";
 export const FETCH_UNITS_FAILURE = "FETCH_UNITS_FAILURE";
@@ -757,29 +758,6 @@ export const removeFromCart= (id) => {
   };
 };
 
-export const fetchAddOrder = (data) => {
-    return (dispatch) => {
-        dispatch(fetchUnitsRequest());
-        const token = localStorage.getItem("token");
-        axios
-            .post(`http://localhost:8000/api/addOrder`, data, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                const units = response.data;
-                dispatch(fetchUnitsSuccess(units));
-            })
-            .catch((error) => {
-                const errorMsg = error.response?.data?.message || error.message;
-                console.log(errorMsg);
-
-                dispatch(fetchUnitsFailure(errorMsg));
-                // Swal.fire("Error", "Failed to create order!", "error");
-            });
-    };
-};
 
 // export const fetchReviews = (product_id) => {
 //     return (dispatch) => {
@@ -793,29 +771,6 @@ export const fetchAddOrder = (data) => {
 //                 dispatch({ type: "FETCH_REVIEW_FAILURE", payload: error.message });
 //             });
 //     };
-// };
-// export const fetchAddOrder = (data) => {
-//   return (dispatch) => {
-//     dispatch(fetchUnitsRequest());
-//     const token = localStorage.getItem("token");
-//     axios
-//       .post(`http://localhost:8000/api/addOrder`, data, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       })
-//       .then((response) => {
-//         const units = response.data;
-//         dispatch(fetchUnitsSuccess(units));
-//       })
-//       .catch((error) => {
-//         const errorMsg = error.response?.data?.message || error.message;
-//         console.log(errorMsg);
-//
-//         dispatch(fetchUnitsFailure(errorMsg));
-//         // Swal.fire("Error", "Failed to create order!", "error");
-//       });
-//   };
 // };
 
 export const fetchReviews = (product_id) => {
@@ -875,3 +830,79 @@ export const lockCommentAction = (idReview, id_cmt) => {
   };
 };
 
+export const fetchAddOrder = (data) => {
+    return async (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        try {
+            const response = await axios.post(
+                "http://localhost:8000/api/addOrder",
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            const units = response.data;
+            dispatch(fetchUnitsSuccess(units));
+            // Kiểm tra nếu thanh toán qua VNPay
+            if (data.payment_type == 1 && response.data.url) {
+                const vnpayUrl = response.data.url;
+                window.location.href = vnpayUrl; // Chuyển hướng người dùng đến VNPay
+            } else {
+                // Nếu không phải VNPay, thực hiện các bước khác như hiển thị thông báo
+                Swal.fire({
+                    icon: "success",
+                    title: "Đặt hàng thành công!" + response.data.url,
+                    showConfirmButton: false,
+                    timer: 500,
+                });
+            }
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || error.message;
+            console.log(errorMsg);
+            dispatch(fetchUnitsFailure(errorMsg));
+        }
+    };
+};
+
+export const vnpayReturn = (params) => {
+    return async (dispatch) => {
+        dispatch(fetchUnitsRequest());
+        const token = localStorage.getItem("token");
+        try {
+            const response = await axios.get(
+                "http://127.0.0.1:8000/api/vnPay/return",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    params,
+                }
+            );
+            const message = response.data.Message;
+            dispatch(fetchUnitsSuccess(message));
+            // Hiển thị thông báo nếu cần
+            Swal.fire({
+                icon: "success",
+                title: "Thanh toán thành công!",
+                text: message,
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || error.message;
+            console.error("Lỗi xử lý thanh toán:", errorMsg);
+            dispatch(fetchUnitsFailure(errorMsg));
+            // Hiển thị thông báo lỗi
+            Swal.fire({
+                icon: "error",
+                title: "Thanh toán thất bại!",
+                text: errorMsg,
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        }
+    };
+};
