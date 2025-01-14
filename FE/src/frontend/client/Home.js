@@ -297,7 +297,7 @@ function Home() {
       </section>
       {/* Modall */}
       <Footer />
-    </div>
+      </div>
   );
 }
 export default Home;

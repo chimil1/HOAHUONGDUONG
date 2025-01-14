@@ -148,10 +148,6 @@ class CartItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CartItem $cartItem)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -168,4 +164,20 @@ class CartItemController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    public function update(Request $request, $id)
+    {
+        $userId = Auth::id(); // Lấy ID của người dùng hiện tại
+        $cartItem = CartItem::where('id', $id)->where('user_id', $userId)->first();
+    
+        if (!$cartItem) {
+            return response()->json(['message' => 'Item not found'], 404);
+        }
+    
+        // Cập nhật số lượng
+        $cartItem->quantity = $request->input('quantity');
+        $cartItem->save();
+    
+        return response()->json(['message' => 'Item updated successfully', 'data' => $cartItem]);
+    }
+    
 }

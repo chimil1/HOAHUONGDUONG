@@ -1,46 +1,46 @@
 import {
-    FETCH_UNITS_REQUEST,
-    FETCH_UNITS_SUCCESS,
-    FETCH_UNITS_FAILURE,
-} from '../actions/unitActions';
+  FETCH_UNITS_REQUEST,
+  FETCH_UNITS_SUCCESS,
+  FETCH_UNITS_FAILURE,
+} from "../actions/unitActions";
 
 const initialState = {
-    selectedUnit: null, 
-    loading: false,
-    user: null,
-    units: [],
-    error: ''
+  selectedUnit: null,
+  loading: false,
+  user: null,
+  units: [],
+  error: "",
 };
 
 const unitReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case FETCH_UNITS_REQUEST:
-            return {
-                ...state,
-                loading: true
-            };
-        case FETCH_UNITS_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                units: action.payload,
-                user: action.payload,
-                selectedUnit: action.payload,
-                error: ''
-            };
-        case FETCH_UNITS_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                selectedUnit: null,
-                units: [],
-                user: null,
-                error: action.payload
-            };
+  switch (action.type) {
+    case FETCH_UNITS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case FETCH_UNITS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        units: action.payload,
+        user: action.payload,
+        selectedUnit: action.payload,
+        error: "",
+      };
+    case FETCH_UNITS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        selectedUnit: null,
+        units: [],
+        user: null,
+        error: action.payload,
+      };
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 };
 
 export default unitReducer;
