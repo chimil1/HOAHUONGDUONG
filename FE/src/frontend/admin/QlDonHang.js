@@ -23,13 +23,11 @@ function QLDonHang() {
     if (text && text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
-    return text || "Không có thông tin";  // return fallback text if undefined or null
+    return text || "Không có thông tin";
   };
-
   const handleUpdateStatus = (id, newStatus) => {
     dispatch(updateOrderStatus(id, newStatus));
   };
-
   const getStatusText = (status) => {
     switch (status) {
       case 0:
@@ -42,6 +40,8 @@ function QLDonHang() {
         return "Đã nhận hàng";
       case 4:
         return "Đã hủy";
+      case 5:
+        return "Hoàn thành"; 
       default:
         return "Không rõ";
     }
@@ -182,9 +182,12 @@ function QLDonHang() {
                                       </>
                                     ) : item.status === 3 ? (
                                       <span className="badge badge-success">Đã nhận hàng</span>
+                                    ) : item.status === 5 ? (
+                                      <span className="badge badge-success">Hoàn thành</span>  
                                     ) : item.status === 4 ? (
                                       <span className="badge badge-danger">Đã hủy</span>
                                     ) : null}
+
                                   </div>
                                 </td>
                                 <td className="text-center">

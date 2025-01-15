@@ -11,7 +11,7 @@ import {
   updateOrderStatus,
   fetchProductFind,
   fetchReviewFind,
-  createReview
+  createReview,
 } from "../actions/unitActions";
 
 function OrderClient() {
@@ -54,13 +54,20 @@ function OrderClient() {
 
   const getStatusText = (status) => {
     switch (status) {
-      case 0: return "Chờ xác nhận";
-      case 1: return "Đã xác nhận";
-      case 2: return "Đang vận chuyển";
-      case 3: return "Đã nhận hàng";
-      case 4: return "Đã hủy";
-      case 5: return "Hoàn thành";
-      default: return "Không rõ";
+      case 0:
+        return "Chờ xác nhận";
+      case 1:
+        return "Đã xác nhận";
+      case 2:
+        return "Đang vận chuyển";
+      case 3:
+        return "Đã nhận hàng";
+      case 4:
+        return "Đã hủy";
+      case 5:
+        return "Hoàn thành";
+      default:
+        return "Không rõ";
     }
   };
 
@@ -74,15 +81,9 @@ function OrderClient() {
   const totalOrdersCount = Array.isArray(unitState.units)
     ? unitState.units.length
     : 0;
-
-    ? unitState.units.length
-    : 0;
-
   const calculateTotalAmount = (order) => {
     if (Array.isArray(order.order_details)) {
       return order.order_details.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
         (total, item) => total + item.price * item.quantity,
         0
       );
@@ -123,20 +124,19 @@ function OrderClient() {
   };
   const currentDate = new Date();
   const filteredOrders = Array.isArray(unitState.units)
-  ? [...unitState.units]
-      .filter(
-        (order) =>
-          selectedStatus === "all" ||
-          (isValidOrder(order) &&
-            getStatusText(order.status) === selectedStatus)
-      )
-      .sort((a, b) => {
-        const aDate = new Date(a.created_at);
-        const bDate = new Date(b.created_at);
-      return Math.abs(currentDate - aDate) - Math.abs(currentDate - bDate);
-      })
-  : [];
-
+    ? [...unitState.units]
+        .filter(
+          (order) =>
+            selectedStatus === "all" ||
+            (isValidOrder(order) &&
+              getStatusText(order.status) === selectedStatus)
+        )
+        .sort((a, b) => {
+          const aDate = new Date(a.created_at);
+          const bDate = new Date(b.created_at);
+          return Math.abs(currentDate - aDate) - Math.abs(currentDate - bDate);
+        })
+    : [];
 
   const handleShowCancelModal = (orderId) => {
     setCurrentOrderId(orderId);
@@ -156,15 +156,6 @@ function OrderClient() {
     handleUpdateStatus(currentOrderId, 4);
     handleCloseCancelModal();
   };
-    ? selectedStatus === "all"
-      ? unitState.units
-      : unitState.units.filter(
-        (order) =>
-          isValidOrder(order) &&
-          getStatusText(order.status) === selectedStatus
-      )
-    : [];
-
   const handleNavigateProduct = (nameProduct, idOrder) => {
     const findProduct = productState.products;
     const findReview = reviewState.units;
@@ -173,7 +164,8 @@ function OrderClient() {
       (product) => product.product_name === nameProduct
     );
     const reviews = findReview?.find(
-      (review) => review.product_id === product.id && review.order_id === idOrder
+      (review) =>
+        review.product_id === product.id && review.order_id === idOrder
     );
 
     if (reviews) {
@@ -185,7 +177,7 @@ function OrderClient() {
     } else if (product) {
       navigate(`/product/${product.id}`, { state: { orderId: idOrder } });
       dispatch(createReview({ order_id: idOrder, product_id: product.id }));
-      dispatch(updateOrderStatus(idOrder, 5)); 
+      dispatch(updateOrderStatus(idOrder, 5));
     } else {
       Swal.fire({
         text: "Sản phẩm không tồn tại!",
@@ -198,7 +190,7 @@ function OrderClient() {
   return (
     <div className="App">
       <Header />
-      <section className="pt-3 m-t-100" style={{ backgroundColor: "#eee" }}>
+      <section className="pt-3 m-t-80" style={{ backgroundColor: "#eee" }}>
         <div className="container">
           <button className="btn btn-outline-dark mb-3" onClick={handleBack}>
             <i className="fas fa-arrow-left"></i> Quay lại
@@ -208,25 +200,34 @@ function OrderClient() {
               <li className="nav-item">
                 <Link
                   to="#"
-                  className={`nav-link ${selectedStatus === "all" ? "active" : ""}`}
+                  className={`nav-link ${
+                    selectedStatus === "all" ? "active" : ""
+                  }`}
                   onClick={() => setSelectedStatus("all")}
                 >
                   Tất cả {totalOrdersCount}
                 </Link>
               </li>
-              {["Chờ xác nhận", "Đã xác nhận", "Đang vận chuyển", "Hoàn thành", "Đã hủy"].map(
-                (status) => (
-                  <li className="nav-item" key={status}>
-                    <Link
-                      to="#"
-                      className={`nav-link text-dark ${selectedStatus === status ? "active" : ""}`}
-                      onClick={() => setSelectedStatus(status)}
-                    >
-                      {status} {orderStatusCount[status] || 0}
-                    </Link>
-                  </li>
-                )
-              )}
+              {[
+                "Chờ xác nhận",
+                "Đã xác nhận",
+                "Đang vận chuyển",
+                "Đã nhận hàng",
+                "Hoàn thành",
+                "Đã hủy",
+              ].map((status) => (
+                <li className="nav-item" key={status}>
+                  <Link
+                    to="#"
+                    className={`nav-link text-dark ${
+                      selectedStatus === status ? "active" : ""
+                    }`}
+                    onClick={() => setSelectedStatus(status)}
+                  >
+                    {status} {orderStatusCount[status] || 0}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </section>
           {filteredOrders.length === 0 ? (
@@ -247,60 +248,83 @@ function OrderClient() {
                     </p>
                   </div>
                   <div className="mb-2">
-                    <div className="row no-gutters" style={{ marginLeft: "50px", marginTop: "10px", marginBottom: "10px" }}>
-                      {Array.isArray(order.order_details) && order.order_details.length > 0 ? (
-                        (expandedOrders[order.id] ? order.order_details : order.order_details.slice(0, 1)).map(
-                          (item, index) => (
-                            <div className="d-flex mb-3" key={index}>
-                              <div className="col-md-2">
-                                <div className="img-container" style={{ display: "flex", alignItems: "center" }}>
-                                  <img
-                                    src="https://pubcdn.ivymoda.com/files/product/thumab/400/2024/01/24/075baabaeb4ac4fc1747919a769e1abc.JPG"
-                                    alt="Product"
-                                    className="img-mb-5"
-                                    style={{ width: "120px", height: "150px" }}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="card-body">
-                                  <Link to={`/orderdetailclient/${item.order_id}`}>
-                                    <h5 className="card-title">{item.product_name || "Không có thông tin"}</h5>
-                                  </Link>
-                                  <p className="card-text d-flex justify-content-between">
-                                    <span>Phân loại hàng: {item.size}, {item.color}</span>
-                                    <span className="ml-3">Giá: {formatCurrency(item.price)}</span>
-                                  </p>
-                                  <p className="card-text">x{item.quantity}</p>
-                                </div>
+                    <div
+                      className="row no-gutters"
+                      style={{
+                        marginLeft: "50px",
+                        marginTop: "10px",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {Array.isArray(order.order_details) &&
+                      order.order_details.length > 0 ? (
+                        (expandedOrders[order.id]
+                          ? order.order_details
+                          : order.order_details.slice(0, 1)
+                        ).map((item, index) => (
+                          <div className="d-flex mb-3" key={index}>
+                            <div className="col-md-2">
+                              <div
+                                className="img-container"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <img
+                                  src="https://pubcdn.ivymoda.com/files/product/thumab/400/2024/01/24/075baabaeb4ac4fc1747919a769e1abc.JPG"
+                                  alt="Product"
+                                  className="img-mb-5"
+                                  style={{ width: "120px", height: "150px" }}
+                                />
                               </div>
                             </div>
-                          )
-                        )
+                            <div className="col-md-6">
+                              <div className="card-body">
+                                <Link
+                                  to={`/orderdetailclient/${item.order_id}`}
+                                >
+                                  <h5 className="card-title">
+                                    {item.product_name || "Không có thông tin"}
+                                  </h5>
+                                </Link>
+                                <p className="card-text d-flex justify-content-between">
+                                  <span>
+                                    Phân loại hàng: {item.size}, {item.color}
+                                  </span>
+                                  <span className="ml-3">
+                                    Giá: {formatCurrency(item.price)}
+                                  </span>
+                                </p>
+                                <p className="card-text">x{item.quantity}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
                       ) : (
                         <p>Không có chi tiết đơn hàng.</p>
                       )}
-                      {Array.isArray(order.order_details) && order.order_details.length > 1 && (
-                        <div
-                          className="d-flex justify-content-center align-items-center"
-                          style={{ cursor: "pointer", color: "black" }}
-                          onClick={() => toggleExpand(order.id)}
-                        >
-                          {expandedOrders[order.id] ? (
-                            <>
-                              <span>Rút gọn</span>
-                              <i className="fas fa-chevron-up ml-2"></i>
-                            </>
-                          ) : (
-                            <>
-                              <span>Xem thêm</span>
-                              <i className="fas fa-chevron-down ml-2"></i>
-                            </>
-                          )}
-                        </div>
-                      )}
+                      {Array.isArray(order.order_details) &&
+                        order.order_details.length > 1 && (
+                          <div
+                            className="d-flex justify-content-center align-items-center"
+                            style={{ cursor: "pointer", color: "black" }}
+                            onClick={() => toggleExpand(order.id)}
+                          >
+                            {expandedOrders[order.id] ? (
+                              <>
+                                <span>Rút gọn</span>
+                                <i className="fas fa-chevron-up ml-2"></i>
+                              </>
+                            ) : (
+                              <>
+                                <span>Xem thêm</span>
+                                <i className="fas fa-chevron-down ml-2"></i>
+                              </>
+                            )}
+                          </div>
+                        )}
                     </div>
-
                     <div className="card-footer">
                       <div className="d-flex justify-content-end mt-3">
                         <h5>
@@ -329,15 +353,33 @@ function OrderClient() {
                             Đã nhận được hàng
                           </button>
                         )}
-                        {order.status === 3 && (
-                          <Link
-                            to={`/revieworder/${order.id}`}
-                            className="btn btn-dark btn-sm ml-2"
-                            aria-label="Đánh giá"
-                          >
-                            Đánh giá
-                          </Link>
-                        )}
+                        {order.status === 3 &&
+                          order.order_details.map((item) => {
+                            const hasReviewed = reviewState.units?.some(
+                              (review) =>
+                                review.order_id === order.id &&
+                                review.product_id === item.product_id
+                            );
+                            return !hasReviewed ? (
+                              <button
+                                onClick={() =>
+                                  handleNavigateProduct(
+                                    item.product_name,
+                                    order.id
+                                  )
+                                }
+                                className="btn btn-dark btn-sm"
+                                aria-label="Đánh giá"
+                                style={{
+                                  position: "absolute",
+                                  bottom: "10px",
+                                  right: "10px",
+                                }}
+                              >
+                                Đánh giá
+                              </button>
+                            ) : null;
+                          })}
                       </div>
                     </div>
                   </div>

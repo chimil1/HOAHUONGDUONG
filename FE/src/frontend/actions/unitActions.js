@@ -496,24 +496,6 @@ export const fetchCategoryDetails = (id) => {
       });
   };
 };
-
-// export const updateCategory = (id, data) => {
-//   return (dispatch) => {
-//     dispatch(fetchUnitsRequest());
-//     return axios
-//       .put(`http://localhost:8000/api/category/${id}`, data)  // return the axios promise here
-//       .then((response) => {
-//         const unit = response.data;
-//         dispatch(fetchUnitsSuccess(unit));
-//       })
-//       .catch((error) => {
-//         const errorMsg = error.response?.data || error.message;
-//         dispatch(fetchUnitsFailure(errorMsg));
-//         throw error; // re-throw to be caught in component
-//       });
-//   };
-// };
-
 export const updateCategory = (id, data) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
@@ -561,22 +543,6 @@ export const fetchReview = () => {
       });
   };
 };
-
-// export const fetchReviewDetails = (id) => {
-//   return (dispatch) => {
-//     dispatch(fetchUnitsRequest());
-//     axios
-//       .get(`http://localhost:8000/api/6/${id}`)
-//       .then((response) => {
-//         const units = response.data;
-//         dispatch(fetchUnitsSuccess(units));
-//       })
-//       .catch((error) => {
-//         const errorMsg = error.message;
-//         dispatch(fetchUnitsFailure(errorMsg));
-//       });
-//   };
-// };
 
 //details review
 export const fetchReviewDetails = (id) => {
@@ -751,67 +717,6 @@ export const removeFromCart= (id) => {
   };
 };
 
-export const fetchAddOrder = (data) => {
-    return (dispatch) => {
-        dispatch(fetchUnitsRequest());
-        const token = localStorage.getItem("token");
-        axios
-            .post(`http://localhost:8000/api/addOrder`, data, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                const units = response.data;
-                dispatch(fetchUnitsSuccess(units));
-            })
-            .catch((error) => {
-                const errorMsg = error.response?.data?.message || error.message;
-                console.log(errorMsg);
-
-                dispatch(fetchUnitsFailure(errorMsg));
-                // Swal.fire("Error", "Failed to create order!", "error");
-            });
-    };
-};
-
-// export const fetchReviews = (product_id) => {
-//     return (dispatch) => {
-//         dispatch({ type: "FETCH_REVIEW_REQUEST" });
-//         axios
-//             .get(`http://localhost:8000/api/review/${product_id}`)
-//             .then((response) => {
-//                 dispatch({ type: "FETCH_REVIEW_SUCCESS", payload: response.data });
-//             })
-//             .catch((error) => {
-//                 dispatch({ type: "FETCH_REVIEW_FAILURE", payload: error.message });
-//             });
-//     };
-// };
-// export const fetchAddOrder = (data) => {
-//   return (dispatch) => {
-//     dispatch(fetchUnitsRequest());
-//     const token = localStorage.getItem("token");
-//     axios
-//       .post(`http://localhost:8000/api/addOrder`, data, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       })
-//       .then((response) => {
-//         const units = response.data;
-//         dispatch(fetchUnitsSuccess(units));
-//       })
-//       .catch((error) => {
-//         const errorMsg = error.response?.data?.message || error.message;
-//         console.log(errorMsg);
-//
-//         dispatch(fetchUnitsFailure(errorMsg));
-//         // Swal.fire("Error", "Failed to create order!", "error");
-//       });
-//   };
-// };
-
 export const fetchReviews = (product_id) => {
   return (dispatch) => {
     dispatch({ type: "FETCH_REVIEW_REQUEST" });
@@ -903,8 +808,6 @@ export const createReview = (reviewData) => {
     }
   };
 };
-
-
 export const fetchAddOrder = (data, navigate) => {
   return async (dispatch) => {
     dispatch(fetchUnitsRequest());

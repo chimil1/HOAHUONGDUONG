@@ -46,9 +46,11 @@ function OrderDetailClient() {
             case 2:
                 return "Đang vận chuyển";
             case 3:
-                return "Hoàn thành";
+                return "Đã nhận hàng";
             case 4:
                 return "Đã hủy";
+            case 5:
+                return "Hoàn thành";    
             default:
                 return "Không rõ";
         }
@@ -57,11 +59,9 @@ function OrderDetailClient() {
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
     };
-
     const handleBack = () => {
-        navigate(-1); // This will navigate to the previous page
+        navigate(-1); 
     };
-
     return (
         <div className="App">
             <Header />
