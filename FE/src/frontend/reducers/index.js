@@ -3,6 +3,7 @@ import unitReducer from "./unitReducers";
 import cartReducer from "./cartReducer";
 import addressReducer from "./addressReducer";
 import RelatedProductsReducers from "./RelatedProductsReducers";
+import ProductReducer from "./productReducer";
 import RelateReview from "./RelateReview";
 
 const rootReducer = combineReducers({
@@ -10,7 +11,8 @@ const rootReducer = combineReducers({
     cart: cartReducer,
     address:addressReducer,
     relatedProducts: RelatedProductsReducers,
-    reviews: RelateReview
+    reviews: RelateReview,
+    products: ProductReducer
 });
 
 export default rootReducer;

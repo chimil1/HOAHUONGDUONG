@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Loading from "./layout/Loading";
@@ -22,25 +22,26 @@ function Productdetail() {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state.unit);
   const relatedProductsState = useSelector(
-      (state) => state.relatedProducts || []
+    (state) => state.relatedProducts || []
   );
-  const token = localStorage.getItem("token");
-  console.log("Token:", token);
+  const location = useLocation();
+  const { orderId } = location.state || {};
+  const userId = localStorage.getItem("user");
   const initialImage =
-      Array.isArray(productState.units.images) &&
+    Array.isArray(productState.units.images) &&
       productState.units.images.length > 0
-          ? productState.units.images[0].product_img
-          : "";
+      ? productState.units.images[0].product_img
+      : "";
   const [currentImage, setCurrentImage] = useState(initialImage);
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
   };
-
+  console.log(orderId);
 
   useEffect(() => {
-    // Kiểm tra xem dữ liệu sản phẩm có sẵn trong Redux hay không
+    
     if (!productState.units || !productState.units.id) {
-      dispatch(fetchProductDetails(id)); // Gọi lại sản phẩm nếu chưa có
+      dispatch(fetchProductDetails(id)); 
     }
   }, [dispatch, id, productState.units]);
 
@@ -56,8 +57,8 @@ function Productdetail() {
 
   useEffect(() => {
     if (
-        Array.isArray(productState.units.images) &&
-        productState.units.images.length > 0
+      Array.isArray(productState.units.images) &&
+      productState.units.images.length > 0
     ) {
       setCurrentImage(productState.units.images[0].product_img);
     }
@@ -69,7 +70,7 @@ function Productdetail() {
   }, [dispatch, id]);
 
   const submit = () => {
-    if (!token) {
+    if (!userId) {
       Swal.fire({
         icon: "warning",
         title: "Bạn cần đăng nhập để thêm vào giỏ hàng",
@@ -86,7 +87,7 @@ function Productdetail() {
     const data = {
       product_id: product.id,
       quantity,
-      options: selectedOptions, // Gửi các tùy chọn đã chọn
+      options: selectedOptions, 
     };
 
     dispatch(addToCart(data));
@@ -129,11 +130,34 @@ function Productdetail() {
     setReviewText(e.target.value);
   };
 
-  const handleRatingChange = (e) => {
-    setRating(parseInt(e.target.value));
+
+  const handleRatingChange = (value) => {
+    setRating(value);
   };
+  const offensiveWords = [
+    "cc",
+    "cl",
+    "clm",
+    "như cức",
+    "lol",
+    "mẹ",
+    "mọe",
+  ];
+
   const handleReviewSubmit = (e) => {
     e.preventDefault();
+    const containsOffensiveWords = offensiveWords.some((word) =>
+      comment.toLowerCase().includes(word.toLowerCase())
+    );
+
+    if (containsOffensiveWords) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Đánh giá không hợp lệ',
+        text: 'Vui lòng kiểm tra lại nội dung đánh giá của bạn. Các từ ngữ thô tục không được phép.',
+      });
+      return;
+    }
 
     if (!comment.trim() || rating === 0) {
       alert("Vui lòng nhập đánh giá và chọn số sao.");
@@ -142,17 +166,34 @@ function Productdetail() {
 
     const reviewData = {
       productId: id,
-      // userId: 16,
+      order_id: orderId,
       rating,
       comment,
     };
-
+    navigate(location.pathname, { state: {} });
     dispatch(addReview(reviewData));
-
-
     setReviewText("");
     setRating(0);
+    Swal.fire({
+      icon: 'success',
+      title: 'Đánh giá thành công!',
+      text: 'Cảm ơn bạn đã chia sẻ ý kiến về sản phẩm.',
+      showConfirmButton: true,
+      confirmButtonText: 'Đóng',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(location.pathname, { state: {} });
+      }
+    });
   };
+
+  const calculateAverageRating = (reviews) => {
+    if (!reviews || reviews.length === 0) return 0;
+
+    const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+    return totalRating / reviews.length;
+  };
+
 
   if (!product) {
     return <p>Không có dữ liệu sản phẩm.</p>;
@@ -171,195 +212,208 @@ function Productdetail() {
   }
 
   return (
-      <div>
-        <Header></Header>
-        <hr></hr>
-        <div className="container">
-          <div className="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-            <Link to="/Home" className="stext-109 cl8 hov-cl1 trans-04">
-              Home
-              <i
-                  className="fa fa-angle-right m-l-9 m-r-10"
-                  aria-hidden="true"
-              ></i>
-            </Link>
+    <div>
+      <Header></Header>
+      <hr></hr>
+      <div className="container">
+        <div className="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+          <Link to="/Home" className="stext-109 cl8 hov-cl1 trans-04">
+            Home
+            <i
+              className="fa fa-angle-right m-l-9 m-r-10"
+              aria-hidden="true"
+            ></i>
+          </Link>
 
-            <Link to="/Product" className="stext-109 cl8 hov-cl1 trans-04">
-              Men
-              <i
-                  className="fa fa-angle-right m-l-9 m-r-10"
-                  aria-hidden="true"
-              ></i>
-            </Link>
+          <Link to="/Product" className="stext-109 cl8 hov-cl1 trans-04">
+            Men
+            <i
+              className="fa fa-angle-right m-l-9 m-r-10"
+              aria-hidden="true"
+            ></i>
+          </Link>
 
-            <span className="stext-109 cl4">{product.product_name}</span>
-          </div>
+          <span className="stext-109 cl4">{product.product_name}</span>
         </div>
+      </div>
 
-        <section className="sec-product-detail bg-light p-5">
-          <div className="container">
-            <div className="row">
-              <aside className="col-lg-6">
-                <div className="border rounded-4 mb-3 d-flex justify-content-center">
-                  {currentImage ? (
-                      <Link className="rounded-4">
-                        <img
-                            style={{
-                              maxWidth: "100%",
-                              maxHeight: "100vh",
-                              margin: "auto",
-                            }}
-                            className="rounded-4 fit"
-                            src={currentImage}
-                        />
-                      </Link>
-                  ) : (
-                      <p>Không có hình ảnh nào cho sản phẩm này.</p>
-                  )}
-                </div>
-                <div className="d-flex justify-content-center mb-3">
-                  {Array.isArray(productState.units.images) &&
+      <section className="sec-product-detail bg-light p-5">
+        <div className="container">
+          <div className="row">
+            <aside className="col-lg-6">
+              <div className="border rounded-4 mb-3 d-flex justify-content-center">
+                {currentImage ? (
+                  <Link className="rounded-4">
+                    <img
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100vh",
+                        margin: "auto",
+                      }}
+                      className="rounded-4 fit"
+                      src={currentImage}
+                    />
+                  </Link>
+                ) : (
+                  <p>Không có hình ảnh nào cho sản phẩm này.</p>
+                )}
+              </div>
+              <div className="d-flex justify-content-center mb-3">
+                {Array.isArray(productState.units.images) &&
                   productState.units.images.length > 0 ? (
-                      productState.units.images.slice(0, 5).map((item, index) => (
-                          <Link
-                              className="border mx-1 rounded-2 item-thumb"
-                              data-type="image"
-                              key={index}
-                              onClick={() => handleThumbnailClick(item.product_img)}
-                              href={item.product_img}
-                          >
-                            <img
-                                width="60"
-                                height="60"
-                                className="rounded-2"
-                                src={item.product_img}
-                                alt={`Product Thumbnail ${index + 1}`}
-                            />
-                          </Link>
-                      ))
-                  ) : (
-                      <p>Không có hình ảnh nào cho sản phẩm này.</p>
-                  )}
-                </div>
-              </aside>
+                  productState.units.images.slice(0, 5).map((item, index) => (
+                    <Link
+                      className="border mx-1 rounded-2 item-thumb"
+                      data-type="image"
+                      key={index}
+                      onClick={() => handleThumbnailClick(item.product_img)}
+                      href={item.product_img}
+                    >
+                      <img
+                        width="60"
+                        height="60"
+                        className="rounded-2"
+                        src={item.product_img}
+                        alt={`Product Thumbnail ${index + 1}`}
+                      />
+                    </Link>
+                  ))
+                ) : (
+                  <p>Không có hình ảnh nào cho sản phẩm này.</p>
+                )}
+              </div>
+            </aside>
 
-              <div className="col-md-6 col-lg-5 p-b-10">
-                <div className="p-r-50 p-t-5 p-lr-0-lg">
-                  <h4 className="mtext-105 cl2 js-name-detail p-b-14">
-                    {product.product_name}
-                  </h4>
-                  <span className="mtext-106 cl2 p-b-5">
-                  Giá bán: {formatPrice(product.price)}
-                </span>
-                  <div className="mt-3">
-                    <h5 className="mtext-100">Mô tả</h5>
-                    <div className="mt-2">
-                      <p className="stext-102 text-justify">
-                        {product.description}
-                      </p>
+            <div className="col-md-6 col-lg-5 p-b-10">
+              <div className="p-r-50 p-t-5 p-lr-0-lg">
+                <h4 className="mtext-105 cl2 js-name-detail p-b-14">
+                  {product.product_name}
+                  <div className="d-flex align-items-center">
+                    <span className="mtext-106 cl2">
+                      {`${calculateAverageRating(reviewsState.units).toFixed(1)} / 5`}
+                    </span>
+                    <div className="ms-2">
+                      
+                      <i
+                        className={`zmdi zmdi-star ${calculateAverageRating(reviewsState.units) >= 1 ? "text-warning" : "text-muted"}`}
+                        style={{ fontSize: "25px" }}
+                      ></i>
                     </div>
                   </div>
 
-                  <div className="p-t-33">
-                    {product.options.map((options) => (
-                        // item.option_name
-                        <div className="flex-w flex-r-m p-b-10">
-                          <div className="size-203 flex-c-m respon6">
-                            {options.option_name}
-                          </div>
+                </h4>
+                <span className="mtext-106 cl2 p-b-5">
+                  Giá bán: {formatPrice(product.price)}
+                </span>
+                <div className="mt-3">
+                  <h5 className="mtext-100">Mô tả</h5>
+                  <div className="mt-2">
+                    <p className="stext-102 text-justify">
+                      {product.description}
+                    </p>
+                  </div>
+                </div>
 
-                          <div className="size-204 respon6-next">
-                            <select
-                                className="form-select form-select-sm"
-                                name="time"
-                            >
-                              <option>Chọn {options.option_name}</option>
-                              {options.option_values.map((values) => (
-                                  <option value={values.id}>
-                                    {values.value_name}
-                                  </option>
-                              ))}
-                            </select>
-                            <div className="dropDownSelect2"></div>
-                          </div>
-                        </div>
-                    ))}
-
+                <div className="p-t-33">
+                  {product.options.map((options) => (
+                    // item.option_name
                     <div className="flex-w flex-r-m p-b-10">
-                      <div className="size-203 flex-c-m respon6">Số lượng</div>
-                      <div className="size-204 flex-w flex-m respon6-next">
-                        <div className="wrap-num-product flex-w m-r-20 m-tb-10">
-                          <div
-                              className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
-                              onClick={handleDecrease}
-                          >
-                            <i className="fs-16 zmdi zmdi-minus"></i>
-                          </div>
+                      <div className="size-203 flex-c-m respon6">
+                        {options.option_name}
+                      </div>
 
-                          <input
-                              className="mtext-104 cl3 txt-center num-product"
-                              type="number"
-                              name="num-product"
-                              value={quantity}
-                              readOnly
-                          />
+                      <div className="size-204 respon6-next">
+                        <select
+                          className="form-select form-select-sm"
+                          name="time"
+                        >
+                          <option>Chọn {options.option_name}</option>
+                          {options.option_values.map((values) => (
+                            <option value={values.id}>
+                              {values.value_name}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="dropDownSelect2"></div>
+                      </div>
+                    </div>
+                  ))}
 
-                          <div
-                              className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
-                              onClick={handleIncrease}
-                          >
-                            <i className="fs-16 zmdi zmdi-plus"></i>
-                          </div>
+                  <div className="flex-w flex-r-m p-b-10">
+                    <div className="size-203 flex-c-m respon6">Số lượng</div>
+                    <div className="size-204 flex-w flex-m respon6-next">
+                      <div className="wrap-num-product flex-w m-r-20 m-tb-10">
+                        <div
+                          className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+                          onClick={handleDecrease}
+                        >
+                          <i className="fs-16 zmdi zmdi-minus"></i>
+                        </div>
+
+                        <input
+                          className="mtext-104 cl3 txt-center num-product"
+                          type="number"
+                          name="num-product"
+                          value={quantity}
+                          readOnly
+                        />
+
+                        <div
+                          className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+                          onClick={handleIncrease}
+                        >
+                          <i className="fs-16 zmdi zmdi-plus"></i>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="d-grid gap-2 d-md-block">
-                    <button className="btn btn-dark btn-lg m-2 rounded-pill"
-                            onClick={handleSubmit(submit)}>
-                      Thêm vào giỏ
-                    </button>
+                </div>
+                <div className="d-grid gap-2 d-md-block">
+                  <button className="btn btn-dark btn-lg m-2 rounded-pill"
+                    onClick={handleSubmit(submit)}>
+                    Thêm vào giỏ
+                  </button>
 
-                    <button className="btn btn-dark btn-lg rounded-pill">
-                      Mua hàng
-                    </button>
-                  </div>
+                  <button className="btn btn-dark btn-lg rounded-pill">
+                    Mua hàng
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="container mt-5">
-              <div className="card">
-                <div className="card-header">
-                  <ul className="nav nav-tabs card-header-tabs" role="tablist">
-                    <li className="nav-item">
-                      <a
-                          className="nav-link active text-dark fw  text-center"
-                          id="description-tab"
-                          data-bs-toggle="tab"
-                          href="#description"
-                          role="tab"
-                          aria-controls="description"
-                          aria-selected="true"
-                      >
-                        Mô tả sản phẩm
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                          className="nav-link text-dark fw-bold"
-                          id="reviews-tab"
-                          data-bs-toggle="tab"
-                          href="#reviews"
-                          role="tab"
-                          aria-controls="reviews"
-                          aria-selected="false"
-                      >
-                        Đánh giá
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+          <div className="container mt-5">
+            <div className="card">
+              <div className="card-header">
+                <ul className="nav nav-tabs card-header-tabs" role="tablist">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active text-dark fw  text-center"
+                      id="description-tab"
+                      data-bs-toggle="tab"
+                      href="#description"
+                      role="tab"
+                      aria-controls="description"
+                      aria-selected="true"
+                    >
+                      Mô tả sản phẩm
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link text-dark fw-bold"
+                      id="reviews-tab"
+                      data-bs-toggle="tab"
+                      href="#reviews"
+                      role="tab"
+                      aria-controls="reviews"
+                      aria-selected="false"
+                    >
+                      Đánh giá
+                    </a>
+                  </li>
+                </ul>
+              </div>
 
               <div className="card-body">
                 <div className="tab-content">
@@ -416,11 +470,11 @@ function Productdetail() {
                           <p>Không có đánh giá nào.</p>
                         )}
 
+                        
+                        {orderId ? (
                           <form onSubmit={handleReviewSubmit}>
                             <div className="mb-3">
-                              <label htmlFor="review" className="form-label">
-                                Đánh giá của bạn
-                              </label>
+                              <label htmlFor="review" className="form-label">Đánh giá của bạn</label>
                               <textarea
                                 className="form-control"
                                 id="review"
@@ -431,21 +485,41 @@ function Productdetail() {
                               ></textarea>
                             </div>
 
-                            <div className="mb-3">
-                              <label className="form-label">Đánh giá sao</label>
-                              <select
-                                className="form-select"
-                                value={rating}
-                                onChange={handleRatingChange}
-                              >
-                                <option value={0}>Chọn sao</option>
-                                <option value={1}>1 Sao</option>
-                                <option value={2}>2 Sao</option>
-                                <option value={3}>3 Sao</option>
-                                <option value={4}>4 Sao</option>
-                                <option value={5}>5 Sao</option>
-                              </select>
-                            </div>
+                            <form onSubmit={(e) => e.preventDefault()}>
+                              <div className="mb-3">
+                                <label
+                                  className="form-label"
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    marginBottom: "50px", 
+                                  }}
+                                >
+                                  Vui lòng chọn số sao
+                                </label>
+                                <div
+                                  className="stars"
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                 
+                                  {[1, 2, 3, 4, 5].map((starValue) => (
+                                    <i
+                                      key={starValue}
+                                      className={`zmdi zmdi-star ${rating >= starValue ? "text-warning" : "text-muted"}`}
+                                      style={{
+                                        fontSize: "25px",
+                                        cursor: "pointer",
+                                        margin: "0 25px", 
+                                      }}
+                                      onClick={() => handleRatingChange(starValue)} 
+                                    ></i>
+                                  ))}
+                                </div>
+                              </div>
+                            </form>
 
                             <div className="text-end">
                               <button type="submit" className="btn btn-dark ">
@@ -453,6 +527,9 @@ function Productdetail() {
                               </button>
                             </div>
                           </form>
+                        ) : (
+                          <p className="text-center"></p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -463,67 +540,67 @@ function Productdetail() {
         </div>
       </section>
 
-        <section className="sec-relate-product bg0 p-t-45 p-b-105">
-          <div className="container">
-            <div className="p-b-45">
-              <h3 className="ltext-106 cl5 txt-center">Sản phẩm liên quan</h3>
-            </div>
-            <div className="wrap-slick2">
-              <div className="row isotope-grid">
-                {relatedProductsState.loading ? (
-                    <p>Đang tải sản phẩm...</p>
-                ) : relatedProductsState.relatedProducts &&
+      <section className="sec-relate-product bg0 p-t-45 p-b-105">
+        <div className="container">
+          <div className="p-b-45">
+            <h3 className="ltext-106 cl5 txt-center">Sản phẩm liên quan</h3>
+          </div>
+          <div className="wrap-slick2">
+            <div className="row isotope-grid">
+              {relatedProductsState.loading ? (
+                <p>Đang tải sản phẩm...</p>
+              ) : relatedProductsState.relatedProducts &&
                 relatedProductsState.relatedProducts.length > 0 ? (
-                    relatedProductsState.relatedProducts.map((relatedProduct) => (
-                        <div
-                            className="col-sm-6 col-md-4 col-lg-3 p-b-35"
-                            key={relatedProduct.id}
+                relatedProductsState.relatedProducts.map((relatedProduct) => (
+                  <div
+                    className="col-sm-6 col-md-4 col-lg-3 p-b-35"
+                    key={relatedProduct.id}
+                  >
+                    <div className="block2">
+                      <div className="block2-pic hov-img0 position-relative">
+                        <img
+                          src={
+                            relatedProduct.product_img
+                          }
+                          alt={relatedProduct.product_name || "Product Image"}
+                          className="img-fluid"
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-dark text-white mt-2 position-absolute cart-button"
+                          onClick={handleSubmit(submit)}
                         >
-                          <div className="block2">
-                            <div className="block2-pic hov-img0 position-relative">
-                              <img
-                                  src={
-                                    relatedProduct.product_img
-                                  }
-                                  alt={relatedProduct.product_name || "Product Image"}
-                                  className="img-fluid"
-                              />
-                              <button
-                                  type="button"
-                                  className="btn btn-dark text-white mt-2 position-absolute cart-button"
-                                  onClick={handleSubmit(submit)}
-                              >
-                                <i className="fas fa-cart-plus"></i>
-                              </button>
-                            </div>
-                            <div className="block2-txt flex-w flex-t p-t-14">
-                              <div className="block2-txt-child1 flex-col-l">
-                                <Link
-                                    to={`/product/${relatedProduct.id}`}
-                                    className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                                >
-                                  {relatedProduct.product_name || "Tên sản phẩm"}
-                                </Link>
-                                <span className="stext-105 cl3">
+                          <i className="fas fa-cart-plus"></i>
+                        </button>
+                      </div>
+                      <div className="block2-txt flex-w flex-t p-t-14">
+                        <div className="block2-txt-child1 flex-col-l">
+                          <Link
+                            to={`/product/${relatedProduct.id}`}
+                            className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
+                          >
+                            {relatedProduct.product_name || "Tên sản phẩm"}
+                          </Link>
+                          <span className="stext-105 cl3">
                             {relatedProduct.price
-                                ? formatPrice(relatedProduct.price)
-                                : "Liên hệ"}
+                              ? formatPrice(relatedProduct.price)
+                              : "Liên hệ"}
                           </span>
-                              </div>
-                            </div>
-                          </div>
                         </div>
-                    ))
-                ) : (
-                    <p className="text-center">Không có sản phẩm liên quan.</p>
-                )}
-              </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center">Không có sản phẩm liên quan.</p>
+              )}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <Footer></Footer>
-      </div>
+      <Footer></Footer>
+    </div>
   );
 }
 
