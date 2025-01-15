@@ -432,7 +432,7 @@ function Home() {
       </section>
       {/* Modall */}
       <Footer />
-    </div>
+      </div>
   );
 }
 

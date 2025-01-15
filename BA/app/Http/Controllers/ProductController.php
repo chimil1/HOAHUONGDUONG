@@ -8,6 +8,7 @@ use App\Models\Product_image;
 use App\Models\SkuValue;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {
@@ -40,84 +41,58 @@ class ProductController extends Controller
             $request->validate([
                 'product_name' => 'required',
                 'price' => 'required',
-                'status' => 'required|numeric',
+                'status' => 'required',
                 'category_id' => 'required',
-                'images' => 'required',
+                // 'images' => 'required',
             ]);
-
+            
             $product = Product::create($request->all());
-            // Lưu hình ảnh
-            if ($request->hasFile('images')) {
-                foreach ($request->images as $image) {
-                    $path = $image->store('images', 'public');  // Lưu vào thư mục public/products
-                    $product->images()->create([
-                        'path' => $path,
-                        'product_img' => asset('storage/' . $path), // Lưu đường dẫn hình ảnh
-                    ]);
-                }
-            }
-            // if ($request->hasFile('images')) {
-            //     foreach ($request->file('images') as $image) {
-            //         $path = $image->store('images', 'public');
-            //         $product->images()->create([
-            //             'path' => $path,
-            //         ]);
-            //     }
-            // }
-
             if ($product) {
-                // if (is_array($request->sku) && !empty($request->sku)) {
-                // SAVE IMG
-                foreach ($request->images as $imageUrl) {
-                    Product_image::create([
-                        'product_img' => $imageUrl,
-                        'product_id' => $product->id,
-                    ]);
+                if ($request->hasFile('images')) {
+                    foreach ($request->file("images") as $image) {
+                        $filename = time() . '-' . $image->getClientOriginalName();
+                        $image->storeAs('images', $filename, 'public');
+                        $img = new Product_image();
+                        $img->product_id = $product->id;
+                        $img->product_img = $filename;
+                        $img->save();
+                    }
                 }
                 // Save options
-                if ($request->options) {
-
-                    foreach ($request->options as $optionIndex => $option) {
-                        // $price = $request->price[$i] ?? null;
-                        // $sku = $request->sku[$index] ?? null;
+                if ($request->input('options')) {
+                    $options = json_decode($request->input('options'), true);
+                    $variants = json_decode($request->input('variants'), true);
+                    foreach ($options as $optionIndex => $option) {
                         $optionIndex++;
                         $newOption = $product->options()->create(
                             [
                                 'product_id' => $product->id,
-                                'number_option' => $optionIndex,
                                 'option_name' => $option['name'],
                             ]
                         );
-                        // Save option values
+                        // Save option values   
                         if ($newOption) {
-                            foreach ($option['values'] as $index => $value) {
-                                $index += 1;
-                                $newOptionValue = $newOption->optionValues()->create(
+                            foreach ($option['values'] as $value) {
+                                $newOption->optionValues()->create(
                                     [
-                                        'number_value' => $index,
                                         'product_id' => $product->id,
                                         'option_id' => $newOption->id,
                                         'value_name' => $value
                                     ]
                                 );
-                                $newSku = $product->productSkus()->create(
-                                    [
-
-                                        'product_id' => $product->id,
-                                        // 'price' => $price,
-                                        // 'sku' => $sku,
-                                    ]
-                                );
-                                $newSku->skuValues()->create(
-                                    [
-                                        'product_sku_id' => $newSku->id,
-                                        'product_id' => $product->id,
-                                        'option_id' => $newOption->id,
-                                        'option_value_id' => $newOptionValue->id
-                                    ]
-                                );
                             }
                         }
+                    }
+                    // 2. Tạo tổ hợp từ options
+                    $optionValues = Arr::pluck($options, 'values');
+                    $combinations = $this->generateCombinations($optionValues, $variants);
+                    foreach ($combinations as $index => $skuValue) {
+                        SkuValue::create([
+                            'product_id' => $product->id,
+                            'sku_value' => $skuValue['sku_value'],
+                            'quantity_sku' => $skuValue['quantity'],
+                            'price_sku' => $skuValue['price'],
+                        ]);
                     }
                 }
             }
@@ -257,6 +232,42 @@ class ProductController extends Controller
     {
         $product->delete();
         return response()->json(['message' => 'Xóa sản phẩm thành công.']);
+    }
+
+    private function generateCombinations($options, $variants)
+    {
+        // Tạo tất cả các tổ hợp từ danh sách options
+        $result = [[]];
+        foreach ($options as $propertyValues) {
+            $tmp = [];
+            foreach ($result as $resultItem) {
+                foreach ($propertyValues as $propertyValue) {
+                    $tmp[] = array_merge($resultItem, [$propertyValue]);
+                }
+            }
+            $result = $tmp;
+        }
+
+        // Biến tổ hợp thành chuỗi dạng "Red-S", "Blue-M", ...
+        $flattenedOptions = array_map(fn($combination) => implode('-', $combination), $result);
+
+        // Kết hợp tổ hợp với variants
+        $flattenedVariants = [];
+        foreach ($flattenedOptions as $index => $skuValue) {
+            $variantIndex = floor($index / count($variants[0]['quantityOption'])); // Xác định variant
+            $innerIndex = $index % count($variants[0]['quantityOption']); // Xác định index bên trong variant
+
+            $quantity = $variants[$variantIndex]['quantityOption'][$innerIndex] ?? 0;
+            $price = $variants[$variantIndex]['priceOption'][$innerIndex] ?? 0;
+
+            $flattenedVariants[] = [
+                'sku_value' => $skuValue,
+                'quantity' => $quantity,
+                'price' => $price,
+            ];
+        }
+
+        return $flattenedVariants;
     }
 
 }

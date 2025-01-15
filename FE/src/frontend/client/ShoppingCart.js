@@ -1,13 +1,13 @@
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-import { CartItem, removeFromCart, fetchCoupons } from "../actions/unitActions";
+import { CartItem, removeFromCart, fetchCoupons,updateCartQuantity,fetchCategory } from "../actions/unitActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link} from "react-router-dom";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Loading from "./layout/Loading";
-import "./voucher.css"
+import "./voucher.css";
 
 function ShoppingCart() {
   const dispatch = useDispatch();
@@ -16,6 +16,8 @@ function ShoppingCart() {
   const { handleSubmit } = useForm();
   const navigate = useNavigate();
   const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [quantities, setQuantities] = useState({});
 
   //format giá sản phẩm
   const formatCurrency = (amount) => {
@@ -32,11 +34,14 @@ function ShoppingCart() {
     return text;
   };
 
+
+
+
   useEffect(() => {
     dispatch(CartItem());
+    dispatch(fetchCategory());
     dispatch(fetchCoupons());
   }, [dispatch]);
-
 
   const handleApplyCoupon = () => {
     if (selectedCoupon) {
@@ -56,13 +61,32 @@ function ShoppingCart() {
     }
   };
 
-
   const units = Array.isArray(cartitems.units) ? cartitems.units : [];
 
-  const cartTotal = units.reduce(
-    (total, item) => total + (item.product && item.product.price ? item.product.price * item.quantity : 0),0);
-  const discount = selectedCoupon ? (cartTotal * selectedCoupon.discount_value) / 100 : 0;
-  const totalWithDiscount = cartTotal - discount;
+  const handleCheckboxChange = (id) => {
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((itemId) => itemId !== id)
+        : [...prevSelected, id]
+    );
+  };
+
+  const selectedUnits = units.filter((item) => selectedItems.includes(item.id));
+
+  const selectedCartTotal = selectedUnits.reduce(
+    (total, item) =>
+      total +
+      (item.product && item.product.price
+        ? item.product.price * (quantities[item.product.id] || item.quantity)
+        : 0),
+    0
+  );
+
+  const selectedDiscount = selectedCoupon
+    ? (selectedCartTotal * selectedCoupon.discount_value) / 100
+    : 0;
+
+  const selectedTotalWithDiscount = selectedCartTotal - selectedDiscount;
 
   // Hàm xóa sản phẩm khỏi giỏ hàng
   const handleRemoveItem = (id) => {
@@ -71,25 +95,71 @@ function ShoppingCart() {
       icon: "success",
       title: "Xóa sản phẩm thành công!",
       showConfirmButton: false,
-      timer: 1200,
+      timer: 1500,
     });
     dispatch(CartItem());
-  };  
-  const payment = () => {
-    if (units.length > 0) {
-      navigate("/payment", {
-        state: { totalWithDiscount },
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Không có sản phẩm trong giỏ hàng!",
-        showConfirmButton: false,
-        timer: 1200,
-      });
-    }
+    dispatch(fetchCoupons());
   };
 
+  const payment = () => {
+    if (selectedItems.length === 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Vui lòng chọn ít nhất một sản phẩm để thanh toán!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
+    // Lấy danh sách sản phẩm được checkbox
+    const selectedProducts = units.filter((item) =>
+      selectedItems.includes(item.id)
+    );
+
+
+    // Điều hướng sang trang thanh toán và gửi dữ liệu
+    navigate("/payment", {
+      state: { selectedProducts ,selectedTotalWithDiscount},
+    });
+  };
+
+
+  
+  const handleQuantityChange = async (id, newQuantity) => {
+    try {
+      // Kiểm tra sản phẩm có tồn tại trong giỏ hàng trước khi cập nhật
+      const item = units.find((item) => item.id === id);
+      if (!item) {
+        throw new Error("Item not found");
+      }
+      // Gọi action để cập nhật số lượng
+      await dispatch(updateCartQuantity(id, newQuantity));
+      // Cập nhật lại state số lượng
+      setQuantities((prev) => ({ ...prev, [id]: newQuantity }));
+      // Không hiển thị thông báo thành công
+    } catch (error) {
+      // Không hiển thị thông báo lỗi nữa, chỉ để lỗi
+      console.error("Cập nhật thất bại:", error.message || "Vui lòng thử lại.");
+    }
+  };
+  
+  const handleIncrease = (id) => {
+    const currentQuantity = quantities[id] || 1;
+    const newQuantity = currentQuantity + 1;
+    handleQuantityChange(id, newQuantity);
+  };
+  
+  const handleDecrease = (id) => {
+    const currentQuantity = quantities[id] || 1;
+    const newQuantity = Math.max(currentQuantity - 1, 1);
+    handleQuantityChange(id, newQuantity);
+  };
+  
+  
+
+  
+  // Tổng số sản phẩm trong giỏ hàng
+const totalItemsInCart = units.reduce((total, item) => total + item.quantity, 0);
   console.log("CartItem:", cartitems.units);
 
   if (cartitems.loading || coupons.loading) {
@@ -97,7 +167,7 @@ function ShoppingCart() {
       <p>
         <Loading></Loading>
       </p>
-    ); 
+    );
   }
   if (cartitems.error) {
     return <p>Error: {cartitems.error}</p>;
@@ -110,20 +180,20 @@ function ShoppingCart() {
     <div>
       <Header></Header>
 
-      <form class="bg0 p-t-75 p-b-85 m-t-80">
+      <form class="bg0 p-t-75 p-b-85">
         <div class="container">
           <div class="row">
-            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+            <div class="col-lg-10 col-xl-8 m-lr-auto m-b-50">
               <div class="m-l-25 m-r--38 m-lr-0-xl">
                 <div class="wrap-table-shopping-cart">
                   <table class="table-shopping-cart">
                     <thead>
-                      <tr class="table_head">
-                        <th class="column-1">Hình ảnh</th>
-                        <th class="column-2">Tên sản phẩm</th>
-                        <th class="column-3">Giá</th>
-                        <th class="olumn-4">Số lượng</th>
-                        <th class="column-5">Tổng cộng</th>
+                      <tr style={{height:'50px'}}>
+                        <th colSpan="100%">
+                          <p class="text-left fw-bold m-2">
+                          Bạn đang có {totalItemsInCart} sản phẩm trong giỏ hàng
+                          </p>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -140,43 +210,81 @@ function ShoppingCart() {
                               color: "#333",
                             }}
                           >
-                            Giỏ hàng trống!
+                            <p style={{fontSize:'50px'}}><i class="fa fa-shopping-cart"></i></p>
+                            <p style={{fontSize:'15px', margin:'10px'}}>Không có sản phẩm nào trong giỏ hàng.</p>
+                            <button className="btn btn-dark" onClick={() => navigate('/product')}>
+                            <i class="fa fa-reply"></i> Tiếp tục mua hàng
+                          </button>
                           </td>
                         </tr>
                       )}
                       {units.map((item) =>
                         item.product ? (
                           <tr class="table_row" key={item.product.id}>
+                              <td className="column-1 ">
+                                <input
+                                  type="checkbox"
+                                  style={{ width: "15px", height: "15px" }}
+                                  checked={selectedItems.includes(item.id)}
+                                  onChange={() => handleCheckboxChange(item.id)}
+                                />
+                              </td>
+                            
                             <td class="column-1">
-                              <button
-                                class="how-itemcart1"
-                                onClick={() => handleRemoveItem(item.id)}
+                              <Link 
+                               style={{width:'100px', height:'100px'}}
+                                to={`/Product/${item.product.id}`}
                               >
                                 <img
                                   src="../../asset/images/item-cart-04.jpg"
                                   alt="IMG"
                                 />
-                              </button>
+                              </Link >
                             </td>
                             <td class="column-2">
-                              {truncateText(item.product.product_name,20)}
+                            <Link to={`/Product/${item.product.id}`}>
+                              {truncateText(item.product.product_name, 20)}
+                              </Link>
                             </td>
                             <td class="column-3">
+                            <div className="flex-w flex-r-m p-b-5">
+                              <form className="wrap-num-product flex-w m-r-10 m-tb-5">
+                                <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+                                onClick={() => handleDecrease(item.id)}>
+                                  <i className="fs-20 zmdi zmdi-minus"></i>
+                                </div>
+
+                                <input
+                                  className="mtext-104 cl3 txt-center num-product"
+                                  type="number"
+                                  id="quantity"
+                                  name="quantity"
+                                  value={quantities[item.product.id] || item.quantity}
+                                  
+                                />
+                                <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+                                onClick={() => handleIncrease(item.id)}>
+                                  <i className="fs-20 zmdi zmdi-plus"></i>
+                                </div>
+                              </form>
+                            </div>
+                          </td>
+                            <td class="column-4">
                               {formatCurrency(item.product.price)}
                             </td>
-                            <td class="column-4 ">
-                              <input
-                                type="number"
-                                name="num-product1"
-                                value={item.quantity}
-                              />
-                            </td>
+                          
                             <td class="column-5">
-                              {" "}
-                              {formatCurrency(
-                                item.product.price * item.quantity
-                              )}
+                              Tổng giá:{" "}
+                              <p style={{ color: "red" }}>
+                                {" "}
+                                {formatCurrency(
+                                  item.product.price * (quantities[item.product.id] || item.quantity)
+                                )}
+                              </p>
+                              <p style={{textAlign:'center'}}> <button  onClick={() => handleRemoveItem(item.id)}> <i class="fa fa-trash-o"></i></button></p>
+                             
                             </td>
+
                           </tr>
                         ) : (
                           <tr key={item.id}>
@@ -255,7 +363,8 @@ function ShoppingCart() {
                                       name="discount"
                                       className="form-check-input"
                                       disabled={
-                                        item.minium_order_value > cartTotal
+                                        item.minium_order_value >
+                                        selectedCartTotal
                                       }
                                       checked={selectedCoupon?.id === item.id}
                                       onChange={(e) =>
@@ -276,7 +385,8 @@ function ShoppingCart() {
                                         đơn hàng
                                       </div>
                                       <div>
-                                        {item.minium_order_value > cartTotal ? (
+                                        {item.minium_order_value >
+                                          selectedCartTotal ? (
                                           <p style={{ color: "red" }}>
                                             Đơn hàng chưa đạt giá trị tối thiểu{" "}
                                             {formatCurrency(
@@ -321,41 +431,42 @@ function ShoppingCart() {
               </div>
             </div>
 
-            <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
-              <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+            <div class="col-sm-10 col-lg-7 col-xl-4 m-lr-auto m-b-50">
+              <div class="bor10 m-l-20 m-lr-0-xl m-r-40 p-3">
                 <h4 class="mtext-109 cl2 p-b-30">Tổng giỏ hàng</h4>
 
                 <div class="flex-w flex-t bor12 p-b-13">
                   <div class="size-208">
-                    <span class="stext-110 cl2">Tổng phụ:</span>
+                    <span class="stext-110 cl2">Tổng cộng:</span>
                   </div>
 
                   <div class="size-209">
                     <span class="mtext-110 cl2">
-                      {formatCurrency(cartTotal)}
+                      {formatCurrency(selectedCartTotal)}
                     </span>
                   </div>
                 </div>
 
                 <div class="flex-w flex-t p-t-27 p-b-33">
                   <div class="size-208">
-                    <span class="mtext-101 cl2">Tổng cộng:</span>
+                    <span class="mtext-101 cl2">Thành tiền:</span>
                   </div>
 
                   <div class="size-209 p-t-1">
                     <span class="mtext-110 cl2">
-                      {formatCurrency(totalWithDiscount)}
+                      {formatCurrency(selectedTotalWithDiscount)}
                     </span>
                   </div>
                 </div>
-
-                <button
-                  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-                  type="submit"
-                  onClick={handleSubmit(payment)}
-                >
-                  Thanh toán
-                </button>
+                {selectedItems.length > 0 && (
+                  <button
+                    className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                    type="submit"
+                    onClick={payment}
+                  >
+                    Thanh toán
+                  </button>
+                )}
               </div>
             </div>
           </div>

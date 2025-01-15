@@ -1,10 +1,5 @@
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #f4f6f8;
-  }
-  
-  .add-product-container {
+
+.add-product-container {
     max-width: 800px;
     margin: 40px auto;
     padding: 40px;

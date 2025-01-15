@@ -895,3 +895,32 @@ export const vnpayReturn = (params,navigate) => {
         }
     };
 };
+
+export const updateCartQuantity = (id, quantity) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token'); // Hoặc lấy từ session hoặc state tùy theo cách bạn lưu trữ token
+
+    const response = await axios.put(
+      `http://localhost:8000/api/cartItem/${id}`,
+      { quantity },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Gửi token trong header
+        },
+      }
+    );
+
+    console.log("Update Success:", response.data);
+
+    dispatch({
+      type: "UPDATE_CART_QUANTITY_SUCCESS",
+      payload: { id, quantity },
+    });
+  } catch (error) {
+    console.error("Update Failed:", error.response || error);
+    throw error;
+  }
+};
+
+
+

@@ -12,6 +12,20 @@ const initialState = {
         return { ...state, loading: false, units: action.payload };
       case "FETCH_CART_FAILURE":
         return { ...state, loading: false, error: action.payload };
+        case "UPDATE_CART_QUANTITY_SUCCESS":
+      return {
+        ...state,
+        units: state.units.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        ),
+      };
+    case "UPDATE_CART_QUANTITY_FAILURE":
+      return {
+        ...state,
+        error: action.payload,
+      };
       default:
         return state;
     }

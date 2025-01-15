@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-import {
-  fetchAddresses,
-  fetchAddOrder,
-  CartItem,
-} from "../actions/unitActions";
+import { fetchAddresses, fetchAddOrder, CartItem } from "../actions/unitActions";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-
 function PayMent() {
   const dispatch = useDispatch();
   const cartitems = useSelector((state) => state.cart);
@@ -22,8 +17,10 @@ function PayMent() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
-  const { totalWithDiscount } = location.state || {};
-
+  const { selectedProducts } = location.state || { selectedProducts: [] };
+  const { selectedTotalWithDiscount } = location.state || {selectedTotalWithDiscount: []};
+  const [quantities, setQuantities] = useState({});
+  
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -36,19 +33,21 @@ function PayMent() {
     dispatch(fetchAddresses());
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   if (!cartitems.units || cartitems.units.length === 0) {
+  //     dispatch(CartItem()); // Gọi lại sản phẩm nếu giỏ hàng trống
+  //   }
+  // }, [dispatch, cartitems.units]);
   const units = Array.isArray(cartitems.units) ? cartitems.units : [];
-
-  // Kiểm tra giỏ hàng trống
-  if (units.length === 0) {
-    Swal.fire({
-      icon: "error",
-      title: "Không thể thanh toán!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    navigate("/home");
-  }
-
+if(units.length < 0){
+  Swal.fire({
+    icon: "error",
+    title: "Không thể thanh toán!",
+    showConfirmButton: false,
+    timer: 1500,
+  });
+  navigate("/home");
+}
   const handleSaveAddress = () => {
     const selected = addressState.addresses.find(
       (item) => item.id === parseInt(currentAddressId)
@@ -58,16 +57,16 @@ function PayMent() {
       setErrorMessage(""); // Clear any previous error messages
     }
   };
-
   const cartTotal = units.reduce(
     (total, item) =>
       total +
       (item.product && item.product.price
-        ? item.product.price * item.quantity
+        ? item.product.price * quantities[item.product.id]
         : 0),
     0
   );
-  const submit = async () => {
+
+  const submit = () => {
     if (!selectedAddress || !selectedPaymentMethod) {
       setErrorMessage("Vui lòng chọn địa chỉ và phương thức thanh toán.");
       return;
@@ -77,7 +76,7 @@ function PayMent() {
       shipping_name: selectedAddress.shipping_name,
       shipping_phone: selectedAddress.shipping_phone,
       shipping_address: selectedAddress.shipping_address,
-      amount: totalWithDiscount,
+      amount: selectedTotalWithDiscount,
       payment_type: selectedPaymentMethod,
       orderDetailsData: units.map((item) => ({
         product_name: item.product.product_name,
@@ -86,9 +85,29 @@ function PayMent() {
       })),
     };
     console.log(data);
+    // console.log(orderDetailsData);
 
-    await dispatch(fetchAddOrder(data,navigate));
+    dispatch(fetchAddOrder(data));
+    Swal.fire({
+      icon: "success",
+      title: "Đặt hàng thành công!",
+      showConfirmButton: false,
+      timer: 500,
+    });
+    navigate("/home");
   };
+
+  // const { addresses, loading: addressLoading, error: addressError } = addressState;
+  console.log("CartItem:", cartitems);
+  console.log("Address:", addressState);
+
+  // if (cartitems.loading) {
+  //   return <p>Loading...</p>;
+  // }
+
+  if (cartitems.error) {
+    return <p>Error: {cartitems.error}</p>;
+  }
 
   const handleOrder = () => {
     if (!selectedAddress && !selectedPaymentMethod) {
@@ -132,7 +151,7 @@ function PayMent() {
                     <span className="text-muted">Giỏ hàng</span>
                   </h4>
                   <ul className="list-group mb-3">
-                    {units.map((item) => (
+                    {selectedProducts.map((item) => (
                       <li
                         className="list-group-item d-flex justify-content-between lh-condensed"
                         key={item.product.id}
@@ -140,18 +159,20 @@ function PayMent() {
                         <div>
                           <h6 className="my-0"> {item.product.product_name}</h6>
                           <small className="text-muted">
+                            {" "}
                             {formatCurrency(item.product.price)} x{" "}
                             {item.quantity}
                           </small>
                         </div>
                         <span className="text-muted">
+                          {" "}
                           {formatCurrency(item.product.price * item.quantity)}
                         </span>
                       </li>
                     ))}
                     <li className="list-group-item d-flex justify-content-between">
                       <span>Tổng thành tiền</span>
-                      <strong>{formatCurrency(totalWithDiscount)}</strong>
+                      <strong>{formatCurrency(selectedTotalWithDiscount)}</strong>
                     </li>
                   </ul>
                 </div>
@@ -243,7 +264,7 @@ function PayMent() {
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog m-t-100" role="document">
+        <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
@@ -301,7 +322,7 @@ function PayMent() {
               </button>
               <button
                 type="button"
-                className="btn btn-dark"
+                className="btn btn-primary"
                 data-dismiss="modal"
                 onClick={handleSaveAddress}
               >

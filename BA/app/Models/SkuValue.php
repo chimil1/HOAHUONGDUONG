@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SkuValue extends Model
 {
-    protected $fillable = ['product_sku_id', 'product_id', 'option_id', 'option_value_id'];
 
+    protected $fillable = ['sku_value', 'product_id', 'quantity_sku', 'price_sku'];
     
 
     public function productSku()

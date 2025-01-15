@@ -17,7 +17,10 @@ function Cart() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
-  const { totalWithDiscount } = location.state || {};
+  const { selectedProducts } = location.state || { selectedProducts: [] };
+  const { selectedTotalWithDiscount } = location.state || {selectedTotalWithDiscount: []};
+  const [quantities, setQuantities] = useState({});
+  
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -58,7 +61,7 @@ if(units.length < 0){
     (total, item) =>
       total +
       (item.product && item.product.price
-        ? item.product.price * item.quantity
+        ? item.product.price * quantities[item.product.id]
         : 0),
     0
   );
@@ -73,7 +76,7 @@ if(units.length < 0){
       shipping_name: selectedAddress.shipping_name,
       shipping_phone: selectedAddress.shipping_phone,
       shipping_address: selectedAddress.shipping_address,
-      amount: totalWithDiscount,
+      amount: selectedTotalWithDiscount,
       payment_type: selectedPaymentMethod,
       orderDetailsData: units.map((item) => ({
         product_name: item.product.product_name,
@@ -93,6 +96,7 @@ if(units.length < 0){
     });
     navigate("/home");
   };
+
   // const { addresses, loading: addressLoading, error: addressError } = addressState;
   console.log("CartItem:", cartitems);
   console.log("Address:", addressState);
@@ -147,7 +151,7 @@ if(units.length < 0){
                     <span className="text-muted">Giỏ hàng</span>
                   </h4>
                   <ul className="list-group mb-3">
-                    {units.map((item) => (
+                    {selectedProducts.map((item) => (
                       <li
                         className="list-group-item d-flex justify-content-between lh-condensed"
                         key={item.product.id}
@@ -168,7 +172,7 @@ if(units.length < 0){
                     ))}
                     <li className="list-group-item d-flex justify-content-between">
                       <span>Tổng thành tiền</span>
-                      <strong>{formatCurrency(totalWithDiscount)}</strong>
+                      <strong>{formatCurrency(selectedTotalWithDiscount)}</strong>
                     </li>
                   </ul>
                 </div>
