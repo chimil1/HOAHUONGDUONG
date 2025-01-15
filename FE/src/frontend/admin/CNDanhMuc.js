@@ -5,8 +5,6 @@ import { useDropzone } from "react-dropzone";
 import "./pr.css";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import Menu from "./layout/Menu";
-
 const CNDanhMuc = () => {
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
@@ -77,9 +75,8 @@ const CNDanhMuc = () => {
 
   return (
     <div className="page-wrapper">
-      <Menu />
+      <Header/>
       <div className="page-container">
-        <Header />
         <div className="main-content m-t-100">
           <div className="section__content section__content--p30">
             <div className="container-fluid">

@@ -75,7 +75,6 @@ function ShoppingCart() {
     });
     dispatch(CartItem());
   };  
-
   const payment = () => {
     if (units.length > 0) {
       navigate("/payment", {

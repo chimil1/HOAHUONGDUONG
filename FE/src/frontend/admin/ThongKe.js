@@ -143,15 +143,13 @@ function ThongKe() {
 
   return (
       <div className="page-wrapper">
-        <Menu />
-        <div className="page-container">
           <Header />
-          <div className="main-content m-t-100">
+        <div className="page-container">
+          <div className="main-content">
             <div className="section__content section__content--p30">
               <div className="container-fluid">
-                <div className="row m-t-100">
-                  {/* Các phần hiển thị thông tin tổng quan */}
-                  <div className="col-sm-6 col-lg-3">
+                <div className="row col-log-12 m-t-90">
+                  <div className="col-sm-6">
                     <div className="overview-item overview-item--c1">
                       <div className="overview__inner">
                         <div className="overview-box clearfix">
@@ -166,8 +164,7 @@ function ThongKe() {
                       </div>
                     </div>
                   </div>
-
-                  <div className="col-sm-6 col-lg-3">
+                  <div className="col-sm-6">
                     <div className="overview-item overview-item--c4">
                       <div className="overview__inner">
                         <div className="overview-box clearfix d-flex align-items-center">
@@ -187,10 +184,7 @@ function ThongKe() {
                       </div>
                     </div>
                   </div>
-
-                  {/* Các phần hiển thị thông tin khác */}
                 </div>
-
                 <div className="row">
                   {/* Biểu đồ thống kê số người đăng nhập */}
                   <div className="col-lg-6 col-md-12 mb-4">

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Menu from "./layout/Menu";
-
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, fetchDelete } from "../actions/unitActions";
 import Loading from "../client/layout/Loading";
@@ -24,11 +23,13 @@ function QlSanPham() {
     }).format(amount);
   };
 
+  // Update truncateText function to handle undefined and non-string values
   const truncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
+    // Check if text is valid and is a string
+    if (text && typeof text === 'string' && text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
-    return text;
+    return text; // If it's not a string or the length is less than maxLength, return the text as it is
   };
 
   useEffect(() => {
@@ -89,9 +90,8 @@ function QlSanPham() {
 
   return (
     <div className="page-wrapper">
-      <Menu />
+      <Header />
       <div className="page-container">
-        <Header />
         <div className="main-content m-t-100">
           <div className="section__content section__content--p30">
             <div className="container-fluid">

@@ -140,7 +140,7 @@ class OrderController extends Controller
 
                 // Sắp xếp tham số
                 ksort($inputData);
-$query = "";
+                $query = "";
                 $i = 0;
                 $hashdata = "";
                 foreach ($inputData as $key => $value) {

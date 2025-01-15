@@ -39,9 +39,8 @@ function QlKhachHang() {
 
   return (
       <div className="page-wrapper">
-        <Menu />
+        <Header />
         <div className="page-container">
-          <Header />
           <div className="main-content m-t-100">
             <div className="section__content section__content--p30">
               <div className="container-fluid">

@@ -29,8 +29,7 @@ Route::get('revenue-by', [OrderController::class, 'totalAmountStatusTwo']);
 Route::post('shipping-addresses/{user_id}', [ShippingAddressController::class, 'store']);
 
 
-Route::get('/auth/redirect', [GoogleController::class, 'redirectToProvider']);
-Route::post('/auth/callback', [GoogleController::class, 'handleProviderCallback']);
+
 Route::get('/products/search', [ProductController::class, 'search']);
 Route::post('/chatbot', [ChatbotController::class, 'handleRequest']);
 

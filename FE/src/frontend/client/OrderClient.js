@@ -112,16 +112,22 @@ function OrderClient() {
       order.status <= 5
     );
   };
-
+  const currentDate = new Date();
   const filteredOrders = Array.isArray(unitState.units)
-    ? selectedStatus === "all"
-      ? unitState.units
-      : unitState.units.filter(
-          (order) =>
-            isValidOrder(order) &&
-            getStatusText(order.status) === selectedStatus
-        )
-    : [];
+  ? [...unitState.units]
+      .filter(
+        (order) =>
+          selectedStatus === "all" ||
+          (isValidOrder(order) &&
+            getStatusText(order.status) === selectedStatus)
+      )
+      .sort((a, b) => {
+        const aDate = new Date(a.created_at);
+        const bDate = new Date(b.created_at);
+      return Math.abs(currentDate - aDate) - Math.abs(currentDate - bDate);
+      })
+  : [];
+
 
   const handleShowCancelModal = (orderId) => {
     setCurrentOrderId(orderId);

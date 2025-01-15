@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 export const FETCH_UNITS_REQUEST = "FETCH_UNITS_REQUEST";
 export const FETCH_UNITS_SUCCESS = "FETCH_UNITS_SUCCESS";
 export const FETCH_UNITS_FAILURE = "FETCH_UNITS_FAILURE";
@@ -538,7 +539,7 @@ export const fetchReviewDetails = (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
     axios
-      .get(`http://localhost:8000/api/6/${id}`)
+      .get(`http://localhost:8000/api/${id}`)
       .then((response) => {
         const units = response.data;
         dispatch(fetchUnitsSuccess(units));
@@ -549,24 +550,6 @@ export const fetchReviewDetails = (id) => {
       });
   };
 };
-
-//details review
-// export const fetchReviewDetails = (id) => {
-//   return (dispatch) => {
-//     dispatch(fetchUnitsRequest());
-//     axios
-//       .get(`http://localhost:8000/api/review/${id}`)
-//       .then((response) => {
-//         const units = response.data;
-//         dispatch(fetchUnitsSuccess(units));
-//       })
-//       .catch((error) => {
-//         const errorMsg = error.message;
-//         dispatch(fetchUnitsFailure(errorMsg));
-//       });
-//   };
-// };
-
 export const fetchStatiscal = () => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
@@ -618,23 +601,6 @@ export const fetchCoupons = () => {
             });
     };
 };
-
-// export const fetchDeleteCoupon = (id) => {
-//     return (dispatch) => {
-//         dispatch(fetchUnitsRequest());
-//         axios
-//             .delete(`http://localhost:8000/api/coupon/${id}`)
-//             .then((response) => {
-//                 const units = response.data;
-//                 dispatch(fetchUnitsSuccess(units));
-//                 dispatch(fetchCoupons());
-//             })
-//             .catch((error) => {
-//                 const errorMsg = error.message;
-//                 dispatch(fetchUnitsFailure(errorMsg));
-//             });
-//     };
-// };
 export const fetchCouponDetails = (id) => {
     return (dispatch) => {
         dispatch(fetchUnitsRequest());
@@ -702,8 +668,6 @@ export const addToCart = (data) => {
       });
   };
 };
-
-
 export const CartItem = () => {
     return (dispatch) => {
         dispatch({ type: "FETCH_CART_REQUEST" });
@@ -722,21 +686,6 @@ export const CartItem = () => {
             });
     };
 };
-// export const removeFromCart = async (productId) => {
-//   const token = localStorage.getItem("token");
-//   try {
-//       const response = await axios.delete(`http://localhost:8000/api/cartItem/${productId}`, {
-//           headers: {
-//               Authorization: `Bearer ${token}`, // thêm token nếu cần
-//           },
-//       });
-//       console.log(response.data.message);
-//       // Cập nhật lại giỏ hàng sau khi xóa thành công
-//   } catch (error) {
-//       console.error('Error removing product from cart:', error.response.data.message);
-//   }
-// };
-
 export const removeFromCart= (id) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
@@ -757,22 +706,6 @@ export const removeFromCart= (id) => {
       });
   };
 };
-
-
-// export const fetchReviews = (product_id) => {
-//     return (dispatch) => {
-//         dispatch({ type: "FETCH_REVIEW_REQUEST" });
-//         axios
-//             .get(`http://localhost:8000/api/review/${product_id}`)
-//             .then((response) => {
-//                 dispatch({ type: "FETCH_REVIEW_SUCCESS", payload: response.data });
-//             })
-//             .catch((error) => {
-//                 dispatch({ type: "FETCH_REVIEW_FAILURE", payload: error.message });
-//             });
-//     };
-// };
-
 export const fetchReviews = (product_id) => {
   return (dispatch) => {
     dispatch({ type: "FETCH_REVIEW_REQUEST" });
@@ -786,8 +719,6 @@ export const fetchReviews = (product_id) => {
       });
   };
 };
-
-
 export const addReview = (data) => {
   return (dispatch) => {
     dispatch({ type: "FETCH_REVIEW_REQUEST" });
@@ -811,8 +742,6 @@ export const addReview = (data) => {
       });
   };
 };
-
-
 export const lockCommentAction = (idReview, id_cmt) => {
   return (dispatch) => {
     dispatch(fetchUnitsRequest());
@@ -830,44 +759,54 @@ export const lockCommentAction = (idReview, id_cmt) => {
   };
 };
 
-export const fetchAddOrder = (data) => {
-    return async (dispatch) => {
-        dispatch(fetchUnitsRequest());
-        const token = localStorage.getItem("token");
-        try {
-            const response = await axios.post(
-                "http://localhost:8000/api/addOrder",
-                data,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            const units = response.data;
-            dispatch(fetchUnitsSuccess(units));
-            // Kiểm tra nếu thanh toán qua VNPay
-            if (data.payment_type === 1 && response.data.url) {
-                const vnpayUrl = response.data.url;
-                window.location.href = vnpayUrl; // Chuyển hướng người dùng đến VNPay
-            } else {
-                // Nếu không phải VNPay, thực hiện các bước khác như hiển thị thông báo
-                Swal.fire({
-                    icon: "success",
-                    title: "Đặt hàng thành công!" + response.data.url,
-                    showConfirmButton: false,
-                    timer: 500,
-                });
-            }
-        } catch (error) {
-            const errorMsg = error.response?.data?.message || error.message;
-            console.log(errorMsg);
-            dispatch(fetchUnitsFailure(errorMsg));
+export const fetchAddOrder = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(fetchUnitsRequest());
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/addOrder",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-    };
+      );
+      const units = response.data;
+      dispatch(fetchUnitsSuccess(units));
+      // Kiểm tra nếu thanh toán qua VNPay
+      if (data.payment_type === 1 && response.data.url) {
+        const vnpayUrl = response.data.url;
+        window.location.href = vnpayUrl; // Chuyển hướng người dùng đến VNPay
+      } else {
+        // Nếu không phải VNPay, hiển thị thông báo và chuyển về trang chủ
+        Swal.fire({
+          icon: "success",
+          title: "Đặt hàng thành công!",
+          showConfirmButton: false,
+          timer: 1000,
+        }).then(() => {
+          navigate("/"); // Chuyển về trang chủ
+        });
+      }
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || error.message;
+      console.error("Lỗi khi đặt hàng:", errorMsg);
+      dispatch(fetchUnitsFailure(errorMsg));
+
+      Swal.fire({
+        icon: "error",
+        title: "Đặt hàng thất bại!",
+        text: errorMsg,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 };
 
-export const vnpayReturn = (params) => {
+export const vnpayReturn = (params,navigate) => {
     return async (dispatch) => {
         dispatch(fetchUnitsRequest());
         const token = localStorage.getItem("token");
@@ -890,7 +829,8 @@ export const vnpayReturn = (params) => {
                 text: message,
                 showConfirmButton: false,
                 timer: 2000,
-            });
+            })
+            navigate('/');
         } catch (error) {
             const errorMsg = error.response?.data?.message || error.message;
             console.error("Lỗi xử lý thanh toán:", errorMsg);

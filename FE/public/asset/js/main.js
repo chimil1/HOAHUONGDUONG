@@ -279,4 +279,4 @@
 
 
 
-})(jQuery);
+})(window.jQuery);

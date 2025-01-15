@@ -5,7 +5,6 @@ import { FaCheck, FaShippingFast } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import Menu from "./layout/Menu";
 import Loading from "../client/layout/Loading";
 
 function QLDonHang() {
@@ -21,10 +20,10 @@ function QLDonHang() {
   }, [dispatch]);
 
   const truncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
+    if (text && text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
-    return text;
+    return text || "Không có thông tin";  // return fallback text if undefined or null
   };
 
   const handleUpdateStatus = (id, newStatus) => {
@@ -101,12 +100,10 @@ function QLDonHang() {
   if (!Array.isArray(unitState.units) || unitState.units.length === 0) {
     return <p>Lỗi: Không có đơn hàng nào.</p>;
   }
-
   return (
     <div className="page-wrapper">
-      <Menu />
+    <Header />
       <div className="page-container">
-        <Header />
         <div className="main-content m-t-100">
           <div className="section__content section__content--p40">
             <div className="container-fluid">
@@ -147,7 +144,7 @@ function QLDonHang() {
                               <tr key={item.id}>
                                 <td className="text-center text-nowrap">{formatOrderId(item.id)}</td>
                                 <td className="text-center text-nowrap">{item.username || "Không có thông tin"}</td>
-                                <td className="text-center text-nowrap">{truncateText(item.shipping_address, 20) || "Không có thông tin"}</td>
+                                <td className="text-center text-nowrap">{truncateText(item.shipping_address, 20)}</td>
                                 <td className="text-center text-nowrap">{item.shipping_phone || "Không có thông tin"}</td>
                                 <td className="text-center text-nowrap">{getStatusText(item.status)}</td>
                                 <td className="text-center text-nowrap">

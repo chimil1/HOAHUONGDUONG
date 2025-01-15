@@ -1,7 +1,6 @@
 
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-import Menu from "./layout/Menu";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,7 +18,6 @@ function EditCoupon() {
         handleSubmit,
         formState: { errors },
         setValue,
-        getValues,
         setError,
     } = useForm();
 
@@ -81,9 +79,8 @@ function EditCoupon() {
     if (unitState.error) return <p>Error: {unitState.error}</p>;
     return (
         <div className="page-wrapper">
-            <Menu />
+            <Header />
             <div className="page-container">
-                <Header />
                 <div className="main-content m-t-100">
                     <div className="section__content section__content--p30">
                         <div className="container-fluid">

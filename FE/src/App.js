@@ -1,16 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import ThongKe from "./frontend/admin/ThongKe";
 import QlDanhMuc from "./frontend/admin/QlDanhMuc";
 import EditCategory from "./frontend/admin/EditCategory";
-import QlDanhSach from "./frontend/admin/QlDanhSach";
 import QlDonHang from "./frontend/admin/QlDonHang";
 import QlKhachHang from "./frontend/admin/QlKhachHang";
 import QlSanPham from "./frontend/admin/QlSanPham";
 import OrderDetails from "./frontend/admin/orderDetail";
 import EditProduct from "./frontend/admin/EditProduct";
 import AddProduct from "./frontend/admin/AddProduct";
-import ProductDetails from "./frontend/admin/ProductDetails";
 import ReviewDetail from "./frontend/admin/ReviewDetails";
 import Coupons from "./frontend/admin/Coupons";
 import Review from "./frontend/admin/Review";
@@ -36,7 +33,7 @@ import ForgotPassword from "./frontend/client/auth/ForgotPassword";
 import ConfirmPassword from "./frontend/client/auth/ComfirmPassword";
 import Cart from "./frontend/client/ShoppingCart";
 import ListAddress from "./frontend/client/ShippingList";
-import PayMent from "./frontend/client/PayMentOrder";
+import PayMent from "./frontend/client/PayMent";
 import VNPayReturn from "./frontend/client/VNPayReturn";
 
 import Loading from "./frontend/client/layout/Loading"
@@ -82,13 +79,10 @@ function App() {
           <Route path="/addcategory" element={<ProtectedRoute><AddCategory /></ ProtectedRoute>} />
           <Route path="/editcategory/:id" element={<ProtectedRoute><EditCategory /></ ProtectedRoute>} />
           <Route path="/editcoupon/:id" element={<ProtectedRoute><EditCoupon /></ ProtectedRoute>} />
-          <Route path="/qldanhsach" element={<ProtectedRoute><QlDanhSach /></ ProtectedRoute>} />
           <Route path="/qldonhang" element={<ProtectedRoute><QlDonHang /></ ProtectedRoute>} />
           <Route path="/qldonhang/:id" element={<ProtectedRoute><QlDonHang /></ ProtectedRoute>} />
           <Route path="/qlkhachhang" element={<ProtectedRoute><QlKhachHang /></ ProtectedRoute>} />
           <Route path="/qlsanpham" element={<ProtectedRoute><QlSanPham /></ ProtectedRoute>} />
-          <Route path="/productdetail" element={<ProtectedRoute><ProductDetails /></ ProtectedRoute>} />
-          <Route path="/productdetail/:id" element={<ProtectedRoute><ProductDetails /></ ProtectedRoute>} />
           <Route path="/orderdetails/:id" element={<ProtectedRoute><OrderDetails /></ ProtectedRoute>} />
           <Route path="/orderdetails" element={<ProtectedRoute><OrderDetails /></ ProtectedRoute>} />
           <Route path="/details/:id" element={<ProtectedRoute><OrderManagement /></ ProtectedRoute>} />
