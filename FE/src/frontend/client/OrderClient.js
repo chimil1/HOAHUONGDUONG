@@ -5,13 +5,19 @@ import Loading from "./layout/Loading";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 import {
   fetchOrderManagementcline,
   updateOrderStatus,
+  fetchProductFind,
+  fetchReviewFind,
+  createReview
 } from "../actions/unitActions";
 
 function OrderClient() {
   const unitState = useSelector((state) => state.unit);
+  const productState = useSelector((state) => state.products);
+  const reviewState = useSelector((state) => state.reviews);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -31,6 +37,11 @@ function OrderClient() {
   ];
 
   useEffect(() => {
+    dispatch(fetchProductFind());
+    dispatch(fetchReviewFind());
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(fetchOrderManagementcline(id));
   }, [dispatch, id]);
 
@@ -43,20 +54,13 @@ function OrderClient() {
 
   const getStatusText = (status) => {
     switch (status) {
-      case 0:
-        return "Chờ xác nhận";
-      case 1:
-        return "Đã xác nhận";
-      case 2:
-        return "Đang vận chuyển";
-      case 3:
-        return "Hoàn thành";
-      case 4:
-        return "Đã hủy";
-      case 5:
-        return "Đánh giá";
-      default:
-        return "Không rõ";
+      case 0: return "Chờ xác nhận";
+      case 1: return "Đã xác nhận";
+      case 2: return "Đang vận chuyển";
+      case 3: return "Đã nhận hàng";
+      case 4: return "Đã hủy";
+      case 5: return "Hoàn thành";
+      default: return "Không rõ";
     }
   };
 
@@ -71,9 +75,14 @@ function OrderClient() {
     ? unitState.units.length
     : 0;
 
+    ? unitState.units.length
+    : 0;
+
   const calculateTotalAmount = (order) => {
     if (Array.isArray(order.order_details)) {
       return order.order_details.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
         (total, item) => total + item.price * item.quantity,
         0
       );
@@ -146,6 +155,44 @@ function OrderClient() {
     }
     handleUpdateStatus(currentOrderId, 4);
     handleCloseCancelModal();
+  };
+    ? selectedStatus === "all"
+      ? unitState.units
+      : unitState.units.filter(
+        (order) =>
+          isValidOrder(order) &&
+          getStatusText(order.status) === selectedStatus
+      )
+    : [];
+
+  const handleNavigateProduct = (nameProduct, idOrder) => {
+    const findProduct = productState.products;
+    const findReview = reviewState.units;
+
+    const product = findProduct?.find(
+      (product) => product.product_name === nameProduct
+    );
+    const reviews = findReview?.find(
+      (review) => review.product_id === product.id && review.order_id === idOrder
+    );
+
+    if (reviews) {
+      Swal.fire({
+        text: "Sản phẩm này đã được bạn đánh giá rồi!",
+        icon: "info",
+        confirmButtonText: "OK",
+      });
+    } else if (product) {
+      navigate(`/product/${product.id}`, { state: { orderId: idOrder } });
+      dispatch(createReview({ order_id: idOrder, product_id: product.id }));
+      dispatch(updateOrderStatus(idOrder, 5)); 
+    } else {
+      Swal.fire({
+        text: "Sản phẩm không tồn tại!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (

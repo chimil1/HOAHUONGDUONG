@@ -56,6 +56,7 @@ class ReviewController extends Controller
             'rating' => $request->rating,
             'comment' => $request->comment,
             'user_id' => $userId,
+            'order_id' => $request->order_id,
             'product_id' => $request->productId,
         ]);
         return response()->json($review);
@@ -104,10 +105,11 @@ class ReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Review $review)
-    {
-        //
+    public function update(Request $request, $id)
+    { 
+    
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -124,7 +126,6 @@ class ReviewController extends Controller
         if (!$comment) {
             return response()->json(['message' => 'Bình luận không tồn tại'], 404);
         }
-
         // Cập nhật trạng thái khóa bình luận
         $comment->status = 1;
         $comment->update();
